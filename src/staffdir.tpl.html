@@ -1,0 +1,42 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Title</th>
+                        <th>Department/Unit</th>
+                        <th>Contact</th>
+                        <th>Expertise</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="person in staffdir">
+                        <td>
+                            <div ng-if="person.rank" class="text-muted"> {{person.rank}}</div>
+                            {{person.lastname}}, {{person.firstname}}
+                        </td>
+                        <td>{{person.title}}</td>
+                        <td>{{person.department}}</td>
+                        <td>
+                            <ul class="fa-ul">
+                                <li><span class="fa fa-phone fa-li"></span>{{person.phone}}</li>
+                                <li><span class="fa fa-fax fa-li"></span>{{person.fax}}</li>
+                                <li><span class="fa fa-envelope fa-li"></span>{{person.email}}</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list-unstyled" ng-if="person.subjects">
+                                <li ng-repeat="subject in person.subjects">
+                                    <a ng-href="{{subject.link}}" title="{{subject.subject}}" ng-if="subject.link">{{subject.subject}}</a>
+                                    <span ng-if="!subject.link">{{subject.subject}}</span>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
