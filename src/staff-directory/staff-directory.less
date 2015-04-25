@@ -1,0 +1,84 @@
+@import (reference) '../../bower_components/fontawesome/less/variables';
+
+.staff-directory-list {
+  th {
+    .sortable, .sortable-reverse{
+      &:after {
+        padding-left: 5px;
+        display: inline-block;
+        font: normal normal normal 14px/1 FontAwesome; // shortening font declaration
+        font-size: inherit; // can't have font-size inherit on line above, so need to override
+        text-rendering: auto; // optimizelegibility throws things off #1094
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        transform: translate(0, 0); // ensures no half-pixel rendering in firefox
+        color: @gray-dark;
+      }
+    }
+
+    .sortable:after {
+      content: @fa-var-caret-down;
+    }
+    .sortable-reverse:after {
+      content: @fa-var-caret-up;
+    }
+
+    // Dropdown component within a table header
+    > .dropdown {
+      display: inline-block;
+
+      > .dropdown-toggle {
+        padding: 0 22px 0 5px;
+        border: none;
+        color: @gray-light;
+
+        &::before, &::after{
+          width: 6px;
+          top: 55%;
+          color: @gray-light;
+        }
+
+        &::before {
+          right: 11px;
+        }
+
+        &::after {
+          right: 7px;
+        }
+      }
+
+      &.open {
+        > .dropdown-toggle {
+
+          &::before {
+            right: 12px;
+          }
+
+          &::after {
+            right: 7px;
+          }
+
+          &::before, &::after{
+            width: 10px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.form-group-separator {
+  text-align: center;
+
+  &::before, &::after {
+    content: ' ';
+    top: 50%;
+    position: absolute;
+    width: 45%;
+    border-bottom: 1px solid #ccc;
+  }
+
+  &::after {
+    right: 0;
+  }
+}

@@ -21,19 +21,15 @@ module.exports = function(grunt) {
         less: {
             dev: {
                 files: {
-                    'dist/staffdir.css': 'src/**/*.less'
+                    'dist/staffdir.css': 'src/main.less'
                 },
                 options: {
-                    compress: false,
-                    // LESS source map
-                    // To enable, set sourceMap to true and update sourceMapRootpath based on your install
-                    sourceMap: true,
-                    sourceMapFilename: 'dist/staffdir.css.map'
+                    compress: false
                 }
             },
             build: {
                 files: {
-                    'dist/staffdir.min.css': 'src/**/*.less'
+                    'dist/staffdir.min.css': 'src/main.less'
                 },
                 options: {
                     compress: true

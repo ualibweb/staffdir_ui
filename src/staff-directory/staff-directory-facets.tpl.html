@@ -1,0 +1,19 @@
+<form class="facets-form form-horizontal">
+    <div class="form-group">
+        <strong>Filter By</strong>
+    </div>
+    <div class="form-group">
+        <input class="form-control" id="directorySearch" name="directorySearch" type="text" ng-model="staffdir.facet.search" placeholder="Search..." ng-keyup="clearFacet('subject')"/>
+    </div>
+
+    <div class="form-group form-group-separator">
+
+        <strong class="text-center">OR</strong>
+    </div>
+
+    <div class="form-group">
+        <select class="form-control" ng-model="staffdir.facet.subject" name="subject" ng-options="subject.subject for subject in facets.subjects" ng-change="clearFacet('search')">
+            <option value="">Choose Expertise</option>
+        </select>
+    </div>
+</form>

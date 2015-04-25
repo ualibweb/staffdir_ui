@@ -1,0 +1,39 @@
+.staff-card-container{
+  max-width: 450px;
+  background-color: @gray-lighter;
+
+  .staff-card-detail{
+    > h6 {
+      color: @gray;
+      font-size: 1.1em;
+      border-bottom: 1px solid darken(@gray-lighter, 10%);
+
+      @media (max-width: @screen-xs-max){
+        border-bottom: none;
+      }
+    }
+  }
+
+  .name-plate{
+    margin-bottom: @grid-gutter-width;
+  }
+
+  .name {
+    font-size: 1.5em;
+    font-weight: 700;
+  }
+
+  .title{
+    font-size: 1.1em;
+    font-weight: 700;
+  }
+
+  .department {
+    font-size: 1.1em;
+  }
+}
+
+//remove - demo purposes only
+.clear-ri {
+  clear: left;
+}

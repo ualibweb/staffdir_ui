@@ -1,0 +1,242 @@
+@import (reference) "../bower_components/bootstrap/less/bootstrap";
+
+/**
+* TEMPORARY for demo purposes
+**/
+
+//
+// Variables
+// --------------------------------------------------
+
+
+// Global values [Overrides]
+// --------------------------------------------------
+
+// Colors
+//
+// weight: 0
+//
+// Always try to stick to the [Primary Colors](#style-color-primary). Only use [Secondary Colors](#style-color-secondary)
+// for slight accents or highlights. [Secondary Colors](#1.2) should only be dominant
+// when used in a child/sub theme.
+//
+// > When using colors as background, check that the contrast between text and background colors pass, at minimum, the WCAG AA usability standards by using [this contrast checker](http://webaim.org/resources/contrastchecker/) or similar tools.
+//
+// Icon: fa-eyedropper
+//
+// MenuBlurb:
+// Color scheme for the website and how to use them
+//
+// Styleguide style.color
+
+// Primary Colors
+//
+// weight: 0
+//
+// Try to use these colors for everything. Only use these colors where deemed appropriate
+// via this styleguide.
+//
+// Markup: primary.html
+//
+// HideMarkup: true
+//
+// Styleguide style.color.primary
+
+// Grays
+// -------------------------
+
+// Gray Values
+//
+// weight: 2
+//
+// Use these to aid in contrast between elements or sections.
+//
+// Markup: gray-values.html
+//
+// HideMarkup: true
+//
+// Styleguide style.color.gray_values
+@gray-darker:            lighten(@gray-base, 13.5%); // #222
+@gray-dark:              lighten(@gray-base, 20%);   // #333
+@gray:                   lighten(@gray-base, 40%); // #666 \\ //lighten(@gray-base, 33.5%); // #555
+@gray-light:             lighten(@gray-base, 60%); // #999 \\ //lighten(@gray-base, 46.7%); // #777
+@gray-lighter:           lighten(@gray-base, 97.5%); // #f9f9f9 \\ //lighten(@gray-base, 93.5%); // #eee
+
+// Brand colors
+// -------------------------
+
+@brand-primary:         #993333;
+
+// Secondary Colors
+//
+// weight: 1
+//
+// Use these colors sparingly, as accents or contrasts. It is best to use these colors on thin or line elements and properties such as `borders`, `text`, etc.,
+// instead of block/thick elements such `background-color`, `nav buttons`, etc.
+//
+// Markup: secondary.html
+//
+// HideMarkup: true
+//
+// Styleguide style.color.secondary
+
+@dark-blue: #184866;
+@orange: #cc5d30;
+@green: #61a661;
+
+// Links
+// -------------------------
+
+@link-color:            #428bca;
+
+// Typography
+//
+// weight: 1
+//
+// Use and availability of fonts
+//
+// Icon: fa-font
+//
+// MenuBlurb:
+// Fonts used for body, heading, and other text elements
+//
+// Styleguide style.typography
+
+// Body Text
+//
+// weight: 0
+//
+// The default font family for text in the `<body>` is *Lato*
+//
+// Markup: body-font.html
+//
+// HideMarkup: true
+//
+// Styleguide style.typography.body
+
+@font-family-sans-serif:  'Lato', sans-serif;
+@font-family-serif:       'EB Garamond', "Times New Roman", Times, serif;
+@font-family-monospace:   'Ubuntu Mono', Menlo, Monaco, Consolas, "Courier New", monospace;
+
+// Headings
+//
+// weight: 1
+//
+// Heading use the *Oxygen* font family and are used for all page titles and page section titles.
+//
+// Markup: headings.html
+//
+// HideMarkup: true
+//
+// Styleguide style.typography.headings
+@headings-font-family:    'Oxygen', sans-serif;
+@headings-font-weight:    400;
+
+// Components
+// -------------------------
+
+@border-radius-large:            4px;
+
+//== Buttons
+//
+//## For each of Bootstrap's buttons, define text, background and border color.
+@btn-primary-color:              #fff;
+@btn-primary-bg:                 #428bca;
+@btn-primary-border:             darken(@btn-primary-bg, 5%);
+
+// Grid settings
+// -------------------------
+
+@main-sm-columns:       @grid-columns;
+@sidebar-sm-columns:    4;
+
+// Navbar collapse
+//** Point at which the navbar becomes uncollapsed.
+@grid-float-breakpoint:     @screen-sm-max;
+
+//== Navbar
+//
+//##
+
+// Basics of a navbar
+@navbar-height:                    50px;
+@navbar-margin-bottom:             @line-height-computed;
+@navbar-border-radius:             @border-radius-base;
+@navbar-padding-horizontal:        floor((@grid-gutter-width / 2));
+@navbar-padding-vertical:          ((@navbar-height - @line-height-computed) / 2);
+@navbar-collapse-max-height:       340px;
+
+@navbar-default-color:             #777;
+@navbar-default-bg:                @gray-lighter;
+@navbar-default-border:            darken(@navbar-default-bg, 6.5%);
+
+// Navbar links
+@navbar-default-link-color:                @brand-primary;
+@navbar-default-link-hover-color:          @gray-lighter;
+@navbar-default-link-hover-bg:             @navbar-default-link-color;
+@navbar-default-link-active-color:         @navbar-default-link-hover-color;
+@navbar-default-link-active-bg:            @navbar-default-link-hover-bg;
+@navbar-default-link-disabled-color:       #ccc;
+@navbar-default-link-disabled-bg:          transparent;
+
+// Navbar brand label
+@navbar-default-brand-color:               @navbar-default-link-color;
+@navbar-default-brand-hover-color:         darken(@navbar-default-brand-color, 10%);
+@navbar-default-brand-hover-bg:            transparent;
+
+// Navbar toggle
+@navbar-default-toggle-hover-bg:           #ddd;
+@navbar-default-toggle-icon-bar-bg:        #888;
+@navbar-default-toggle-border-color:       #ddd;
+
+
+// Inverted navbar
+// Reset inverted navbar basics
+@navbar-inverse-color:                      @gray-lighter;
+@navbar-inverse-bg:                         @brand-primary;
+@navbar-inverse-border:                     darken(@navbar-inverse-bg, 10%);
+
+// Inverted navbar links
+@navbar-inverse-link-color:                 @navbar-inverse-color;
+@navbar-inverse-link-hover-color:           @navbar-inverse-bg;
+@navbar-inverse-link-hover-bg:              @navbar-inverse-link-color;
+@navbar-inverse-link-active-color:          @navbar-inverse-bg;
+@navbar-inverse-link-active-bg:             @navbar-inverse-color;
+@navbar-inverse-link-disabled-color:        #e5d8d8;
+@navbar-inverse-link-disabled-bg:           transparent;
+
+// Inverted navbar brand label
+@navbar-inverse-brand-color:                @navbar-inverse-link-color;
+@navbar-inverse-brand-hover-color:          #fff;
+@navbar-inverse-brand-hover-bg:             transparent;
+
+// Inverted navbar toggle
+@navbar-inverse-toggle-hover-bg:            lighten(@navbar-inverse-bg, 10%);
+@navbar-inverse-toggle-icon-bar-bg:         @gray-lighter;
+@navbar-inverse-toggle-border-color:        transparent;
+
+// Jumbotron
+// -------------------------
+
+@jumbotron-bg:                   #eee;
+
+// Global values [Custom]
+// --------------------------------------------------
+
+@content-container-class: wrap;
+
+// Meganav navbar variables
+@navbar-meganav-height: 80px;
+@navbar-meganav-height-sm: 50px;
+
+// File and External Links (iconography and decorations)
+// -------------------------
+
+@icon-ext-link: "\f08e";
+@icon-pdf: "\f1c1";
+@icon-word: "\f1c2";
+@icon-excel: "\f1c3";
+@icon-powerpoint: "\f1c4";
+
+@import 'staff-directory/staff-directory.less';
+@import 'staff-card/staff-card.less';

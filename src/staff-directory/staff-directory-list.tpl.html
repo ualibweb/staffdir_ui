@@ -1,0 +1,50 @@
+<div class="table-responsive">
+    <table class="table table-striped table-condensed table-hover">
+        <thead>
+        <tr>
+            <th>
+                <a href="#"
+                   ng-click="sortList($event, 'lastname')"
+                   ng-class="{'sortable': !staffdir.sortReverse && staffdir.sortBy == 'lastname', 'sortable-reverse': staffdir.sortReverse && staffdir.sortBy == 'lastname'}">Name</a>
+            </th>
+            <th class="hidden-xs">
+                <a href="#" 
+                   ng-click="sortList($event, 'title')" 
+                   ng-class="{'sortable': !staffdir.sortReverse && staffdir.sortBy == 'title', 'sortable-reverse': staffdir.sortReverse && staffdir.sortBy == 'title'}">Title</a>
+            </th>
+            <th class="hidden-xs">
+                <a href="#" 
+                   ng-click="sortList($event, 'department')" 
+                   ng-class="{'sortable': !staffdir.sortReverse && staffdir.sortBy == 'department', 'sortable-reverse': staffdir.sortReverse && staffdir.sortBy == 'department'}">Department/Unit</a>
+            </th>
+            <th>Contact</th>
+            <th class="hidden-xs hidden-sm">Expertise</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="(column, person) in list | filter:staffdir.facet.search | filter:staffdir.facet.subject.subject:true | orderBy:staffdir.sortBy:staffdir.sortReverse track by  person.id ">
+            <td class="text-nowrap">
+                <div ng-if="person.rank" class="text-muted"> {{person.rank}}</div>
+                <span ng-bind-html="person.firstname | highlight:staffdir.facet.search"></span> <strong ng-bind-html="person.lastname | highlight:staffdir.facet.search"></strong>
+            </td>
+            <td class="hidden-xs"><span ng-bind-html="person.title | highlight:staffdir.facet.search"></span></td>
+            <td class="hidden-xs"><span ng-bind-html="person.department | highlight:staffdir.facet.search"></span></td>
+            <td>
+                <ul class="fa-ul">
+                    <li ng-if="person.phone"><span class="fa fa-phone fa-li"></span>{{person.phone}}</li>
+                    <li ng-if="person.fax"><span class="fa fa-fax fa-li"></span>{{person.fax}}</li>
+                    <li ng-if="person.email"><span class="fa fa-envelope fa-li"></span> <a ng-href="mailto:{{person.email}}" title="Email {{person.firstname}} {{persone.lastname}}">{{person.email}}</a></li>
+                </ul>
+            </td>
+            <td class="hidden-xs">
+                <ul class="list-unstyled" ng-if="person.subjects">
+                    <li ng-repeat="subject in person.subjects | orderBy:subject.subject">
+                        <a ng-href="{{subject.link}}" title="{{subject.subject}}" ng-if="subject.link" ng-bind-html="subject.subject | highlight:(staffdir.facet.search || staffdir.facet.subject.subject)"></a>
+                        <span ng-if="!subject.link" ng-bind-html="subject.subject | highlight:(staffdir.facet.search || staffdir.facet.subject.subject)">{{subject.subject}}</span>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
