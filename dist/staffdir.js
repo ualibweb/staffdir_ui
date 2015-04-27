@@ -145,14 +145,14 @@ angular.module('staffdir', ['ualib.staffdir']);
         $scope.staffdir = StaffDir;
     }])
 
-    .directive('staffDirectoryList', ['StaffDirectoryService', function(SDS){
+    .directive('staffDirectoryListing', ['StaffDirectoryService', function(SDS){
         return {
             restrict: 'AC',
             scope: {
                 list: '=',
                 sortBy: '@'
             },
-            templateUrl: 'staff-directory/staff-directory-list.tpl.html',
+            templateUrl: 'staff-directory/staff-directory-listing.tpl.html',
             controller: function($scope, $element){
                 $scope.staffdir = SDS;
 

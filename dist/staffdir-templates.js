@@ -1,4 +1,4 @@
-angular.module('ualib.staffdir.templates', ['staff-card/staff-card-list.tpl.html', 'staff-card/staff-card.tpl.html', 'staff-directory/staff-directory-facets.tpl.html', 'staff-directory/staff-directory-list.tpl.html', 'staff-directory/staff-directory.tpl.html', 'staff.tpl.html']);
+angular.module('ualib.staffdir.templates', ['staff-card/staff-card-list.tpl.html', 'staff-card/staff-card.tpl.html', 'staff-directory/staff-directory-facets.tpl.html', 'staff-directory/staff-directory-listing.tpl.html', 'staff-directory/staff-directory.tpl.html', 'staff.tpl.html']);
 
 angular.module("staff-card/staff-card-list.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("staff-card/staff-card-list.tpl.html",
@@ -85,8 +85,8 @@ angular.module("staff-directory/staff-directory-facets.tpl.html", []).run(["$tem
     "");
 }]);
 
-angular.module("staff-directory/staff-directory-list.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("staff-directory/staff-directory-list.tpl.html",
+angular.module("staff-directory/staff-directory-listing.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("staff-directory/staff-directory-listing.tpl.html",
     "<div class=\"table-responsive\">\n" +
     "    <table class=\"table table-striped table-condensed table-hover\">\n" +
     "        <thead>\n" +
@@ -145,7 +145,7 @@ angular.module("staff-directory/staff-directory.tpl.html", []).run(["$templateCa
     "    <div class=\"staff-directory-facets\" facets=\"staffdir.facets\"></div>\n" +
     "</div>\n" +
     "<div class=\"col-md-10 col-md-pull-2\">\n" +
-    "    <div class=\"staff-directory-list\" list=\"staffdir.list\" sort-by=\"lastname\"></div>\n" +
+    "    <div class=\"staff-directory-listing\" list=\"staffdir.list\" sort-by=\"lastname\"></div>\n" +
     "</div>");
 }]);
 
