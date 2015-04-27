@@ -128,9 +128,9 @@
 .form-group-separator::before,
 .form-group-separator::after {
   content: ' ';
-  top: 50%;
+  top: 55%;
   position: absolute;
-  width: 45%;
+  width: 42%;
   border-bottom: 1px solid #ccc;
 }
 .form-group-separator::after {
