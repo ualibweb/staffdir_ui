@@ -115,18 +115,25 @@ angular.module('staffdir', ['ualib.staffdir']);
             controller: 'StaffDirCtrl',
             templateUrl: 'staff-directory/staff-directory.tpl.html',
             resolve: {
-                StaffDir: ['StaffFactory', function(StaffFactory){
+                StaffDir: ['StaffFactory', '$filter', function(StaffFactory, $filter){
                     var staff = {
                         list: [], // Array for directory listing
                         facets: {} //Object for available facets
                     };
+
                     return StaffFactory.directory().get()
                         .$promise.then(function(data){
                             // Build new object of only subject that currently have a subject/research expert
                             var subj = [];
-                            angular.forEach(data.list, function(val, key){
-                                angular.extend(subj, val.subjects);
+                            angular.forEach(data.list, function(val){
+                                if (angular.isDefined(val.subjects) && val.subjects.length > 0){
+                                    angular.forEach(val.subjects, function(subject){
+                                        subj.push(subject);
+                                    });
+                                }
                             });
+                            subj = $filter('unique')(subj, 'subject');
+                            subj = $filter('orderBy')(subj, 'subject');
                             staff.facets.subjects = subj;
                             // get list of people
                             staff.list = data.list;
