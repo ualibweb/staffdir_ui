@@ -11,6 +11,16 @@ angular.module('ualib.staffdir')
                         facets: {} //Object for available facets
                     };
 
+                    function extend(target) {
+                        var sources = [].slice.call(arguments, 1);
+                        sources.forEach(function (source) {
+                            for (var prop in source) {
+                                target[prop] = source[prop];
+                            }
+                        });
+                        return target;
+                    }
+
                     return StaffFactory.directory().get()
                         .$promise.then(function(data){
                             // Build new object of only subject that currently have a subject/research expert

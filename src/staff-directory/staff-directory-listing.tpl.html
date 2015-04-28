@@ -39,8 +39,8 @@
             <td class="hidden-xs">
                 <ul class="list-unstyled" ng-if="person.subjects">
                     <li ng-repeat="subject in person.subjects | orderBy:subject.subject">
-                        <a ng-href="{{subject.link}}" title="{{subject.subject}}" ng-if="subject.link" ng-bind-html="subject.subject | highlight:(staffdir.facet.search || staffdir.facet.subject.subject)"></a>
-                        <span ng-if="!subject.link" ng-bind-html="subject.subject | highlight:(staffdir.facet.search || staffdir.facet.subject.subject)">{{subject.subject}}</span>
+                        <a ng-href="{{subject.link}}" title="{{subject.subject}}" ng-if="subject.link" ng-bind-html="subject.subject | highlight:staffdir.facet.search"></a>
+                        <span ng-if="!subject.link" ng-bind-html="subject.subject | highlight:staffdir.facet.search">{{subject.subject}}</span>
                     </li>
                 </ul>
             </td>

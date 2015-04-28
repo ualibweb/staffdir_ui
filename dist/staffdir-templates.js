@@ -1,4 +1,4 @@
-angular.module('ualib.staffdir.templates', ['staff-card/staff-card-list.tpl.html', 'staff-card/staff-card.tpl.html', 'staff-directory/staff-directory-facets.tpl.html', 'staff-directory/staff-directory-listing.tpl.html', 'staff-directory/staff-directory.tpl.html', 'staff.tpl.html']);
+angular.module('ualib.staffdir.templates', ['staff-card/staff-card-list.tpl.html', 'staff-card/staff-card.tpl.html', 'staff-directory/staff-directory-facets.tpl.html', 'staff-directory/staff-directory-listing.tpl.html', 'staff-directory/staff-directory.tpl.html']);
 
 angular.module("staff-card/staff-card-list.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("staff-card/staff-card-list.tpl.html",
@@ -63,26 +63,24 @@ angular.module("staff-card/staff-card.tpl.html", []).run(["$templateCache", func
 
 angular.module("staff-directory/staff-directory-facets.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("staff-directory/staff-directory-facets.tpl.html",
-    "<form class=\"facets-form form-horizontal\">\n" +
-    "    <div class=\"form-group\">\n" +
-    "        <strong>Filter By</strong>\n" +
-    "    </div>\n" +
+    "<form class=\"facets-form form-inline text-center\">\n" +
     "    <div class=\"form-group\">\n" +
     "        <input class=\"form-control\" id=\"directorySearch\" name=\"directorySearch\" type=\"text\" ng-model=\"staffdir.facet.search\" placeholder=\"Search...\" ng-keyup=\"clearFacet('subject')\"/>\n" +
     "    </div>\n" +
     "\n" +
-    "    <div class=\"form-group form-group-separator\">\n" +
-    "\n" +
+    "    <div class=\"form-group hidden-xs\">\n" +
     "        <strong class=\"text-center\">OR</strong>\n" +
     "    </div>\n" +
     "\n" +
-    "    <div class=\"form-group\">\n" +
+    "    <div class=\"form-group hidden-xs\">\n" +
     "        <select class=\"form-control\" ng-model=\"staffdir.facet.subject\" name=\"subject\" ng-options=\"subject.subject for subject in facets.subjects\" ng-change=\"clearFacet('search')\">\n" +
     "            <option value=\"\">Choose Expertise</option>\n" +
     "        </select>\n" +
     "    </div>\n" +
-    "</form>\n" +
-    "");
+    "    <button class=\"btn btn-primary hidden-xs\" type=\"button\" ng-click=\"clearFacet('search', 'subject')\">\n" +
+    "        <span class=\"fa fa-refresh\"></span> Reset Filters\n" +
+    "    </button>\n" +
+    "</form>");
 }]);
 
 angular.module("staff-directory/staff-directory-listing.tpl.html", []).run(["$templateCache", function($templateCache) {
@@ -128,8 +126,8 @@ angular.module("staff-directory/staff-directory-listing.tpl.html", []).run(["$te
     "            <td class=\"hidden-xs\">\n" +
     "                <ul class=\"list-unstyled\" ng-if=\"person.subjects\">\n" +
     "                    <li ng-repeat=\"subject in person.subjects | orderBy:subject.subject\">\n" +
-    "                        <a ng-href=\"{{subject.link}}\" title=\"{{subject.subject}}\" ng-if=\"subject.link\" ng-bind-html=\"subject.subject | highlight:(staffdir.facet.search || staffdir.facet.subject.subject)\"></a>\n" +
-    "                        <span ng-if=\"!subject.link\" ng-bind-html=\"subject.subject | highlight:(staffdir.facet.search || staffdir.facet.subject.subject)\">{{subject.subject}}</span>\n" +
+    "                        <a ng-href=\"{{subject.link}}\" title=\"{{subject.subject}}\" ng-if=\"subject.link\" ng-bind-html=\"subject.subject | highlight:staffdir.facet.search\"></a>\n" +
+    "                        <span ng-if=\"!subject.link\" ng-bind-html=\"subject.subject | highlight:staffdir.facet.search\">{{subject.subject}}</span>\n" +
     "                    </li>\n" +
     "                </ul>\n" +
     "            </td>\n" +
@@ -141,18 +139,7 @@ angular.module("staff-directory/staff-directory-listing.tpl.html", []).run(["$te
 
 angular.module("staff-directory/staff-directory.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("staff-directory/staff-directory.tpl.html",
-    "<div class=\"col-md-2 col-md-push-10\">\n" +
-    "    <div class=\"staff-directory-facets\" facets=\"staffdir.facets\"></div>\n" +
-    "</div>\n" +
-    "<div class=\"col-md-10 col-md-pull-2\">\n" +
-    "    <div class=\"staff-directory-listing\" list=\"staffdir.list\" sort-by=\"lastname\"></div>\n" +
-    "</div>");
-}]);
-
-angular.module("staff.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("staff.tpl.html",
     "<h1 class=\"page-header\">Staff Directory</h1>\n" +
-    "<div class=\"row\">\n" +
-    "    <div class=\"staff-directory\" directory-list=\"\"></div>\n" +
-    "</div>");
+    "<div class=\"staff-directory-facets\" facets=\"staffdir.facets\"></div>\n" +
+    "<div class=\"staff-directory-listing\" list=\"staffdir.list\" sort-by=\"lastname\"></div>");
 }]);

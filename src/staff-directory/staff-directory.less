@@ -2,6 +2,8 @@
 
 .staff-directory-listing {
   th {
+    white-space: nowrap;
+
     .sortable, .sortable-reverse{
       &:after {
         padding-left: 5px;
@@ -67,18 +69,10 @@
   }
 }
 
-.form-group-separator {
-  text-align: center;
-
-  &::before, &::after {
-    content: ' ';
-    top: 55%;
-    position: absolute;
-    width: 42%;
-    border-bottom: 1px solid #ccc;
-  }
-
-  &::after {
-    right: 0;
+.facets-form{
+  &.form-inline {
+    @media(min-width: @screen-sm-min) {
+      padding-bottom: 15px;
+    }
   }
 }
