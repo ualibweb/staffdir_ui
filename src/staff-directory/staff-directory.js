@@ -2,6 +2,7 @@ angular.module('ualib.staffdir')
 
     .config(['$routeProvider', function($routeProvider){
         $routeProvider.when('/staffdir', {
+            reloadOnSearch: false,
             controller: 'StaffDirCtrl',
             templateUrl: 'staff-directory/staff-directory.tpl.html',
             resolve: {
@@ -25,7 +26,10 @@ angular.module('ualib.staffdir')
                         .$promise.then(function(data){
                             // Build new object of only subject that currently have a subject/research expert
                             var subj = [];
+                            var list = [];
                             angular.forEach(data.list, function(val){
+                                delete val.division;
+                                list.push(val);
                                 if (angular.isDefined(val.subjects) && val.subjects.length > 0){
                                     angular.forEach(val.subjects, function(subject){
                                         subj.push(subject);
@@ -34,9 +38,11 @@ angular.module('ualib.staffdir')
                             });
                             subj = $filter('unique')(subj, 'subject');
                             subj = $filter('orderBy')(subj, 'subject');
-                            staff.facets.subjects = subj;
+                            staff.facets.subjects = subj.map(function(s){
+                                return s.subject;
+                            });
                             // get list of people
-                            staff.list = data.list;
+                            staff.list = list;
 
                             return staff;
                         }, function(data, status){
@@ -83,7 +89,7 @@ angular.module('ualib.staffdir')
         };
     }])
 
-    .directive('staffDirectoryFacets', ['StaffDirectoryService', function(SDS){
+    .directive('staffDirectoryFacets', ['StaffDirectoryService', '$location', '$q', function(SDS, $location, $q){
         return {
             restrict: 'AC',
             scope: {
@@ -93,6 +99,12 @@ angular.module('ualib.staffdir')
             controller: function($scope){
                 $scope.staffdir = SDS;
 
+                // Sync any URI search params on initial load
+                var params = $location.search();
+                for (var param in params){
+                    SDS.facet[param] = params[param];
+                }
+
                 $scope.clearFacet = function(){
                     var copy = {};
                     var omitKeys = Array.prototype.concat.apply(Array.prototype, arguments);
@@ -101,10 +113,36 @@ angular.module('ualib.staffdir')
                         if (omitKeys.indexOf(key) === -1) {
                             copy[key] = SDS.facet[key];
                         }
+                        else{
+                            $location.search(key, null);
+                        }
                     });
                     SDS.facet = copy;
 
                 };
+
+                $scope.changeFacet = function(facet){
+                    var val = (SDS.facet.hasOwnProperty(facet) && SDS.facet[facet] !== '') ? SDS.facet[facet] : null;
+                    $location.search(facet, val);
+                };
+
+            },
+            link: function(scope){
+                /*var facetWatcher = scope.$watch('staffdir.facet', function(newVal, oldVal){
+                    for (var facet in newVal){
+                        if (newVal[facet] !== ''){
+                            var val = facet === 'subject' ? newVal[facet].subject : newVal[facet];
+                            $location.search(facet, val);
+                        }
+                        else {
+                            $location.search(facet, null);
+                        }
+                    }
+                }, true);
+
+                scope.$on('$destroy', function(){
+                    facetWatcher();
+                });*/
             }
         };
     }]);

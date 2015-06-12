@@ -18,14 +18,15 @@
                    ng-class="{'sortable': !staffdir.sortReverse && staffdir.sortBy == 'department', 'sortable-reverse': staffdir.sortReverse && staffdir.sortBy == 'department'}">Department/Unit</a>
             </th>
             <th>Contact</th>
-            <th class="hidden-xs hidden-sm">Expertise</th>
+            <th class="hidden-xs hidden-sm">Specialty</th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="(column, person) in list | filter:staffdir.facet.search | filter:staffdir.facet.subject.subject:true | orderBy:staffdir.sortBy:staffdir.sortReverse track by  person.id ">
+        <tr ng-repeat="person in filteredList = (list | filter:staffdir.facet.search | filter:staffdir.facet.subject:true | orderBy:staffdir.sortBy:staffdir.sortReverse) track by  person.id">
             <td class="text-nowrap">
                 <div ng-if="person.rank" class="text-muted"> {{person.rank}}</div>
                 <span ng-bind-html="person.firstname | highlight:staffdir.facet.search"></span> <strong ng-bind-html="person.lastname | highlight:staffdir.facet.search"></strong>
+
             </td>
             <td class="hidden-xs"><span ng-bind-html="person.title | highlight:staffdir.facet.search"></span></td>
             <td class="hidden-xs"><span ng-bind-html="person.department | highlight:staffdir.facet.search"></span></td>
@@ -36,7 +37,7 @@
                     <li ng-if="person.email"><span class="fa fa-envelope fa-li"></span> <a ng-href="mailto:{{person.email}}" title="Email {{person.firstname}} {{persone.lastname}}">{{person.email}}</a></li>
                 </ul>
             </td>
-            <td class="hidden-xs">
+            <td class="hidden-xs hidden-sm">
                 <ul class="list-unstyled" ng-if="person.subjects">
                     <li ng-repeat="subject in person.subjects | orderBy:subject.subject">
                         <a ng-href="{{subject.link}}" title="{{subject.subject}}" ng-if="subject.link" ng-bind-html="subject.subject | highlight:staffdir.facet.search"></a>
@@ -47,4 +48,10 @@
         </tr>
         </tbody>
     </table>
+    <div class="alert alert-warning text-center" role="alert" ng-show="filteredList.length === 0">
+        <h2>
+            No results<span ng-if="staffdir.facet.subject"><strong> for {{staffdir.facet.subject}}</strong> subject specialists</span>
+            <span ng-if="staffdir.facet.search"> matching <strong>"{{staffdir.facet.search}}"</strong></span>
+        </h2>
+    </div>
 </div>

@@ -1,6 +1,6 @@
 angular.module('ualib.staffdir')
 
-    .service('StaffDirectoryService', [function(){
+    .service('StaffDirectoryService', ['$location', function($location){
         var self = this; //ensures proper contest in closure statements
         this.sortBy = ''; // Default sort column, can be overridden via 'sortBy' attribute for staffDirectory directive
         this.sortReverse = false; // Default sort direction
@@ -28,6 +28,8 @@ angular.module('ualib.staffdir')
             angular.copy(copy, self.facet);
             console.log(self.facet);
         };
+
+
 
         /**
          * Inspired by Angular UI Router library omit() function

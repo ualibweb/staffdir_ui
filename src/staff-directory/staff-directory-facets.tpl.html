@@ -1,18 +1,19 @@
-<form class="facets-form form-inline text-center">
+<form class="facets-form form-horizontal text-center">
     <div class="form-group">
-        <input class="form-control" id="directorySearch" name="directorySearch" type="text" ng-model="staffdir.facet.search" placeholder="Search..." ng-keyup="clearFacet('subject')"/>
-    </div>
+        <div class="col-sm-5">
+            <input class="form-control" id="directorySearch" name="directorySearch" type="text" ng-model="staffdir.facet.search" placeholder="Search..." ng-keyup="changeFacet('search')"/>
+        </div>
 
-    <div class="form-group hidden-xs">
-        <strong class="text-center">OR</strong>
-    </div>
+        <div class="col-sm-5 hidden-xs">
+            <select class="form-control" ng-model="staffdir.facet.subject" name="subject" ng-options="subject for subject in facets.subjects" ng-change="changeFacet('subject')">
+                <option value="">-- Select Subject Specialty --</option>
+            </select>
+        </div>
 
-    <div class="form-group hidden-xs">
-        <select class="form-control" ng-model="staffdir.facet.subject" name="subject" ng-options="subject.subject for subject in facets.subjects" ng-change="clearFacet('search')">
-            <option value="">Choose Expertise</option>
-        </select>
+        <div class="col-sm-2">
+            <button class="btn btn-primary hidden-xs" type="button" ng-click="clearFacet('search', 'subject')">
+                <span class="fa fa-refresh"></span> Reset Filters
+            </button>
+        </div>
     </div>
-    <button class="btn btn-primary hidden-xs" type="button" ng-click="clearFacet('search', 'subject')">
-        <span class="fa fa-refresh"></span> Reset Filters
-    </button>
 </form>
