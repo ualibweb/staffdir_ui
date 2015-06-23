@@ -96,7 +96,7 @@ angular.module("staff-directory/staff-directory-listing.tpl.html", []).run(["$te
     "        </tr>\n" +
     "        </thead>\n" +
     "        <tbody>\n" +
-    "        <tr ng-repeat=\"person in filteredList = (list | filter:staffdir.facet.search | filter:staffdir.facet.subject:true | orderBy:staffdir.sortBy:staffdir.sortReverse) track by  person.id\">\n" +
+    "        <tr ng-repeat=\"person in filteredList = (list | filter:staffdir.facet.search | filter:staffdir.facet.subject:true | orderBy:staffdir.sortBy:staffdir.sortReverse) track by $index\">\n" +
     "            <td class=\"text-nowrap\">\n" +
     "                <div ng-if=\"person.rank\" class=\"text-muted\"> {{person.rank}}</div>\n" +
     "                <span ng-bind-html=\"person.firstname | highlight:staffdir.facet.search\"></span> <strong ng-bind-html=\"person.lastname | highlight:staffdir.facet.search\"></strong>\n" +

@@ -22,7 +22,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="person in filteredList = (list | filter:staffdir.facet.search | filter:staffdir.facet.subject:true | orderBy:staffdir.sortBy:staffdir.sortReverse) track by  person.id">
+        <tr ng-repeat="person in filteredList = (list | filter:staffdir.facet.search | filter:staffdir.facet.subject:true | orderBy:staffdir.sortBy:staffdir.sortReverse) track by $index">
             <td class="text-nowrap">
                 <div ng-if="person.rank" class="text-muted"> {{person.rank}}</div>
                 <span ng-bind-html="person.firstname | highlight:staffdir.facet.search"></span> <strong ng-bind-html="person.lastname | highlight:staffdir.facet.search"></strong>
