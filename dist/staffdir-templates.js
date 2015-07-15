@@ -13,7 +13,7 @@ angular.module("staff-card/staff-card-list.tpl.html", []).run(["$templateCache",
     "                </div>\n" +
     "            </div>\n" +
     "            <div class=\"col-xs-4 col-sm-3\">\n" +
-    "                <img class=\"staff-portrait thumbnail\" src=\"user-placeholder.png\">\n" +
+    "                <img class=\"staff-portrait thumbnail\" ng-src=\"{{person.image}}\">\n" +
     "            </div>\n" +
     "            <div class=\"col-xs-8\">\n" +
     "                <div class=\"row\">\n" +

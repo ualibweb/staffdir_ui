@@ -19,7 +19,9 @@ angular.module('ualib.staffdir')
                             var list = [];
                             angular.forEach(data.list, function(val){
                                 delete val.division;
-
+                                if (angular.isUndefined(val.image)){
+                                    val.image = 'assets/img/user-profile.png';
+                                }
                                 list.push(val);
                                 if (angular.isDefined(val.subjects) && val.subjects.length > 0){
                                     angular.forEach(val.subjects, function(subject){

@@ -213,7 +213,9 @@ angular.module('staffdir', ['ualib.staffdir']);
                             var list = [];
                             angular.forEach(data.list, function(val){
                                 delete val.division;
-
+                                if (angular.isUndefined(val.image)){
+                                    val.image = 'assets/img/user-profile.png';
+                                }
                                 list.push(val);
                                 if (angular.isDefined(val.subjects) && val.subjects.length > 0){
                                     angular.forEach(val.subjects, function(subject){
@@ -304,7 +306,7 @@ angular.module('staffdir', ['ualib.staffdir']);
             var alphaIndexed = items.map(function(item){
                 item.alphaIndex = item[indexProp].charAt(0).toUpperCase();
                 return item;
-            });            
+            });
             return alphaIndexed;
         };
     });
