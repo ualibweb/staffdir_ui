@@ -214,7 +214,8 @@ angular.module('staffdir', ['ualib.staffdir']);
                             angular.forEach(data.list, function(val){
                                 delete val.division;
                                 if (angular.isUndefined(val.image)){
-                                    val.image = 'assets/img/user-profile.png';
+                                    //TODO: temporary work around because CMS file handling is dumb. Fix and make sustainable!!!
+                                    val.image = '/wp-content/themes/roots-ualib/assets/img/user-profile.png';
                                 }
                                 list.push(val);
                                 if (angular.isDefined(val.subjects) && val.subjects.length > 0){
