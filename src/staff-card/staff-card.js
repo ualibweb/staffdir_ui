@@ -25,13 +25,67 @@ angular.module('ualib.staffdir')
         };
     }])
 
-    .directive('staffCard', [function(){
+    .directive('staffCard', ['StaffFactory', function(StaffFactory){
         return {
-            restrict: 'AC',
+            restrict: 'EA',
             scope: {
-                staffPerson: '='
+                person: '@',
+                size: '@'
             },
-            templateUrl: 'staff-card/staff-card.tpl.html'
+            templateUrl: function(tElem, tAttrs){
+                var tpl = 'staff-card/';
+
+                switch (tAttrs.size){
+                    case 'xs':
+                        tpl += 'staff-card-xs.tpl.html';
+                        break;
+                    case 'sm':
+                        tpl += 'staff-card-sm.tpl.html';
+                        break;
+                    default:
+                        tpl += 'staff-card-md.tpl.html';
+                }
+
+                return tpl;
+            },
+            link: function(scope, elm){
+                console.log(scope.person);
+                if (angular.isDefined(scope.person)){
+                    scope.info = {};
+
+
+                    if (angular.isNumber(scope.person)){
+                        StaffFactory.byId().get({id: scope.person})
+                            .$promise.then(function(data){
+                                scope.staffPerson = data.list[0];
+                            }, function(){
+                                console.log('Staffdir Error -- Come on, put in proper error handling already');
+                            });
+                    }
+                    else {
+                        var p = scope.person.split(/\s/);
+
+                        if (p.length > 1){
+                            console.log({firstname: p[0], lastname: p[1]});
+                            StaffFactory.byName().get({firstname: p[0], lastname: p[1]})
+                                .$promise.then(function(data){
+                                    scope.staffPerson = data.list[0];
+                                }, function(){
+                                    console.log('Staffdir Error -- Come on, put in proper error handling already');
+                                });
+                        }
+                        else {
+                            StaffFactory.byEmail().get({email: p[0]})
+                                .$promise.then(function(data){
+                                    scope.staffPerson = data.list[0];
+                                }, function(){
+                                    console.log('Staffdir Error -- Come on, put in proper error handling already');
+                                });
+                        }
+                    }
+
+                }
+            }
         };
     }]);
 

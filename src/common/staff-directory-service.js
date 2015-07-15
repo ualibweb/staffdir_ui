@@ -1,5 +1,19 @@
 angular.module('ualib.staffdir')
 
+    // Capture any existing URL facet parameters.
+    .run(['StaffDirectoryService', '$location', function(SDS, $location){
+        var params = $location.search();
+        for (var param in params){
+            //TODO: This must be temporary. Any URI param will cause the facet bar to display on load!!
+            if (!SDS.showFacetBar) {
+                SDS.showFacetBar = true;
+            }
+            SDS.facet[param] = params[param];
+        }
+
+
+    }])
+
     .service('StaffDirectoryService', ['$location', function($location){
         var self = this; //ensures proper contest in closure statements
         this.sortBy = ''; // Default sort column, can be overridden via 'sortBy' attribute for staffDirectory directive
@@ -7,45 +21,53 @@ angular.module('ualib.staffdir')
         this.sortable = {}; // reference object for sortable columns
         this.facet = {}; // Object to hold filter values based on available facets (empty object means no filtering).
 
-        // reset all facets
-        this.resetFacets = function(){
-            self.facet = {};
-        };
-
+        //TODO: handle this variable through a central route/event instead of on a function-by-function basis
+        this.showFacetBar = false;
 
         // Accepts string or array arguments of facets to clear
         this.clearFacets = function(){
+            var args = arguments.length ? arguments : Object.keys(self.facet);
+            var omitKeys = Array.prototype.concat.apply(Array.prototype, args);
             var copy = {};
-            var omitKeys = Array.prototype.concat.apply(Array.prototype, arguments);
-            console.log(omitKeys);
 
             Object.keys(self.facet).map(function(key){
                 if (omitKeys.indexOf(key) === -1) {
                     copy[key] = self.facet[key];
                 }
-            });
-            console.log(copy);
-            angular.copy(copy, self.facet);
-            console.log(self.facet);
-        };
-
-
-
-        /**
-         * Inspired by Angular UI Router library omit() function
-         * https://github.com/angular-ui/ui-router/blob/master/src/common.js
-         */
-        // extracted from underscore.js
-        // Return a copy of the object omitting the blacklisted properties.
-        function omit(obj) {
-            var copy = {};
-            var omitKeys = Array.prototype.concat.apply(Array.prototype, Array.prototype.slice.call(arguments, 1));
-            console.log(omitKeys);
-            Object.keys(obj).map(function(key, index){
-                if (omitKeys.indexOf(key) === -1) {
-                    copy[key] = obj[key];
+                else{
+                    $location.search(key, null);
                 }
             });
-            return copy;
+            console.log(isEmptyObj(copy));
+            self.showFacetBar = !isEmptyObj(copy);
+            self.facet = angular.copy(copy);
+        };
+        
+        this.changeFacet = function(facet){
+            var val = (self.facet.hasOwnProperty(facet) && self.facet[facet] !== '' && self.facet[facet] !== false) ? self.facet[facet] : null;
+            $location.search(facet, val);
+            self.showFacetBar = !isEmptyObj(self.facet);
+        };
+
+        this.specialtyType = function(staff){
+            var type = (self.facet.selector | self.facet.instructor);
+            if (type){
+                return staff.subjects.filter(function(subj){
+                        var isType = (subj.type & type) === type;
+                        return self.facet.subject ? (self.facet.subject === subj.subject) && isType : isType;
+                    }).length > 0;
+            }
+            return true;
+        };
+
+        function isEmptyObj(obj){
+            var name;
+            for (name in obj){
+                if (obj[name]){
+                    return false;
+                }
+            }
+            return true;
         }
+
     }]);

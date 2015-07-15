@@ -1,5 +1,71 @@
-<div class="row" ng-repeat="person in staffdir track by person.id">
+<div class="animate-repeat" ng-repeat="person in filteredList = (list | filter:staffdir.facet.search | filter:staffdir.facet.department | filter:staffdir.facet.subject:true | filter:staffdir.facet.library | filter:staffdir.specialtyType | orderBy:staffdir.sortBy:staffdir.sortReverse | alphaIndex:staffdir.sortBy) track by $index">
+    <div class="page-slice">
+        <div class="row">
+            <div class="col-xs-12 col-sm-1">
+                <div class="alpha-index-header" ng-if="person.alphaIndex != filteredList[$index-1].alphaIndex">
+                    <div ui-scrollfix="+0">
+                        {{person.alphaIndex}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-4 col-sm-3">
+                <img class="staff-portrait thumbnail" src="user-placeholder.png">
+            </div>
+            <div class="col-xs-8">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-7 name-plate">
+                        <h3 class="name">
+                            <small ng-if="person.rank">{{person.rank}}</small>
+                            <span ng-class="{'sorting-by': staffdir.sortBy == 'firstname'}" ng-bind-html="person.firstname | highlight:staffdir.facet.search"></span> <span ng-class="{'sorting-by': staffdir.sortBy == 'lastname'}" ng-bind-html="person.lastname | highlight:staffdir.facet.search"></span>
+                        </h3>
+                        <h4 class="title"><span ng-bind-html="person.title | highlight:staffdir.facet.search"></span></h4>
+                        <h5 class="hidden-xs"><span ng-bind-html="person.department | highlight:staffdir.facet.search"></span></h5>
 
-        <div class="staff-card" staff-person="person"></div>
+                    </div>
+                    <div class="col-xs-12 col-sm-5">
+                        <ul class="fa-ul">
+                            <li ng-if="person.phone"><span class="fa fa-phone fa-li"></span>{{person.phone}}</li>
+                            <li class="hidden-xs" ng-if="person.fax"><span class="fa fa-fax fa-li"></span>{{person.fax}}</li>
+                            <li ng-if="person.email"><span class="fa fa-envelope fa-li"></span>{{person.email}}</li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-12 subject-specialty hidden-xs" ng-if="person.subjects">
+                        <table class="table table-condensed">
+                            <thead>
+                            <tr>
+                                <th>Subject specialty</th>
+                                <th class="text-center">Selector</th>
+                                <th class="text-center">Instruction</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="subject in person.subjects | orderBy:subject.subject">
+                                <td>
+                                    <a ng-href="{{subject.link}}" title="{{subject.subject}}" ng-if="subject.link" ng-bind-html="subject.subject | highlight:staffdir.facet.search"></a>
+                                    <span ng-if="!subject.link" ng-bind-html="subject.subject | highlight:staffdir.facet.search">{{subject.subject}}</span>
+                                </td>
+                                <td class="text-center"><span class="fa fa-circle text-info" ng-if="subject.type == 1 || subject.type == 3"></span></td>
+                                <td class="text-center"><span class="fa fa-circle text-info" ng-if="subject.type > 1"></span></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
+<div class="alert alert-warning text-center" role="alert" ng-if="filteredList.length < 1">
+    <h2>
+        No staff members found
+        <span ng-if="staffdir.facet.library"> in {{staffdir.facet.library}}</span>
+        <span ng-if="staffdir.facet.selector"> that are subject selectors</span>
+        <span ng-if="staffdir.facet.instructor"><span ng-if="staffdir.facet.selector"> or</span> <span ng-if="!staffdir.facet.selector"> that are</span> instruction librarians</span>
+                <span ng-if="staffdir.facet.subject">
+                    <span ng-if="staffdir.facet.selector || staffdir.facet.instructor"> for</span>
+                    <span ng-if="!staffdir.facet.selector && !staffdir.facet.instructor"> with a specialty in</span>
+                     {{staffdir.facet.subject}}
+                </span>
+    </h2>
 </div>

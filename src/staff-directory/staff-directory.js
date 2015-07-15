@@ -12,16 +12,6 @@ angular.module('ualib.staffdir')
                         facets: {} //Object for available facets
                     };
 
-                    function extend(target) {
-                        var sources = [].slice.call(arguments, 1);
-                        sources.forEach(function (source) {
-                            for (var prop in source) {
-                                target[prop] = source[prop];
-                            }
-                        });
-                        return target;
-                    }
-
                     return StaffFactory.directory().get()
                         .$promise.then(function(data){
                             // Build new object of only subject that currently have a subject/research expert
@@ -29,6 +19,7 @@ angular.module('ualib.staffdir')
                             var list = [];
                             angular.forEach(data.list, function(val){
                                 delete val.division;
+
                                 list.push(val);
                                 if (angular.isDefined(val.subjects) && val.subjects.length > 0){
                                     angular.forEach(val.subjects, function(subject){
@@ -41,6 +32,16 @@ angular.module('ualib.staffdir')
                             staff.facets.subjects = subj.map(function(s){
                                 return s.subject;
                             });
+                            // get libraries
+                            staff.facets.libraries = data.libraries.map(function(lib){
+                                return lib.name;
+                            });
+
+                            // get libraries
+                            staff.facets.departments = data.departments.map(function(dept){
+                                return dept.name;
+                            });
+
                             // get list of people
                             staff.list = list;
 
@@ -54,8 +55,10 @@ angular.module('ualib.staffdir')
         });
     }])
 
-    .controller('StaffDirCtrl', ['$scope', 'StaffDir', function($scope, StaffDir){
+    .controller('StaffDirCtrl', ['$scope', 'StaffDir', 'StaffDirectoryService', function($scope, StaffDir, SDS){
+        $scope.filteredItems = [];
         $scope.staffdir = StaffDir;
+        $scope.facets = SDS;
     }])
 
     .directive('staffDirectoryListing', ['StaffDirectoryService', function(SDS){
@@ -65,8 +68,8 @@ angular.module('ualib.staffdir')
                 list: '=',
                 sortBy: '@'
             },
-            templateUrl: 'staff-directory/staff-directory-listing.tpl.html',
-            controller: function($scope, $element){
+            templateUrl: 'staff-card/staff-card-list.tpl.html',
+            controller: function($scope){
                 $scope.staffdir = SDS;
 
                 SDS.sortBy = angular.isDefined($scope.sortBy) ? $scope.sortBy : 'lastname';
@@ -98,51 +101,16 @@ angular.module('ualib.staffdir')
             templateUrl: 'staff-directory/staff-directory-facets.tpl.html',
             controller: function($scope){
                 $scope.staffdir = SDS;
-
-                // Sync any URI search params on initial load
-                var params = $location.search();
-                for (var param in params){
-                    SDS.facet[param] = params[param];
-                }
-
-                $scope.clearFacet = function(){
-                    var copy = {};
-                    var omitKeys = Array.prototype.concat.apply(Array.prototype, arguments);
-
-                    Object.keys(SDS.facet).map(function(key){
-                        if (omitKeys.indexOf(key) === -1) {
-                            copy[key] = SDS.facet[key];
-                        }
-                        else{
-                            $location.search(key, null);
-                        }
-                    });
-                    SDS.facet = copy;
-
-                };
-
-                $scope.changeFacet = function(facet){
-                    var val = (SDS.facet.hasOwnProperty(facet) && SDS.facet[facet] !== '') ? SDS.facet[facet] : null;
-                    $location.search(facet, val);
-                };
-
-            },
-            link: function(scope){
-                /*var facetWatcher = scope.$watch('staffdir.facet', function(newVal, oldVal){
-                    for (var facet in newVal){
-                        if (newVal[facet] !== ''){
-                            var val = facet === 'subject' ? newVal[facet].subject : newVal[facet];
-                            $location.search(facet, val);
-                        }
-                        else {
-                            $location.search(facet, null);
-                        }
-                    }
-                }, true);
-
-                scope.$on('$destroy', function(){
-                    facetWatcher();
-                });*/
             }
         };
-    }]);
+    }])
+
+    .filter('alphaIndex', function(){
+        return function(items, indexProp){
+            var alphaIndexed = items.map(function(item){
+                item.alphaIndex = item[indexProp].charAt(0).toUpperCase();
+                return item;
+            });
+            return alphaIndexed;
+        };
+    });

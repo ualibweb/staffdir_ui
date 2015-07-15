@@ -1,6 +1,44 @@
 @import (reference) '../../bower_components/fontawesome/less/variables';
 
+.sorting-by {
+  font-weight: bold;
+}
+
 .staff-directory-listing {
+
+  .alpha-index-header{
+    font-size: 2.5em;
+    line-height: .9;
+
+    @media (max-width: @screen-xs-max){
+      font-size: 1.9em;
+      height: 41px;
+      text-align: right;
+      margin-bottom: 5px;
+      line-height: inherit;
+
+      > div {
+        padding-right: 15px;
+        background-color: @gray-lighter;
+      }
+
+    }
+
+    > div {
+      color: @gray-light;
+      background-color: @body-bg;
+      padding-top: 5px;
+
+      &.ui-scrollfix {
+        top: 0;
+        z-index: 3000;
+      }
+    }
+
+
+  }
+
+
   th {
     white-space: nowrap;
 
@@ -76,3 +114,47 @@
     }
   }
 }
+
+.staff-directory-listing{
+  @media(max-width: @screen-xs-max) {
+    .staff-portrait {
+
+    }
+
+    .name-plate {
+      h3 {
+        font-size: 1.2em;
+      }
+      h4 {
+        font-size: 1em;
+      }
+    }
+    .fa-ul {
+      margin-top: 15px;
+    }
+  }
+
+  .name-plate {
+    h4, h5 {
+      margin-top: 5px;
+    }
+    h3, h4, h5:not(:last-of-type) {
+      margin-bottom: 0;
+    }
+    h3 {
+      margin-top: 0;
+      > small {
+        display: block;
+      }
+    }
+
+  }
+
+  .subject-specialty {
+    margin-top: 15px;
+    font-size: .9em;
+  }
+
+}
+
+
