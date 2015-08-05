@@ -12,8 +12,8 @@
         <h5>Sort by</h5>
         <div class="facet-group">
             <div class="btn-group btn-group-justified">
-                <label class="btn btn-default" ng-model="staffdir.sortBy" btn-radio="'lastname'" uncheckable>Last name</label>
-                <label class="btn btn-default" ng-model="staffdir.sortBy" btn-radio="'firstname'" uncheckable>First name</label>
+                <label class="btn btn-default" ng-model="staffdir.facet.sortBy" btn-radio="'lastname'" uncheckable ng-change="staffdir.changeFacet('sortBy')">Last name</label>
+                <label class="btn btn-default" ng-model="staffdir.facet.sortBy" btn-radio="'firstname'" uncheckable ng-change="staffdir.changeFacet('sortBy')">First name</label>
             </div>
         </div>
     </div>
@@ -49,7 +49,7 @@
         <div class="facet-group">
             <div class="radio">
                 <label>
-                    <input type="radio" ng-model="staffdir.facet.library" value="" checked ng-change="staffdir.changeFacet('department')"> All
+                    <input type="radio" ng-model="staffdir.facet.library" value="" ng-checked="!staffdir.facet.library" ng-change="staffdir.changeFacet('department')"> All
                 </label>
             </div>
             <div class="radio" ng-repeat="library in facets.libraries">

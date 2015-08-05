@@ -2,13 +2,13 @@ angular.module('ualib.staffdir.templates', ['staff-card/staff-card-list.tpl.html
 
 angular.module("staff-card/staff-card-list.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("staff-card/staff-card-list.tpl.html",
-    "<div class=\"animate-repeat\" ng-repeat=\"person in filteredList = (list | filter:staffdir.facet.search | filter:staffdir.facet.department | filter:staffdir.facet.subject:true | filter:staffdir.facet.library | filter:staffdir.specialtyType | orderBy:staffdir.sortBy:staffdir.sortReverse | alphaIndex:staffdir.sortBy) track by $index\">\n" +
+    "<div class=\"animate-repeat\" ng-repeat=\"person in filteredList track by $index\">\n" +
     "    <div class=\"page-slice\">\n" +
     "        <div class=\"row\">\n" +
     "            <div class=\"col-xs-12 col-sm-1\">\n" +
-    "                <div class=\"alpha-index-header\" ng-if=\"person.alphaIndex != filteredList[$index-1].alphaIndex\">\n" +
+    "                <div class=\"alpha-index-header\" ng-if=\"person.alphaIndex[staffdir.facet.sortBy] != filteredList[$index-1].alphaIndex[staffdir.facet.sortBy]\">\n" +
     "                    <div ui-scrollfix=\"+0\">\n" +
-    "                        {{person.alphaIndex}}\n" +
+    "                        {{person.alphaIndex[staffdir.facet.sortBy]}}\n" +
     "                    </div>\n" +
     "                </div>\n" +
     "            </div>\n" +
@@ -20,7 +20,7 @@ angular.module("staff-card/staff-card-list.tpl.html", []).run(["$templateCache",
     "                    <div class=\"col-xs-12 col-sm-7 name-plate\">\n" +
     "                        <h3 class=\"name\">\n" +
     "                            <small ng-if=\"person.rank\">{{person.rank}}</small>\n" +
-    "                            <span ng-class=\"{'sorting-by': staffdir.sortBy == 'firstname'}\" ng-bind-html=\"person.firstname | highlight:staffdir.facet.search\"></span> <span ng-class=\"{'sorting-by': staffdir.sortBy == 'lastname'}\" ng-bind-html=\"person.lastname | highlight:staffdir.facet.search\"></span>\n" +
+    "                            <span ng-class=\"{'sorting-by': staffdir.facet.sortBy == 'firstname'}\" ng-bind-html=\"person.firstname | highlight:staffdir.facet.search\"></span> <span ng-class=\"{'sorting-by': staffdir.facet.sortBy == 'lastname'}\" ng-bind-html=\"person.lastname | highlight:staffdir.facet.search\"></span>\n" +
     "                        </h3>\n" +
     "                        <h4 class=\"title\"><span ng-bind-html=\"person.title | highlight:staffdir.facet.search\"></span></h4>\n" +
     "                        <h5 class=\"hidden-xs\"><span ng-bind-html=\"person.department | highlight:staffdir.facet.search\"></span></h5>\n" +
@@ -149,8 +149,8 @@ angular.module("staff-directory/staff-directory-facets.tpl.html", []).run(["$tem
     "        <h5>Sort by</h5>\n" +
     "        <div class=\"facet-group\">\n" +
     "            <div class=\"btn-group btn-group-justified\">\n" +
-    "                <label class=\"btn btn-default\" ng-model=\"staffdir.sortBy\" btn-radio=\"'lastname'\" uncheckable>Last name</label>\n" +
-    "                <label class=\"btn btn-default\" ng-model=\"staffdir.sortBy\" btn-radio=\"'firstname'\" uncheckable>First name</label>\n" +
+    "                <label class=\"btn btn-default\" ng-model=\"staffdir.facet.sortBy\" btn-radio=\"'lastname'\" uncheckable ng-change=\"staffdir.changeFacet('sortBy')\">Last name</label>\n" +
+    "                <label class=\"btn btn-default\" ng-model=\"staffdir.facet.sortBy\" btn-radio=\"'firstname'\" uncheckable ng-change=\"staffdir.changeFacet('sortBy')\">First name</label>\n" +
     "            </div>\n" +
     "        </div>\n" +
     "    </div>\n" +
@@ -186,7 +186,7 @@ angular.module("staff-directory/staff-directory-facets.tpl.html", []).run(["$tem
     "        <div class=\"facet-group\">\n" +
     "            <div class=\"radio\">\n" +
     "                <label>\n" +
-    "                    <input type=\"radio\" ng-model=\"staffdir.facet.library\" value=\"\" checked ng-change=\"staffdir.changeFacet('department')\"> All\n" +
+    "                    <input type=\"radio\" ng-model=\"staffdir.facet.library\" value=\"\" ng-checked=\"!staffdir.facet.library\" ng-change=\"staffdir.changeFacet('department')\"> All\n" +
     "                </label>\n" +
     "            </div>\n" +
     "            <div class=\"radio\" ng-repeat=\"library in facets.libraries\">\n" +
@@ -214,17 +214,17 @@ angular.module("staff-directory/staff-directory-listing.tpl.html", []).run(["$te
     "            <th>\n" +
     "                <a href=\"#\"\n" +
     "                   ng-click=\"sortList($event, 'lastname')\"\n" +
-    "                   ng-class=\"{'sortable': !staffdir.sortReverse && staffdir.sortBy == 'lastname', 'sortable-reverse': staffdir.sortReverse && staffdir.sortBy == 'lastname'}\">Name</a>\n" +
+    "                   ng-class=\"{'sortable': !staffdir.sortReverse && staffdir.facet.sortBy == 'lastname', 'sortable-reverse': staffdir.sortReverse && staffdir.facet.sortBy == 'lastname'}\">Name</a>\n" +
     "            </th>\n" +
     "            <th class=\"hidden-xs\">\n" +
     "                <a href=\"#\" \n" +
     "                   ng-click=\"sortList($event, 'title')\" \n" +
-    "                   ng-class=\"{'sortable': !staffdir.sortReverse && staffdir.sortBy == 'title', 'sortable-reverse': staffdir.sortReverse && staffdir.sortBy == 'title'}\">Title</a>\n" +
+    "                   ng-class=\"{'sortable': !staffdir.sortReverse && staffdir.facet.sortBy == 'title', 'sortable-reverse': staffdir.sortReverse && staffdir.facet.sortBy == 'title'}\">Title</a>\n" +
     "            </th>\n" +
     "            <th class=\"hidden-xs\">\n" +
     "                <a href=\"#\" \n" +
     "                   ng-click=\"sortList($event, 'department')\" \n" +
-    "                   ng-class=\"{'sortable': !staffdir.sortReverse && staffdir.sortBy == 'department', 'sortable-reverse': staffdir.sortReverse && staffdir.sortBy == 'department'}\">Department/Unit</a>\n" +
+    "                   ng-class=\"{'sortable': !staffdir.sortReverse && staffdir.facet.sortBy == 'department', 'sortable-reverse': staffdir.sortReverse && staffdir.sortBy == 'department'}\">Department/Unit</a>\n" +
     "            </th>\n" +
     "            <th>Contact</th>\n" +
     "            <th class=\"hidden-xs hidden-sm\">Specialty</th>\n" +

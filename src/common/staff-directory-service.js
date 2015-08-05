@@ -7,7 +7,7 @@ angular.module('ualib.staffdir')
                 var params = $location.search();
                 for (var param in params){
                     //TODO: This must be temporary. Any URI param will cause the facet bar to display on load!!
-                    if (!SDS.showFacetBar) {
+                    if (!SDS.showFacetBar && !SDS.facetExceptions.hasOwnProperty(param)) {
                         SDS.showFacetBar = true;
                     }
                     SDS.facet[param] = params[param];
@@ -16,12 +16,13 @@ angular.module('ualib.staffdir')
         });
     }])
 
-    .service('StaffDirectoryService', ['$location', function($location){
+    .service('StaffDirectoryService', ['$location', '$rootScope', function($location, $rootScope){
         var self = this; //ensures proper contest in closure statements
         this.sortBy = ''; // Default sort column, can be overridden via 'sortBy' attribute for staffDirectory directive
         this.sortReverse = false; // Default sort direction
         this.sortable = {}; // reference object for sortable columns
         this.facet = {}; // Object to hold filter values based on available facets (empty object means no filtering).
+        this.facetExceptions = {sortBy: 'lastname', search: ''};
 
         //TODO: handle this variable through a central route/event instead of on a function-by-function basis
         this.showFacetBar = false;
@@ -30,25 +31,35 @@ angular.module('ualib.staffdir')
         this.clearFacets = function(){
             var args = arguments.length ? arguments : Object.keys(self.facet);
             var omitKeys = Array.prototype.concat.apply(Array.prototype, args);
-            var copy = {};
+            var test ={}, copy = {};
 
             Object.keys(self.facet).map(function(key){
-                if (omitKeys.indexOf(key) === -1) {
+                if (self.facetExceptions.hasOwnProperty(key)){
+                    copy[key] = self.facetExceptions[key];
+                    $location.search(key, null);
+                }
+                else if (omitKeys.indexOf(key) === -1) {
                     copy[key] = self.facet[key];
+                    test[key] = self.facet[key];
                 }
                 else{
                     $location.search(key, null);
                 }
+
             });
-            console.log(isEmptyObj(copy));
-            self.showFacetBar = !isEmptyObj(copy);
+
+            self.showFacetBar = !isEmptyObj(test);
             self.facet = angular.copy(copy);
+
+            $rootScope.$broadcast('facetsChange');
         };
         
         this.changeFacet = function(facet){
             var val = (self.facet.hasOwnProperty(facet) && self.facet[facet] !== '' && self.facet[facet] !== false) ? self.facet[facet] : null;
             $location.search(facet, val);
-            self.showFacetBar = !isEmptyObj(self.facet);
+            $location.replace();
+            self.showFacetBar = !isEmptyObj(self.facet) && !self.facetExceptions.hasOwnProperty(facet);
+            $rootScope.$broadcast('facetsChange');
         };
 
         this.specialtyType = function(staff){

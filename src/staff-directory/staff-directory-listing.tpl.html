@@ -5,17 +5,17 @@
             <th>
                 <a href="#"
                    ng-click="sortList($event, 'lastname')"
-                   ng-class="{'sortable': !staffdir.sortReverse && staffdir.sortBy == 'lastname', 'sortable-reverse': staffdir.sortReverse && staffdir.sortBy == 'lastname'}">Name</a>
+                   ng-class="{'sortable': !staffdir.sortReverse && staffdir.facet.sortBy == 'lastname', 'sortable-reverse': staffdir.sortReverse && staffdir.facet.sortBy == 'lastname'}">Name</a>
             </th>
             <th class="hidden-xs">
                 <a href="#" 
                    ng-click="sortList($event, 'title')" 
-                   ng-class="{'sortable': !staffdir.sortReverse && staffdir.sortBy == 'title', 'sortable-reverse': staffdir.sortReverse && staffdir.sortBy == 'title'}">Title</a>
+                   ng-class="{'sortable': !staffdir.sortReverse && staffdir.facet.sortBy == 'title', 'sortable-reverse': staffdir.sortReverse && staffdir.facet.sortBy == 'title'}">Title</a>
             </th>
             <th class="hidden-xs">
                 <a href="#" 
                    ng-click="sortList($event, 'department')" 
-                   ng-class="{'sortable': !staffdir.sortReverse && staffdir.sortBy == 'department', 'sortable-reverse': staffdir.sortReverse && staffdir.sortBy == 'department'}">Department/Unit</a>
+                   ng-class="{'sortable': !staffdir.sortReverse && staffdir.facet.sortBy == 'department', 'sortable-reverse': staffdir.sortReverse && staffdir.sortBy == 'department'}">Department/Unit</a>
             </th>
             <th>Contact</th>
             <th class="hidden-xs hidden-sm">Specialty</th>

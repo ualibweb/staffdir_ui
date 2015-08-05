@@ -21,7 +21,7 @@ angular.module('staffdir', ['ualib.staffdir']);
                 var params = $location.search();
                 for (var param in params){
                     //TODO: This must be temporary. Any URI param will cause the facet bar to display on load!!
-                    if (!SDS.showFacetBar) {
+                    if (!SDS.showFacetBar && !SDS.facetExceptions.hasOwnProperty(param)) {
                         SDS.showFacetBar = true;
                     }
                     SDS.facet[param] = params[param];
@@ -30,12 +30,13 @@ angular.module('staffdir', ['ualib.staffdir']);
         });
     }])
 
-    .service('StaffDirectoryService', ['$location', function($location){
+    .service('StaffDirectoryService', ['$location', '$rootScope', function($location, $rootScope){
         var self = this; //ensures proper contest in closure statements
         this.sortBy = ''; // Default sort column, can be overridden via 'sortBy' attribute for staffDirectory directive
         this.sortReverse = false; // Default sort direction
         this.sortable = {}; // reference object for sortable columns
         this.facet = {}; // Object to hold filter values based on available facets (empty object means no filtering).
+        this.facetExceptions = {sortBy: 'lastname', search: ''};
 
         //TODO: handle this variable through a central route/event instead of on a function-by-function basis
         this.showFacetBar = false;
@@ -44,25 +45,35 @@ angular.module('staffdir', ['ualib.staffdir']);
         this.clearFacets = function(){
             var args = arguments.length ? arguments : Object.keys(self.facet);
             var omitKeys = Array.prototype.concat.apply(Array.prototype, args);
-            var copy = {};
+            var test ={}, copy = {};
 
             Object.keys(self.facet).map(function(key){
-                if (omitKeys.indexOf(key) === -1) {
+                if (self.facetExceptions.hasOwnProperty(key)){
+                    copy[key] = self.facetExceptions[key];
+                    $location.search(key, null);
+                }
+                else if (omitKeys.indexOf(key) === -1) {
                     copy[key] = self.facet[key];
+                    test[key] = self.facet[key];
                 }
                 else{
                     $location.search(key, null);
                 }
+
             });
-            console.log(isEmptyObj(copy));
-            self.showFacetBar = !isEmptyObj(copy);
+
+            self.showFacetBar = !isEmptyObj(test);
             self.facet = angular.copy(copy);
+
+            $rootScope.$broadcast('facetsChange');
         };
         
         this.changeFacet = function(facet){
             var val = (self.facet.hasOwnProperty(facet) && self.facet[facet] !== '' && self.facet[facet] !== false) ? self.facet[facet] : null;
             $location.search(facet, val);
-            self.showFacetBar = !isEmptyObj(self.facet);
+            $location.replace();
+            self.showFacetBar = !isEmptyObj(self.facet) && !self.facetExceptions.hasOwnProperty(facet);
+            $rootScope.$broadcast('facetsChange');
         };
 
         this.specialtyType = function(staff){
@@ -88,10 +99,76 @@ angular.module('staffdir', ['ualib.staffdir']);
 
     }]);;angular.module('ualib.staffdir')
 
-    .factory('StaffFactory', ['$resource', function($resource){
+    .factory('StaffFactory', ['$resource', '$filter', '$http', function($resource, $filter, $http){
+        //TODO: centralize this function so it can be used with all apps
+        // Extend the default responseTransform array - Straight from Angular 1.2.8 API docs - https://docs.angularjs.org/api/ng/service/$http#overriding-the-default-transformations-per-request
+        function appendTransform(defaults, transform) {
+
+            // We can't guarantee that the default transformation is an array
+            defaults = angular.isArray(defaults) ? defaults : [defaults];
+
+            // Append the new transformation to the defaults
+            return defaults.concat(transform);
+        }
+
         return {
             directory: function(){
-                return $resource('https://wwwdev2.lib.ua.edu/staffDir/api/people', {}, {cache: true});
+                return $resource('https://wwwdev2.lib.ua.edu/staffDir/api/people', {}, {
+                    cache: true,
+                    get: {
+                        method: 'GET',
+                        transformResponse: appendTransform($http.defaults.transformResponse, function(d){
+                            var data = angular.fromJson(d);
+                            var staff = {
+                                list: [], // Array for directory listing
+                                facets: {} //Object for available facets
+                            };
+
+                            // Build new object of only subject that currently have a subject/research expert
+                            var subj = [];
+                            var list = [];
+                            angular.forEach(data.list, function(val){
+                                delete val.division;
+                                if (angular.isUndefined(val.image)){
+                                    //TODO: temporary work around because CMS file handling is dumb. Need to fix and make sustainable
+                                    val.image = '/wp-content/themes/roots-ualib/assets/img/user-profile.png';
+                                }
+
+                                //preset alpha index values base on first and last name
+                                val.alphaIndex = {};
+                                val.alphaIndex.lastname = val.lastname.charAt(0).toUpperCase();
+                                val.alphaIndex.firstname = val.firstname.charAt(0).toUpperCase();
+
+                                list.push(val);
+
+                                if (angular.isDefined(val.subjects) && val.subjects.length > 0){
+                                    angular.forEach(val.subjects, function(subject){
+                                        subj.push(subject);
+                                    });
+                                }
+                            });
+                            subj = $filter('unique')(subj, 'subject');
+                            subj = $filter('orderBy')(subj, 'subject');
+                            staff.facets.subjects = subj.map(function(s){
+                                return s.subject;
+                            });
+                            // get libraries
+                            staff.facets.libraries = data.libraries.map(function(lib){
+                                return lib.name;
+                            });
+
+                            // get libraries
+                            staff.facets.departments = data.departments.map(function(dept){
+                                return dept.name;
+                            });
+
+                            // get list of people
+                            staff.list = list;
+
+                            return staff;
+                        })
+                    }
+                });
             },
             byEmail: function(){
                 return $resource('https://wwwdev2.lib.ua.edu/staffDir/api/people/search/email/:email', {}, {cache: true});
@@ -210,7 +287,7 @@ angular.module('staffdir', ['ualib.staffdir']);
 
                     return StaffFactory.directory().get()
                         .$promise.then(function(data){
-                            // Build new object of only subject that currently have a subject/research expert
+                            /*// Build new object of only subject that currently have a subject/research expert
                             var subj = [];
                             var list = [];
                             angular.forEach(data.list, function(val){
@@ -242,9 +319,9 @@ angular.module('staffdir', ['ualib.staffdir']);
                             });
 
                             // get list of people
-                            staff.list = list;
+                            staff.list = list;*/
 
-                            return staff;
+                            return data;
                         }, function(data, status){
                             console.log('Error' + status + ': ' + data);
                             return staff;
@@ -254,13 +331,13 @@ angular.module('staffdir', ['ualib.staffdir']);
         });
     }])
 
-    .controller('StaffDirCtrl', ['$scope', 'StaffDir', 'StaffDirectoryService', function($scope, StaffDir, SDS){
-        $scope.filteredItems = [];
+    .controller('StaffDirCtrl', ['$scope', 'StaffDir', 'StaffDirectoryService', function($scope, StaffDir, SDS, $filter){
         $scope.staffdir = StaffDir;
         $scope.facets = SDS;
+
     }])
 
-    .directive('staffDirectoryListing', ['StaffDirectoryService', function(SDS){
+    .directive('staffDirectoryListing', ['StaffDirectoryService', '$filter', function(SDS, $filter){
         return {
             restrict: 'AC',
             scope: {
@@ -269,24 +346,52 @@ angular.module('staffdir', ['ualib.staffdir']);
             },
             templateUrl: 'staff-card/staff-card-list.tpl.html',
             controller: function($scope){
+                var prevSortBy; // used to detect if sort by has changed
+                $scope.filteredList = [];
                 $scope.staffdir = SDS;
 
-                SDS.sortBy = angular.isDefined($scope.sortBy) ? $scope.sortBy : 'lastname';
-                SDS.sortable = $scope.sortable;
+                $scope.staffdir.facet.sortBy = angular.isDefined($scope.sortBy) ? $scope.sortBy : 'lastname';
+                $scope.staffdir.sortable = $scope.sortable;
 
                 // Not good practice, but done for brevity's sake
                 // TODO: have sort functions event listeners defined in linking function and not via ng-click
                 $scope.sortList = function(ev, column){
                     ev. preventDefault();
 
-                    if (SDS.sortBy === column){
+                    if (SDS.facet.sortBy === column){
                         SDS.sortReverse = !SDS.sortReverse;
                     }
                     else {
-                        SDS.sortBy = column;
+                        SDS.facet.sortBy = column;
                         SDS.sortReverse = false;
                     }
                 };
+
+                // Update listing when SDS broadcasts "facetsChange" event
+                $scope.$on('facetsChange', function(ev){
+                    updateList();
+                });
+
+                // Function to update staff listing
+                function updateList(){
+                    var list = angular.copy($scope.list);
+
+                    list = $filter('filter')(list, $scope.staffdir.facet.search);
+                    list = $filter('filter')(list, $scope.staffdir.facet.department);
+                    list = $filter('filter')(list, $scope.staffdir.facet.subject, true);
+                    list = $filter('filter')(list, $scope.staffdir.facet.library);
+                    list = $filter('filter')(list, $scope.staffdir.facet.specialtyType);
+                    list = $filter('orderBy')(list, $scope.staffdir.facet.sortBy, $scope.staffdir.sortReverse);
+
+                    /*if (prevSortBy !== $scope.staffdir.facet.sortBy){
+                        list = $filter('alphaIndex')(list, $scope.staffdir.facet.sortBy);
+                        prevSortBy = angular.copy($scope.staffdir);
+                    }*/
+
+                    $scope.filteredList = angular.copy(list);
+                }
+
+                updateList();
             }
         };
     }])

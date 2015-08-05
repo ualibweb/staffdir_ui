@@ -14,7 +14,7 @@ angular.module('ualib.staffdir')
 
                     return StaffFactory.directory().get()
                         .$promise.then(function(data){
-                            // Build new object of only subject that currently have a subject/research expert
+                            /*// Build new object of only subject that currently have a subject/research expert
                             var subj = [];
                             var list = [];
                             angular.forEach(data.list, function(val){
@@ -46,9 +46,9 @@ angular.module('ualib.staffdir')
                             });
 
                             // get list of people
-                            staff.list = list;
+                            staff.list = list;*/
 
-                            return staff;
+                            return data;
                         }, function(data, status){
                             console.log('Error' + status + ': ' + data);
                             return staff;
@@ -58,13 +58,13 @@ angular.module('ualib.staffdir')
         });
     }])
 
-    .controller('StaffDirCtrl', ['$scope', 'StaffDir', 'StaffDirectoryService', function($scope, StaffDir, SDS){
-        $scope.filteredItems = [];
+    .controller('StaffDirCtrl', ['$scope', 'StaffDir', 'StaffDirectoryService', function($scope, StaffDir, SDS, $filter){
         $scope.staffdir = StaffDir;
         $scope.facets = SDS;
+
     }])
 
-    .directive('staffDirectoryListing', ['StaffDirectoryService', function(SDS){
+    .directive('staffDirectoryListing', ['StaffDirectoryService', '$filter', function(SDS, $filter){
         return {
             restrict: 'AC',
             scope: {
@@ -73,24 +73,52 @@ angular.module('ualib.staffdir')
             },
             templateUrl: 'staff-card/staff-card-list.tpl.html',
             controller: function($scope){
+                var prevSortBy; // used to detect if sort by has changed
+                $scope.filteredList = [];
                 $scope.staffdir = SDS;
 
-                SDS.sortBy = angular.isDefined($scope.sortBy) ? $scope.sortBy : 'lastname';
-                SDS.sortable = $scope.sortable;
+                $scope.staffdir.facet.sortBy = angular.isDefined($scope.sortBy) ? $scope.sortBy : 'lastname';
+                $scope.staffdir.sortable = $scope.sortable;
 
                 // Not good practice, but done for brevity's sake
                 // TODO: have sort functions event listeners defined in linking function and not via ng-click
                 $scope.sortList = function(ev, column){
                     ev. preventDefault();
 
-                    if (SDS.sortBy === column){
+                    if (SDS.facet.sortBy === column){
                         SDS.sortReverse = !SDS.sortReverse;
                     }
                     else {
-                        SDS.sortBy = column;
+                        SDS.facet.sortBy = column;
                         SDS.sortReverse = false;
                     }
                 };
+
+                // Update listing when SDS broadcasts "facetsChange" event
+                $scope.$on('facetsChange', function(ev){
+                    updateList();
+                });
+
+                // Function to update staff listing
+                function updateList(){
+                    var list = angular.copy($scope.list);
+
+                    list = $filter('filter')(list, $scope.staffdir.facet.search);
+                    list = $filter('filter')(list, $scope.staffdir.facet.department);
+                    list = $filter('filter')(list, $scope.staffdir.facet.subject, true);
+                    list = $filter('filter')(list, $scope.staffdir.facet.library);
+                    list = $filter('filter')(list, $scope.staffdir.facet.specialtyType);
+                    list = $filter('orderBy')(list, $scope.staffdir.facet.sortBy, $scope.staffdir.sortReverse);
+
+                    /*if (prevSortBy !== $scope.staffdir.facet.sortBy){
+                        list = $filter('alphaIndex')(list, $scope.staffdir.facet.sortBy);
+                        prevSortBy = angular.copy($scope.staffdir);
+                    }*/
+
+                    $scope.filteredList = angular.copy(list);
+                }
+
+                updateList();
             }
         };
     }])

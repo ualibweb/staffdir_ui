@@ -1,10 +1,10 @@
-<div class="animate-repeat" ng-repeat="person in filteredList = (list | filter:staffdir.facet.search | filter:staffdir.facet.department | filter:staffdir.facet.subject:true | filter:staffdir.facet.library | filter:staffdir.specialtyType | orderBy:staffdir.sortBy:staffdir.sortReverse | alphaIndex:staffdir.sortBy) track by $index">
+<div class="animate-repeat" ng-repeat="person in filteredList track by $index">
     <div class="page-slice">
         <div class="row">
             <div class="col-xs-12 col-sm-1">
-                <div class="alpha-index-header" ng-if="person.alphaIndex != filteredList[$index-1].alphaIndex">
+                <div class="alpha-index-header" ng-if="person.alphaIndex[staffdir.facet.sortBy] != filteredList[$index-1].alphaIndex[staffdir.facet.sortBy]">
                     <div ui-scrollfix="+0">
-                        {{person.alphaIndex}}
+                        {{person.alphaIndex[staffdir.facet.sortBy]}}
                     </div>
                 </div>
             </div>
@@ -16,7 +16,7 @@
                     <div class="col-xs-12 col-sm-7 name-plate">
                         <h3 class="name">
                             <small ng-if="person.rank">{{person.rank}}</small>
-                            <span ng-class="{'sorting-by': staffdir.sortBy == 'firstname'}" ng-bind-html="person.firstname | highlight:staffdir.facet.search"></span> <span ng-class="{'sorting-by': staffdir.sortBy == 'lastname'}" ng-bind-html="person.lastname | highlight:staffdir.facet.search"></span>
+                            <span ng-class="{'sorting-by': staffdir.facet.sortBy == 'firstname'}" ng-bind-html="person.firstname | highlight:staffdir.facet.search"></span> <span ng-class="{'sorting-by': staffdir.facet.sortBy == 'lastname'}" ng-bind-html="person.lastname | highlight:staffdir.facet.search"></span>
                         </h3>
                         <h4 class="title"><span ng-bind-html="person.title | highlight:staffdir.facet.search"></span></h4>
                         <h5 class="hidden-xs"><span ng-bind-html="person.department | highlight:staffdir.facet.search"></span></h5>
