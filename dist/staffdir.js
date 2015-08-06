@@ -72,7 +72,7 @@ angular.module('staffdir', ['ualib.staffdir']);
             var val = (self.facet.hasOwnProperty(facet) && self.facet[facet] !== '' && self.facet[facet] !== false) ? self.facet[facet] : null;
             $location.search(facet, val);
             $location.replace();
-            self.showFacetBar = !isEmptyObj(self.facet) && !self.facetExceptions.hasOwnProperty(facet);
+            self.showFacetBar = !isEmptyObj(self.facet) && val && !self.facetExceptions.hasOwnProperty(facet);
             $rootScope.$broadcast('facetsChange');
         };
 
@@ -280,47 +280,9 @@ angular.module('staffdir', ['ualib.staffdir']);
             templateUrl: 'staff-directory/staff-directory.tpl.html',
             resolve: {
                 StaffDir: ['StaffFactory', '$filter', function(StaffFactory, $filter){
-                    var staff = {
-                        list: [], // Array for directory listing
-                        facets: {} //Object for available facets
-                    };
 
                     return StaffFactory.directory().get()
                         .$promise.then(function(data){
-                            /*// Build new object of only subject that currently have a subject/research expert
-                            var subj = [];
-                            var list = [];
-                            angular.forEach(data.list, function(val){
-                                delete val.division;
-                                if (angular.isUndefined(val.image)){
-                                    //TODO: temporary work around because CMS file handling is dumb. Fix and make sustainable!!!
-                                    val.image = '/wp-content/themes/roots-ualib/assets/img/user-profile.png';
-                                }
-                                list.push(val);
-                                if (angular.isDefined(val.subjects) && val.subjects.length > 0){
-                                    angular.forEach(val.subjects, function(subject){
-                                        subj.push(subject);
-                                    });
-                                }
-                            });
-                            subj = $filter('unique')(subj, 'subject');
-                            subj = $filter('orderBy')(subj, 'subject');
-                            staff.facets.subjects = subj.map(function(s){
-                                return s.subject;
-                            });
-                            // get libraries
-                            staff.facets.libraries = data.libraries.map(function(lib){
-                                return lib.name;
-                            });
-
-                            // get libraries
-                            staff.facets.departments = data.departments.map(function(dept){
-                                return dept.name;
-                            });
-
-                            // get list of people
-                            staff.list = list;*/
-
                             return data;
                         }, function(data, status){
                             console.log('Error' + status + ': ' + data);
@@ -346,7 +308,6 @@ angular.module('staffdir', ['ualib.staffdir']);
             },
             templateUrl: 'staff-card/staff-card-list.tpl.html',
             controller: function($scope){
-                var prevSortBy; // used to detect if sort by has changed
                 $scope.filteredList = [];
                 $scope.staffdir = SDS;
 
@@ -375,6 +336,7 @@ angular.module('staffdir', ['ualib.staffdir']);
                 // Function to update staff listing
                 function updateList(){
                     var list = angular.copy($scope.list);
+                    var facets = angular.copy($scope.staffdir.facet);
 
                     list = $filter('filter')(list, $scope.staffdir.facet.search);
                     list = $filter('filter')(list, $scope.staffdir.facet.department);
@@ -382,11 +344,6 @@ angular.module('staffdir', ['ualib.staffdir']);
                     list = $filter('filter')(list, $scope.staffdir.facet.library);
                     list = $filter('filter')(list, $scope.staffdir.facet.specialtyType);
                     list = $filter('orderBy')(list, $scope.staffdir.facet.sortBy, $scope.staffdir.sortReverse);
-
-                    /*if (prevSortBy !== $scope.staffdir.facet.sortBy){
-                        list = $filter('alphaIndex')(list, $scope.staffdir.facet.sortBy);
-                        prevSortBy = angular.copy($scope.staffdir);
-                    }*/
 
                     $scope.filteredList = angular.copy(list);
                 }

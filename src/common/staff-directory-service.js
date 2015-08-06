@@ -58,7 +58,7 @@ angular.module('ualib.staffdir')
             var val = (self.facet.hasOwnProperty(facet) && self.facet[facet] !== '' && self.facet[facet] !== false) ? self.facet[facet] : null;
             $location.search(facet, val);
             $location.replace();
-            self.showFacetBar = !isEmptyObj(self.facet) && !self.facetExceptions.hasOwnProperty(facet);
+            self.showFacetBar = !isEmptyObj(self.facet) && val && !self.facetExceptions.hasOwnProperty(facet);
             $rootScope.$broadcast('facetsChange');
         };
 

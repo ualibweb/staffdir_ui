@@ -49,12 +49,12 @@
         <div class="facet-group">
             <div class="radio">
                 <label>
-                    <input type="radio" ng-model="staffdir.facet.library" value="" ng-checked="!staffdir.facet.library" ng-change="staffdir.changeFacet('department')"> All
+                    <input type="radio" ng-model="staffdir.facet.library" value="" ng-checked="!staffdir.facet.library" ng-change="staffdir.changeFacet('library')"> All
                 </label>
             </div>
             <div class="radio" ng-repeat="library in facets.libraries">
                 <label>
-                    <input type="radio" ng-model="staffdir.facet.library" value="{{library}}" ng-change="staffdir.changeFacet('department')"> {{library}}
+                    <input type="radio" ng-model="staffdir.facet.library" value="{{library}}" ng-change="staffdir.changeFacet('library')"> {{library}}
                 </label>
             </div>
         </div>

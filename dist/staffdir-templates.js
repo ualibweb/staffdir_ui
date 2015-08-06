@@ -2,7 +2,7 @@ angular.module('ualib.staffdir.templates', ['staff-card/staff-card-list.tpl.html
 
 angular.module("staff-card/staff-card-list.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("staff-card/staff-card-list.tpl.html",
-    "<div class=\"animate-repeat\" ng-repeat=\"person in filteredList track by $index\">\n" +
+    "<div ng-repeat=\"person in filteredList track by $index\">\n" +
     "    <div class=\"page-slice\">\n" +
     "        <div class=\"row\">\n" +
     "            <div class=\"col-xs-12 col-sm-1\">\n" +
@@ -186,12 +186,12 @@ angular.module("staff-directory/staff-directory-facets.tpl.html", []).run(["$tem
     "        <div class=\"facet-group\">\n" +
     "            <div class=\"radio\">\n" +
     "                <label>\n" +
-    "                    <input type=\"radio\" ng-model=\"staffdir.facet.library\" value=\"\" ng-checked=\"!staffdir.facet.library\" ng-change=\"staffdir.changeFacet('department')\"> All\n" +
+    "                    <input type=\"radio\" ng-model=\"staffdir.facet.library\" value=\"\" ng-checked=\"!staffdir.facet.library\" ng-change=\"staffdir.changeFacet('library')\"> All\n" +
     "                </label>\n" +
     "            </div>\n" +
     "            <div class=\"radio\" ng-repeat=\"library in facets.libraries\">\n" +
     "                <label>\n" +
-    "                    <input type=\"radio\" ng-model=\"staffdir.facet.library\" value=\"{{library}}\" ng-change=\"staffdir.changeFacet('department')\"> {{library}}\n" +
+    "                    <input type=\"radio\" ng-model=\"staffdir.facet.library\" value=\"{{library}}\" ng-change=\"staffdir.changeFacet('library')\"> {{library}}\n" +
     "                </label>\n" +
     "            </div>\n" +
     "        </div>\n" +
