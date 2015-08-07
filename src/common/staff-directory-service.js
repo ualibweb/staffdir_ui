@@ -11,6 +11,7 @@ angular.module('ualib.staffdir')
                         SDS.showFacetBar = true;
                     }
                     SDS.facet[param] = params[param];
+                    console.log(SDS.facet);
                 }
             }
         });
@@ -18,7 +19,6 @@ angular.module('ualib.staffdir')
 
     .service('StaffDirectoryService', ['$location', '$rootScope', function($location, $rootScope){
         var self = this; //ensures proper contest in closure statements
-        this.sortBy = ''; // Default sort column, can be overridden via 'sortBy' attribute for staffDirectory directive
         this.sortReverse = false; // Default sort direction
         this.sortable = {}; // reference object for sortable columns
         this.facet = {}; // Object to hold filter values based on available facets (empty object means no filtering).
@@ -58,7 +58,7 @@ angular.module('ualib.staffdir')
             var val = (self.facet.hasOwnProperty(facet) && self.facet[facet] !== '' && self.facet[facet] !== false) ? self.facet[facet] : null;
             $location.search(facet, val);
             $location.replace();
-            self.showFacetBar = !isEmptyObj(self.facet) && val && !self.facetExceptions.hasOwnProperty(facet);
+            self.showFacetBar = !isEmptyObj(self.facet);
             $rootScope.$broadcast('facetsChange');
         };
 
@@ -76,7 +76,7 @@ angular.module('ualib.staffdir')
         function isEmptyObj(obj){
             var name;
             for (name in obj){
-                if (obj[name]){
+                if (obj[name] && !self.facetExceptions.hasOwnProperty(name)){
                     return false;
                 }
             }
