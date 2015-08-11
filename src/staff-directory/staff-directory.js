@@ -6,7 +6,7 @@ angular.module('ualib.staffdir')
             controller: 'StaffDirCtrl',
             templateUrl: 'staff-directory/staff-directory.tpl.html',
             resolve: {
-                StaffDir: ['StaffFactory', '$filter', function(StaffFactory, $filter){
+                StaffDir: ['StaffFactory', function(StaffFactory){
 
                     return StaffFactory.directory().get()
                         .$promise.then(function(data){
@@ -20,7 +20,7 @@ angular.module('ualib.staffdir')
         });
     }])
 
-    .controller('StaffDirCtrl', ['$scope', 'StaffDir', 'StaffDirectoryService', function($scope, StaffDir, SDS, $filter){
+    .controller('StaffDirCtrl', ['$scope', 'StaffDir', 'StaffDirectoryService', function($scope, StaffDir, SDS){
         $scope.staffdir = StaffDir;
         $scope.facets = SDS;
 
@@ -34,7 +34,7 @@ angular.module('ualib.staffdir')
                 sortBy: '@'
             },
             templateUrl: 'staff-card/staff-card-list.tpl.html',
-            controller: function($scope){
+            controller: ['$scope', function($scope){
                 $scope.filteredList = [];
                 $scope.staffdir = SDS;
 
@@ -67,20 +67,20 @@ angular.module('ualib.staffdir')
                 });
 
                 updateList();
-            }
+            }]
         };
     }])
 
-    .directive('staffDirectoryFacets', ['StaffDirectoryService', '$location', '$q', function(SDS, $location, $q){
+    .directive('staffDirectoryFacets', ['StaffDirectoryService', function(SDS){
         return {
             restrict: 'AC',
             scope: {
                 facets: '='
             },
             templateUrl: 'staff-directory/staff-directory-facets.tpl.html',
-            controller: function($scope){
+            controller: ['$scope', function($scope){
                 $scope.staffdir = SDS;
-            }
+            }]
         };
     }])
 

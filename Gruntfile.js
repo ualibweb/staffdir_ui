@@ -38,8 +38,25 @@ module.exports = function(grunt) {
         },
         html2js:{
             dev: {
-                src: 'src/**/*.tpl.html',
+                src: ['src/**/*.tpl.html', '!src/staff-directory-listing.tpl.html', '!src/staff-card/staff-card-sm.tpl.html'],
                 dest: 'dist/staffdir-templates.js',
+                module: 'ualib.staffdir.templates'
+            },
+            build: {
+                options: {
+                    htmlmin: {
+                        collapseBooleanAttributes: true,
+                        collapseWhitespace: true,
+                        removeAttributeQuotes: true,
+                        removeComments: true,
+                        removeEmptyAttributes: true,
+                        removeRedundantAttributes: true,
+                        removeScriptTypeAttributes: true,
+                        removeStyleLinkTypeAttributes: true
+                    }
+                },
+                src: 'src/**/*.tpl.html',
+                dest: 'dist/staffdir-templates.min.js',
                 module: 'ualib.staffdir.templates'
             }
         },
@@ -97,10 +114,10 @@ module.exports = function(grunt) {
         'concat'
     ]);
     grunt.registerTask('build', [
-        //'html2js:build',
+        'html2js:build',
         'jshint',
-        'copy',
         'less:build',
-        'uglify'
+        'uglify',
+        'concat:index'
     ]);
 };

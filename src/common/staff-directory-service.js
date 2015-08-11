@@ -67,6 +67,9 @@ angular.module('ualib.staffdir')
             if (type){
                 return staff.subjects.filter(function(subj){
                         var isType = (subj.type & type) === type;
+                        if (type === 3){
+                            return self.facet.subject ? (self.facet.subject === subj.subject) && subj.type > 0 : subj.type > 0;
+                        }
                         return self.facet.subject ? (self.facet.subject === subj.subject) && isType : isType;
                     }).length > 0;
             }

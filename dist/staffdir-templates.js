@@ -1,4 +1,4 @@
-angular.module('ualib.staffdir.templates', ['staff-card/staff-card-list.tpl.html', 'staff-card/staff-card-md.tpl.html', 'staff-card/staff-card-sm.tpl.html', 'staff-directory/staff-directory-facets.tpl.html', 'staff-directory/staff-directory-listing.tpl.html', 'staff-directory/staff-directory.tpl.html']);
+angular.module('ualib.staffdir.templates', ['staff-card/staff-card-list.tpl.html', 'staff-card/staff-card-md.tpl.html', 'staff-directory/staff-directory-facets.tpl.html', 'staff-directory/staff-directory-listing.tpl.html', 'staff-directory/staff-directory.tpl.html']);
 
 angular.module("staff-card/staff-card-list.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("staff-card/staff-card-list.tpl.html",
@@ -109,26 +109,6 @@ angular.module("staff-card/staff-card-md.tpl.html", []).run(["$templateCache", f
     "                </div>\n" +
     "            </div>\n" +
     "        </div>\n" +
-    "    </div>\n" +
-    "</div>");
-}]);
-
-angular.module("staff-card/staff-card-sm.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("staff-card/staff-card-sm.tpl.html",
-    "<div class=\"staff-card staff-card-sm panel panel-default\">\n" +
-    "    <div class=\"panel-body\">\n" +
-    "        <span class=\"name h3\"><small ng-if=\"staffPerson.rank\">{{staffPerson.rank}} </small>{{staffPerson.firstname}} {{staffPerson.lastname}}</span>\n" +
-    "            <span class=\"pull-right\">\n" +
-    "                <a href=\"\" class=\"btn btn-primary btn-lg\"><span class=\"fa fa-envelope fa-fw\"></span></a>\n" +
-    "                <a href=\"\" class=\"btn btn-primary btn-lg\"><span class=\"fa fa-phone-square fa-fw\"></span></a>\n" +
-    "            </span>\n" +
-    "<!--\n" +
-    "        <div class=\"staff-card-detail\">\n" +
-    "            <ul class=\"fa-ul\">\n" +
-    "                <li ng-if=\"staffPerson.phone\"></li>\n" +
-    "                <li ng-if=\"staffPerson.email\"></li>\n" +
-    "            </ul>\n" +
-    "        </div>-->\n" +
     "    </div>\n" +
     "</div>");
 }]);
