@@ -221,9 +221,6 @@ angular.module('staffdir', ['ualib.staffdir']);
                 var tpl = 'staff-card/';
 
                 switch (tAttrs.size){
-                    case 'xs':
-                        tpl += 'staff-card-xs.tpl.html';
-                        break;
                     case 'sm':
                         tpl += 'staff-card-sm.tpl.html';
                         break;

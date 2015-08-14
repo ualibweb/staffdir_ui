@@ -30,7 +30,7 @@ angular.module("staff-card/staff-card-list.tpl.html", []).run(["$templateCache",
     "                        <ul class=\"fa-ul\">\n" +
     "                            <li ng-if=\"person.phone\"><span class=\"fa fa-phone fa-li\"></span>{{person.phone}}</li>\n" +
     "                            <li class=\"hidden-xs\" ng-if=\"person.fax\"><span class=\"fa fa-fax fa-li\"></span>{{person.fax}}</li>\n" +
-    "                            <li ng-if=\"person.email\"><span class=\"fa fa-envelope fa-li\"></span>{{person.email}}</li>\n" +
+    "                            <li ng-if=\"person.email\"><span class=\"fa fa-envelope fa-li\"></span><a href=\"mailto:{{person.email}}\">{{person.email}}</a></li>\n" +
     "                        </ul>\n" +
     "                    </div>\n" +
     "                    <div class=\"col-sm-12 subject-specialty hidden-xs\" ng-if=\"person.subjects\">\n" +
@@ -93,7 +93,7 @@ angular.module("staff-card/staff-card-md.tpl.html", []).run(["$templateCache", f
     "                    <ul class=\"fa-ul\">\n" +
     "                        <li ng-if=\"staffPerson.phone\"><span class=\"fa fa-phone fa-li\"></span>{{staffPerson.phone}}</li>\n" +
     "                        <li ng-if=\"staffPerson.fax\"><span class=\"fa fa-fax fa-li\"></span>{{staffPerson.fax}}</li>\n" +
-    "                        <li ng-if=\"staffPerson.email\"><span class=\"fa fa-envelope fa-li\"></span>{{staffPerson.email}}</li>\n" +
+    "                        <li ng-if=\"staffPerson.email\"><span class=\"fa fa-envelope fa-li\"></span><a href=\"mailto:{{staffPerson.email}}\">{{staffPerson.email}}</a></li>\n" +
     "                    </ul>\n" +
     "                </div>\n" +
     "            </div>\n" +
