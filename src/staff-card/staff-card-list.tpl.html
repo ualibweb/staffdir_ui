@@ -9,7 +9,8 @@
                 </div>
             </div>
             <div class="col-xs-4 col-sm-3">
-                <img class="staff-portrait thumbnail" ng-src="{{person.photo}}">
+                <img class="staff-portrait thumbnail" ng-src="{{person.photo}}" ng-if="person.photo != null">
+                <img class="staff-portrait thumbnail" ng-src="wp-content/themes/roots-ualib/assets/img/user-profile.png" ng-if="person.photo == null">
             </div>
             <div class="col-xs-8">
                 <div class="row">
