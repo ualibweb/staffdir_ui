@@ -26,7 +26,7 @@
                         <ul class="fa-ul">
                             <li ng-if="person.phone"><span class="fa fa-phone fa-li"></span>{{person.phone}}</li>
                             <li class="hidden-xs" ng-if="person.fax"><span class="fa fa-fax fa-li"></span>{{person.fax}}</li>
-                            <li ng-if="person.email"><span class="fa fa-envelope fa-li"></span><a href="mailto:{{person.email}}">{{person.email}}</a></li>
+                            <li ng-if="person.email"><span class="fa fa-envelope fa-li"></span><a ng-href="mailto:{{person.email}}" title="Email {{person.firstname}} {{person.lastname}}">{{person.email}}</a></li>
                         </ul>
                     </div>
                     <div class="col-sm-12 subject-specialty hidden-xs" ng-if="person.subjects">

@@ -30,7 +30,7 @@ angular.module("staff-card/staff-card-list.tpl.html", []).run(["$templateCache",
     "                        <ul class=\"fa-ul\">\n" +
     "                            <li ng-if=\"person.phone\"><span class=\"fa fa-phone fa-li\"></span>{{person.phone}}</li>\n" +
     "                            <li class=\"hidden-xs\" ng-if=\"person.fax\"><span class=\"fa fa-fax fa-li\"></span>{{person.fax}}</li>\n" +
-    "                            <li ng-if=\"person.email\"><span class=\"fa fa-envelope fa-li\"></span><a href=\"mailto:{{person.email}}\">{{person.email}}</a></li>\n" +
+    "                            <li ng-if=\"person.email\"><span class=\"fa fa-envelope fa-li\"></span><a ng-href=\"mailto:{{person.email}}\" title=\"Email {{person.firstname}} {{person.lastname}}\">{{person.email}}</a></li>\n" +
     "                        </ul>\n" +
     "                    </div>\n" +
     "                    <div class=\"col-sm-12 subject-specialty hidden-xs\" ng-if=\"person.subjects\">\n" +
