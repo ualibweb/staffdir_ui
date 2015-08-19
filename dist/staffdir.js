@@ -137,7 +137,8 @@ angular.module('staffdir', ['ualib.staffdir']);
                                     val.photo = '/wp-content/themes/roots-ualib/assets/img/user-profile.png';
                                 }
                                 var rx = /^([\w-]+(?:\.[\w-]+)*)/;
-                                val.emailPrefix = rx.exec(val.email);
+                                var emailPrefix = rx.exec(val.email);
+                                val.emailPrefix = emailPrefix[0];
 
                                 //preset alpha index values base on first and last name
                                 val.alphaIndex = {};
@@ -384,7 +385,7 @@ angular.module('staffdir', ['ualib.staffdir']);
         return {
             restrict: 'AC',
             scope:{
-                login: '=email'
+                login: '@email'
             },
             templateUrl: 'staff-profile/staff-profile.tpl.html',
             controller: function($scope){
@@ -392,7 +393,7 @@ angular.module('staffdir', ['ualib.staffdir']);
 
                 console.log("Login: " + $scope.login);
 
-                StaffFactory.profile().get({login: emailPrefix[0]})
+                StaffFactory.profile().get({login: $scope.login})
                     .$promise.then(function(data){
                         $scope.profileData = data;
                         console.dir(data);

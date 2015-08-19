@@ -35,7 +35,8 @@ angular.module('ualib.staffdir')
                                     val.photo = '/wp-content/themes/roots-ualib/assets/img/user-profile.png';
                                 }
                                 var rx = /^([\w-]+(?:\.[\w-]+)*)/;
-                                val.emailPrefix = rx.exec(val.email);
+                                var emailPrefix = rx.exec(val.email);
+                                val.emailPrefix = emailPrefix[0];
 
                                 //preset alpha index values base on first and last name
                                 val.alphaIndex = {};

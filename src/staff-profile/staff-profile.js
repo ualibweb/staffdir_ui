@@ -12,7 +12,7 @@ angular.module('ualib.staffdir')
         return {
             restrict: 'AC',
             scope:{
-                login: '=email'
+                login: '@email'
             },
             templateUrl: 'staff-profile/staff-profile.tpl.html',
             controller: function($scope){
@@ -20,7 +20,7 @@ angular.module('ualib.staffdir')
 
                 console.log("Login: " + $scope.login);
 
-                StaffFactory.profile().get({login: emailPrefix[0]})
+                StaffFactory.profile().get({login: $scope.login})
                     .$promise.then(function(data){
                         $scope.profileData = data;
                         console.dir(data);
