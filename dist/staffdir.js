@@ -395,6 +395,7 @@ angular.module('staffdir', ['ualib.staffdir']);
                 StaffFactory.profile().get({login: emailPrefix[0]})
                     .$promise.then(function(data){
                         $scope.profileData = data;
+                        console.dir(data);
                     }, function(data){
                         console.log('Error: cold not get profile! ' + data);
                     });

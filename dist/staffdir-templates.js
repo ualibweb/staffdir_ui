@@ -13,8 +13,8 @@ angular.module("staff-card/staff-card-list.tpl.html", []).run(["$templateCache",
     "                </div>\n" +
     "            </div>\n" +
     "            <div class=\"col-xs-4 col-sm-3\">\n" +
-    "                <img class=\"staff-portrait thumbnail\" ng-src=\"{{person.photo}}\" ng-if=\"person.photo != null\">\n" +
-    "                <img class=\"staff-portrait thumbnail\" ng-src=\"wp-content/themes/roots-ualib/assets/img/user-profile.png\" ng-if=\"person.photo == null\">\n" +
+    "                <img class=\"staff-portrait thumbnail\" ng-src=\"{{person.photo}}\" ng-if=\"person.photo != null\" />\n" +
+    "                <img class=\"staff-portrait thumbnail\" ng-src=\"wp-content/themes/roots-ualib/assets/img/user-profile.png\" ng-if=\"person.photo == null\" />\n" +
     "            </div>\n" +
     "            <div class=\"col-xs-8\">\n" +
     "                <div class=\"row\">\n" +
@@ -289,7 +289,6 @@ angular.module("staff-directory/staff-directory.tpl.html", []).run(["$templateCa
 angular.module("staff-profile/staff-profile.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("staff-profile/staff-profile.tpl.html",
     "<h2>Faculty/Staff Profile</h2>\n" +
-    "\n" +
     "<div class=\"row\">\n" +
     "    <div class=\"col-md-3\">\n" +
     "        <img class=\"staff-portrait thumbnail\" ng-src=\"{{userProfile.person.photo}}\" ng-if=\"userProfile.person.photo != null\"\n" +
@@ -313,7 +312,6 @@ angular.module("staff-profile/staff-profile.tpl.html", []).run(["$templateCache"
     "        </ul>\n" +
     "    </div>\n" +
     "</div>\n" +
-    "\n" +
     "<div class=\"row\">\n" +
     "    <div class=\"col-md-12\">\n" +
     "        <span ng-bind-html=\"userProfile.person.profile\"></span>\n" +
