@@ -34,8 +34,11 @@ angular.module('ualib.staffdir')
                                     //TODO: temporary work around because CMS file handling is dumb. Need to fix and make sustainable
                                     val.photo = '/wp-content/themes/roots-ualib/assets/img/user-profile.png';
                                 }
+
+
                                 var rx = /^([\w-]+(?:\.[\w-]+)*)/;
                                 var prefix = val.email.match(rx);
+                                //added in order to prevent crashes from empty email address
                                 if (prefix !== null) {
                                     val.emailPrefix = prefix[0];
                                 } else {

@@ -16,13 +16,13 @@ angular.module('ualib.staffdir')
             },
             templateUrl: 'staff-profile/staff-profile.tpl.html',
             controller: function($scope){
-                $scope.profileData = {};
+                $scope.userProfile = {};
 
                 console.log("Login: " + $scope.login);
 
                 StaffFactory.profile().get({login: $scope.login})
                     .$promise.then(function(data){
-                        $scope.profileData = data;
+                        $scope.userProfile = data;
                         console.dir(data);
                     }, function(data){
                         console.log('Error: cold not get profile! ' + data);

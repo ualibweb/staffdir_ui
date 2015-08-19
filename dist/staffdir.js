@@ -136,8 +136,11 @@ angular.module('staffdir', ['ualib.staffdir']);
                                     //TODO: temporary work around because CMS file handling is dumb. Need to fix and make sustainable
                                     val.photo = '/wp-content/themes/roots-ualib/assets/img/user-profile.png';
                                 }
+
+
                                 var rx = /^([\w-]+(?:\.[\w-]+)*)/;
                                 var prefix = val.email.match(rx);
+                                //added in order to prevent crashes from empty email address
                                 if (prefix !== null) {
                                     val.emailPrefix = prefix[0];
                                 } else {
@@ -393,13 +396,13 @@ angular.module('staffdir', ['ualib.staffdir']);
             },
             templateUrl: 'staff-profile/staff-profile.tpl.html',
             controller: function($scope){
-                $scope.profileData = {};
+                $scope.userProfile = {};
 
                 console.log("Login: " + $scope.login);
 
                 StaffFactory.profile().get({login: $scope.login})
                     .$promise.then(function(data){
-                        $scope.profileData = data;
+                        $scope.userProfile = data;
                         console.dir(data);
                     }, function(data){
                         console.log('Error: cold not get profile! ' + data);
