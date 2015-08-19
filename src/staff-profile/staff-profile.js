@@ -19,8 +19,6 @@ angular.module('ualib.staffdir')
                 $scope.profileData = {};
 
                 console.log("Login: " + $scope.login);
-                var rx = /^([\w-]+(?:\.[\w-]+)*)/;
-                var emailPrefix = rx.exec($scope.login);
 
                 StaffFactory.profile().get({login: emailPrefix[0]})
                     .$promise.then(function(data){

@@ -30,10 +30,12 @@ angular.module('ualib.staffdir')
                             var list = [];
                             angular.forEach(data.list, function(val){
                                 delete val.division;
-                                if (angular.isUndefined(val.image)){
+                                if (val.photo == null){
                                     //TODO: temporary work around because CMS file handling is dumb. Need to fix and make sustainable
-                                    val.image = '/wp-content/themes/roots-ualib/assets/img/user-profile.png';
+                                    val.photo = '/wp-content/themes/roots-ualib/assets/img/user-profile.png';
                                 }
+                                var rx = /^([\w-]+(?:\.[\w-]+)*)/;
+                                val.emailPrefix = rx.exec(val.email);
 
                                 //preset alpha index values base on first and last name
                                 val.alphaIndex = {};
