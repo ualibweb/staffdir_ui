@@ -1,4 +1,4 @@
-angular.module('ualib.staffdir.templates', ['staff-card/staff-card-list.tpl.html', 'staff-card/staff-card-md.tpl.html', 'staff-directory/staff-directory-facets.tpl.html', 'staff-directory/staff-directory-listing.tpl.html', 'staff-directory/staff-directory.tpl.html']);
+angular.module('ualib.staffdir.templates', ['staff-card/staff-card-list.tpl.html', 'staff-card/staff-card-md.tpl.html', 'staff-directory/staff-directory-facets.tpl.html', 'staff-directory/staff-directory-listing.tpl.html', 'staff-directory/staff-directory.tpl.html', 'staff-profile/staff-profile.tpl.html']);
 
 angular.module("staff-card/staff-card-list.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("staff-card/staff-card-list.tpl.html",
@@ -21,7 +21,14 @@ angular.module("staff-card/staff-card-list.tpl.html", []).run(["$templateCache",
     "                    <div class=\"col-xs-12 col-sm-7 name-plate\">\n" +
     "                        <h3 class=\"name\">\n" +
     "                            <small ng-if=\"person.rank\">{{person.rank}}</small>\n" +
-    "                            <span ng-class=\"{'sorting-by': staffdir.facet.sortBy == 'firstname'}\" ng-bind-html=\"person.firstname | highlight:staffdir.facet.search\"></span> <span ng-class=\"{'sorting-by': staffdir.facet.sortBy == 'lastname'}\" ng-bind-html=\"person.lastname | highlight:staffdir.facet.search\"></span>\n" +
+    "                            <a ng-href=\"/#/staffdir/profile/{{person.email}}\" ng-if=\"person.profile !== null\">\n" +
+    "                                <span ng-class=\"{'sorting-by': staffdir.facet.sortBy == 'firstname'}\" ng-bind-html=\"person.firstname | highlight:staffdir.facet.search\"></span>\n" +
+    "                                <span ng-class=\"{'sorting-by': staffdir.facet.sortBy == 'lastname'}\" ng-bind-html=\"person.lastname | highlight:staffdir.facet.search\"></span>\n" +
+    "                            </a>\n" +
+    "                            <span ng-if=\"person.profile == null\">\n" +
+    "                                <span ng-class=\"{'sorting-by': staffdir.facet.sortBy == 'firstname'}\" ng-bind-html=\"person.firstname | highlight:staffdir.facet.search\"></span>\n" +
+    "                                <span ng-class=\"{'sorting-by': staffdir.facet.sortBy == 'lastname'}\" ng-bind-html=\"person.lastname | highlight:staffdir.facet.search\"></span>\n" +
+    "                            </span>\n" +
     "                        </h3>\n" +
     "                        <h4 class=\"title\"><span ng-bind-html=\"person.title | highlight:staffdir.facet.search\"></span></h4>\n" +
     "                        <h5 class=\"hidden-xs\"><span ng-bind-html=\"person.department | highlight:staffdir.facet.search\"></span></h5>\n" +
@@ -276,5 +283,41 @@ angular.module("staff-directory/staff-directory.tpl.html", []).run(["$templateCa
     "\n" +
     "\n" +
     "\n" +
+    "");
+}]);
+
+angular.module("staff-profile/staff-profile.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("staff-profile/staff-profile.tpl.html",
+    "<h2>Faculty/Staff Profile</h2>\n" +
+    "\n" +
+    "<div class=\"row\">\n" +
+    "    <div class=\"col-md-3\">\n" +
+    "        <img class=\"staff-portrait thumbnail\" ng-src=\"{{userProfile.person.photo}}\" ng-if=\"userProfile.person.photo != null\"\n" +
+    "             width=\"180\" height=\"225\">\n" +
+    "        <img class=\"staff-portrait thumbnail\" ng-src=\"wp-content/themes/roots-ualib/assets/img/user-profile.png\"\n" +
+    "             ng-if=\"userProfile.person.photo == null\" width=\"180\" height=\"225\">\n" +
+    "    </div>\n" +
+    "    <div class=\"col-md-9\">\n" +
+    "        <h3 class=\"name\">\n" +
+    "            <small ng-if=\"userProfile.person.rank\">{{userProfile.person.rank}}</small>\n" +
+    "            <span ng-bind-html=\"userProfile.person.firstname\"></span> <span ng-bind-html=\"userProfile.person.lastname\"></span>\n" +
+    "        </h3>\n" +
+    "        <h4 class=\"title\"><span ng-bind-html=\"userProfile.person.title\"></span></h4>\n" +
+    "        <h5 class=\"hidden-xs\"><span ng-bind-html=\"userProfile.person.department\"></span></h5>\n" +
+    "        <ul class=\"fa-ul\">\n" +
+    "            <li ng-if=\"userProfile.person.phone\"><span class=\"fa fa-phone fa-li\"></span>{{userProfile.person.phone}}</li>\n" +
+    "            <li class=\"hidden-xs\" ng-if=\"userProfile.person.fax\"><span class=\"fa fa-fax fa-li\"></span>{{userProfile.person.fax}}</li>\n" +
+    "            <li ng-if=\"userProfile.person.email\"><span class=\"fa fa-envelope fa-li\"></span>\n" +
+    "                <a href=\"mailto:{{userProfile.person.email}}\">{{userProfile.person.email}}</a>\n" +
+    "            </li>\n" +
+    "        </ul>\n" +
+    "    </div>\n" +
+    "</div>\n" +
+    "\n" +
+    "<div class=\"row\">\n" +
+    "    <div class=\"col-md-12\">\n" +
+    "        <span ng-bind-html=\"userProfile.person.profile\"></span>\n" +
+    "    </div>\n" +
+    "</div>\n" +
     "");
 }]);

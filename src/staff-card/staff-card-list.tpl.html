@@ -17,7 +17,14 @@
                     <div class="col-xs-12 col-sm-7 name-plate">
                         <h3 class="name">
                             <small ng-if="person.rank">{{person.rank}}</small>
-                            <span ng-class="{'sorting-by': staffdir.facet.sortBy == 'firstname'}" ng-bind-html="person.firstname | highlight:staffdir.facet.search"></span> <span ng-class="{'sorting-by': staffdir.facet.sortBy == 'lastname'}" ng-bind-html="person.lastname | highlight:staffdir.facet.search"></span>
+                            <a ng-href="/#/staffdir/profile/{{person.email}}" ng-if="person.profile !== null">
+                                <span ng-class="{'sorting-by': staffdir.facet.sortBy == 'firstname'}" ng-bind-html="person.firstname | highlight:staffdir.facet.search"></span>
+                                <span ng-class="{'sorting-by': staffdir.facet.sortBy == 'lastname'}" ng-bind-html="person.lastname | highlight:staffdir.facet.search"></span>
+                            </a>
+                            <span ng-if="person.profile == null">
+                                <span ng-class="{'sorting-by': staffdir.facet.sortBy == 'firstname'}" ng-bind-html="person.firstname | highlight:staffdir.facet.search"></span>
+                                <span ng-class="{'sorting-by': staffdir.facet.sortBy == 'lastname'}" ng-bind-html="person.lastname | highlight:staffdir.facet.search"></span>
+                            </span>
                         </h3>
                         <h4 class="title"><span ng-bind-html="person.title | highlight:staffdir.facet.search"></span></h4>
                         <h5 class="hidden-xs"><span ng-bind-html="person.department | highlight:staffdir.facet.search"></span></h5>

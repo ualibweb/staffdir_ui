@@ -79,6 +79,9 @@ angular.module('ualib.staffdir')
             },
             byId: function(){
                 return $resource('https://wwwdev2.lib.ua.edu/staffDir/api/people/search/id/:id', {}, {cache: true});
+            },
+            profile: function(){
+                return $resource('https://wwwdev2.lib.ua.edu/staffDir/api/profile/:login', {}, {cache: true});
             }
         };
     }]);
