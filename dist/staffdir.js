@@ -137,8 +137,8 @@ angular.module('staffdir', ['ualib.staffdir']);
                                     val.photo = '/wp-content/themes/roots-ualib/assets/img/user-profile.png';
                                 }
                                 var rx = /^([\w-]+(?:\.[\w-]+)*)/;
-                                var emailPrefix = rx.exec(val.email);
-                                val.emailPrefix = emailPrefix[0];
+                                var prefix = rx.match(val.email);
+                                val.emailPrefix = prefix[1];
 
                                 //preset alpha index values base on first and last name
                                 val.alphaIndex = {};
