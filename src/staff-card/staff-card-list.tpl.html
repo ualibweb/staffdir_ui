@@ -9,7 +9,8 @@
                 </div>
             </div>
             <div class="col-xs-4 col-sm-3">
-                <img class="staff-portrait thumbnail" ng-src="{{person.image}}">
+                <img class="staff-portrait thumbnail" ng-src="{{person.photo}}" ng-if="person.photo != null">
+                <img class="staff-portrait thumbnail" ng-src="wp-content/themes/roots-ualib/assets/img/user-profile.png" ng-if="person.photo == null">
             </div>
             <div class="col-xs-8">
                 <div class="row">
@@ -39,7 +40,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="subject in person.subjects | orderBy:subject.subject">
+                            <tr ng-repeat="subject in person.subjects | orderBy:'subject'">
                                 <td>
                                     <a ng-href="{{subject.link}}" title="{{subject.subject}}" ng-if="subject.link" ng-bind-html="subject.subject | highlight:staffdir.facet.search"></a>
                                     <span ng-if="!subject.link" ng-bind-html="subject.subject | highlight:staffdir.facet.search">{{subject.subject}}</span>
