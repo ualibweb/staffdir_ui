@@ -41,23 +41,6 @@ module.exports = function(grunt) {
                 src: ['src/**/*.tpl.html', '!src/staff-directory-listing.tpl.html', '!src/staff-card/staff-card-sm.tpl.html'],
                 dest: 'dist/staffdir-templates.js',
                 module: 'ualib.staffdir.templates'
-            },
-            build: {
-                options: {
-                    htmlmin: {
-                        collapseBooleanAttributes: true,
-                        collapseWhitespace: true,
-                        removeAttributeQuotes: true,
-                        removeComments: true,
-                        removeEmptyAttributes: true,
-                        removeRedundantAttributes: true,
-                        removeScriptTypeAttributes: true,
-                        removeStyleLinkTypeAttributes: true
-                    }
-                },
-                src: 'src/**/*.tpl.html',
-                dest: 'dist/staffdir-templates.min.js',
-                module: 'ualib.staffdir.templates'
             }
         },
         concat: {
@@ -76,10 +59,25 @@ module.exports = function(grunt) {
                 }
             }
         },
+        ngAnnotate: {
+            options: {
+                singleQuotes: true
+            },
+            app: {
+                files: [
+                    {
+                        'dist/staffdir.js': ['dist/staffdir.js']
+                    }
+                ]
+            }
+        },
         uglify: {
-            dist: {
+            options: {
+                mangle: false
+            },
+            app: {
                 files: {
-                    'dist/staffdir.min.js': 'src/**/*.js'
+                    'dist/staffdir.min.js': ['dist/*.js', '!dist/*.min.js']
                 }
             }
         },
@@ -108,16 +106,17 @@ module.exports = function(grunt) {
         'dev'
     ]);
     grunt.registerTask('dev', [
-        'html2js:dev',
+        'html2js',
         'jshint',
         'less:dev',
         'concat'
     ]);
     grunt.registerTask('build', [
-        'html2js:build',
+        'html2js',
         'jshint',
-        'less:build',
+        'ngAnnotate',
         'uglify',
+        'less:build',
         'concat:index'
     ]);
 };

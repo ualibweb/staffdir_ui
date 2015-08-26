@@ -104,7 +104,7 @@ angular.module('staffdir', ['ualib.staffdir']);
 
     .factory('StaffFactory', ['$resource', '$filter', '$http', function($resource, $filter, $http){
         //TODO: centralize this function so it can be used with all apps
-        // Extend the default responseTransform array - Straight from Angular 1.2.8 API docs - https://docs.angularjs.org/api/ng/service/$http#overriding-the-default-transformations-per-request
+        // Extend the default responseTransform array - Straight from Angular 1.2.8 API docs - //docs.angularjs.org/api/ng/service/$http#overriding-the-default-transformations-per-request
         function appendTransform(defaults, transform) {
 
             // We can't guarantee that the default transformation is an array
@@ -116,7 +116,7 @@ angular.module('staffdir', ['ualib.staffdir']);
 
         return {
             directory: function(){
-                return $resource('https://wwwdev2.lib.ua.edu/staffDir/api/people', {}, {
+                return $resource('//wwwdev2.lib.ua.edu/staffDir/api/people', {}, {
                     cache: true,
                     get: {
                         method: 'GET',
@@ -184,16 +184,16 @@ angular.module('staffdir', ['ualib.staffdir']);
                 });
             },
             byEmail: function(){
-                return $resource('https://wwwdev2.lib.ua.edu/staffDir/api/people/search/email/:email', {}, {cache: true});
+                return $resource('//wwwdev2.lib.ua.edu/staffDir/api/people/search/email/:email', {}, {cache: true});
             },
             byName: function(){
-                return $resource('https://wwwdev2.lib.ua.edu/staffDir/api/people/search/firstname/:firstname/lastname/:lastname', {}, {cache: true});
+                return $resource('//wwwdev2.lib.ua.edu/staffDir/api/people/search/firstname/:firstname/lastname/:lastname', {}, {cache: true});
             },
             byId: function(){
-                return $resource('https://wwwdev2.lib.ua.edu/staffDir/api/people/search/id/:id', {}, {cache: true});
+                return $resource('//wwwdev2.lib.ua.edu/staffDir/api/people/search/id/:id', {}, {cache: true});
             },
             profile: function(){
-                return $resource('https://wwwdev2.lib.ua.edu/staffDir/api/profile/:login', {}, {cache: true});
+                return $resource('//wwwdev2.lib.ua.edu/staffDir/api/profile/:login', {}, {cache: true});
             }
         };
     }]);;angular.module('ualib.staffdir')
