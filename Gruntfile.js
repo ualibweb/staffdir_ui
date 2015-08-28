@@ -73,11 +73,11 @@ module.exports = function(grunt) {
         },
         uglify: {
             options: {
-                mangle: false
+                mangle: true
             },
             app: {
                 files: {
-                    'dist/staffdir.min.js': ['dist/*.js', '!dist/*.min.js']
+                    'dist/staffdir.min.js': ['dist/staffdir-templates.js', 'dist/staffdir.js']
                 }
             }
         },
