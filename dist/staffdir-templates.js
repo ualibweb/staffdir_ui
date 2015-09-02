@@ -319,15 +319,15 @@ angular.module("staff-profile/staff-profile.tpl.html", []).run(["$templateCache"
     "                <li ng-if=\"userProfile.person.resume.length > 11\"><span class=\"fa fa-file-text fa-li\"></span>\n" +
     "                    <a ng-href=\"{{userProfile.person.resume}}\">Resume / CV</a>\n" +
     "                </li>\n" +
-    "                <li ng-if=\"userProfile.person.social1.length > 11\">\n" +
+    "                <li ng-if=\"userProfile.person.social1\">\n" +
     "                    <span ng-class=\"{{userProfile.person.snClass1}}\"></span>\n" +
     "                    <a ng-href=\"{{userProfile.person.social1}}\" class=\"external-link\">{{userProfile.person.snTitle1}}</a>\n" +
     "                </li>\n" +
-    "                <li ng-if=\"userProfile.person.social2.length > 11\">\n" +
+    "                <li ng-if=\"userProfile.person.social2\">\n" +
     "                    <span ng-class=\"{{userProfile.person.snClass2}}\"></span>\n" +
     "                    <a ng-href=\"{{userProfile.person.social2}}\" class=\"external-link\">{{userProfile.person.snTitle2}}</a>\n" +
     "                </li>\n" +
-    "                <li ng-if=\"userProfile.person.social3.length > 11\">\n" +
+    "                <li ng-if=\"userProfile.person.social3\">\n" +
     "                    <span ng-class=\"{{userProfile.person.snClass3}}\"></span>\n" +
     "                    <a ng-href=\"{{userProfile.person.social3}}\" class=\"external-link\">{{userProfile.person.snTitle3}}</a>\n" +
     "                </li>\n" +
