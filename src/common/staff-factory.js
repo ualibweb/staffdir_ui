@@ -45,41 +45,6 @@ angular.module('ualib.staffdir')
                                     console.log(val.email);
                                 }
 
-                                for (var i = 1; i < 4; i++) {
-                                    if (val["social" + i] !== null) {
-                                        val["snClass" + i] = "fa fa-user fa-li";
-                                        val["snTitle" + i] = "Social Network";
-                                        if (val["social" + i].toLowerCase().indexOf("facebook.com") > 0) {
-                                            val["snClass" + i] = "fa fa-facebook fa-li";
-                                            val["snTitle" + i] = "Facebook";
-                                        }
-                                        if (val["social" + i].toLowerCase().indexOf("twitter.com") > 0) {
-                                            val["snClass" + i] = "fa fa-twitter fa-li";
-                                            val["snTitle" + i] = "Twitter";
-                                        }
-                                        if (val["social" + i].toLowerCase().indexOf("linkedin.com") > 0) {
-                                            val["snClass" + i] = "fa fa-linkedin fa-li";
-                                            val["snTitle" + i] = "LinkedIn";
-                                        }
-                                        if (val["social" + i].toLowerCase().indexOf("vk.com") > 0) {
-                                            val["snClass" + i] = "fa fa-vk fa-li";
-                                            val["snTitle" + i] = "VK";
-                                        }
-                                        if (val["social" + i].toLowerCase().indexOf("plus.google.com") > 0) {
-                                            val["snClass" + i] = "fa fa-google-plus fa-li";
-                                            val["snTitle" + i] = "Google Plus";
-                                        }
-                                        if (val["social" + i].toLowerCase().indexOf("instagram.com") > 0) {
-                                            val["snClass" + i] = "fa fa-instagram fa-li";
-                                            val["snTitle" + i] = "Instagram";
-                                        }
-                                        if (val["social" + i].toLowerCase().indexOf("youtube.com") > 0) {
-                                            val["snClass" + i] = "fa fa-youtube fa-li";
-                                            val["snTitle" + i] = "Youtube";
-                                        }
-                                    }
-                                }
-
                                 //preset alpha index values base on first and last name
                                 val.alphaIndex = {};
                                 val.alphaIndex.lastname = val.lastname.charAt(0).toUpperCase();
