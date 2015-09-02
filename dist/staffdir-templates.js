@@ -302,13 +302,37 @@ angular.module("staff-profile/staff-profile.tpl.html", []).run(["$templateCache"
     "        </h3>\n" +
     "        <h4 class=\"title\"><span ng-bind-html=\"userProfile.person.title\"></span></h4>\n" +
     "        <h5 class=\"hidden-xs\"><span ng-bind-html=\"userProfile.person.department\"></span></h5>\n" +
-    "        <ul class=\"fa-ul\">\n" +
-    "            <li ng-if=\"userProfile.person.phone\"><span class=\"fa fa-phone fa-li\"></span>{{userProfile.person.phone}}</li>\n" +
-    "            <li class=\"hidden-xs\" ng-if=\"userProfile.person.fax\"><span class=\"fa fa-fax fa-li\"></span>{{userProfile.person.fax}}</li>\n" +
-    "            <li ng-if=\"userProfile.person.email\"><span class=\"fa fa-envelope fa-li\"></span>\n" +
-    "                <a href=\"mailto:{{userProfile.person.email}}\">{{userProfile.person.email}}</a>\n" +
-    "            </li>\n" +
-    "        </ul>\n" +
+    "        <div class=\"col-md-6\">\n" +
+    "            <ul class=\"fa-ul\">\n" +
+    "                <li ng-if=\"userProfile.person.phone\"><span class=\"fa fa-phone fa-li\"></span>{{userProfile.person.phone}}</li>\n" +
+    "                <li class=\"hidden-xs\" ng-if=\"userProfile.person.fax\"><span class=\"fa fa-fax fa-li\"></span>{{userProfile.person.fax}}</li>\n" +
+    "                <li ng-if=\"userProfile.person.email\"><span class=\"fa fa-envelope fa-li\"></span>\n" +
+    "                    <a href=\"mailto:{{userProfile.person.email}}\">{{userProfile.person.email}}</a>\n" +
+    "                </li>\n" +
+    "                <li ng-if=\"userProfile.person.website.length > 11\"><span class=\"fa fa-external-link-square fa-li\"></span>\n" +
+    "                    <a ng-href=\"{{userProfile.person.website}}\" class=\"external-link\">Personal website</a>\n" +
+    "                </li>\n" +
+    "            </ul>\n" +
+    "        </div>\n" +
+    "        <div class=\"col-md-6\">\n" +
+    "            <ul class=\"fa-ul\">\n" +
+    "                <li ng-if=\"userProfile.person.resume.length > 11\"><span class=\"fa fa-file-text fa-li\"></span>\n" +
+    "                    <a ng-href=\"{{userProfile.person.resume}}\">Resume / CV</a>\n" +
+    "                </li>\n" +
+    "                <li ng-if=\"userProfile.person.social1.length > 11\">\n" +
+    "                    <span ng-class=\"{{userProfile.person.snClass1}}\"></span>\n" +
+    "                    <a ng-href=\"{{userProfile.person.social1}}\" class=\"external-link\">{{userProfile.person.snTitle1}}</a>\n" +
+    "                </li>\n" +
+    "                <li ng-if=\"userProfile.person.social2.length > 11\">\n" +
+    "                    <span ng-class=\"{{userProfile.person.snClass2}}\"></span>\n" +
+    "                    <a ng-href=\"{{userProfile.person.social2}}\" class=\"external-link\">{{userProfile.person.snTitle2}}</a>\n" +
+    "                </li>\n" +
+    "                <li ng-if=\"userProfile.person.social3.length > 11\">\n" +
+    "                    <span ng-class=\"{{userProfile.person.snClass3}}\"></span>\n" +
+    "                    <a ng-href=\"{{userProfile.person.social3}}\" class=\"external-link\">{{userProfile.person.snTitle3}}</a>\n" +
+    "                </li>\n" +
+    "            </ul>\n" +
+    "        </div>\n" +
     "    </div>\n" +
     "</div>\n" +
     "<div class=\"row\">\n" +
