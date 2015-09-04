@@ -39,7 +39,7 @@ module.exports = function(grunt) {
         html2js:{
             dev: {
                 src: ['src/**/*.tpl.html', '!src/staff-directory-listing.tpl.html', '!src/staff-card/staff-card-sm.tpl.html'],
-                dest: 'dist/staffdir-templates.js',
+                dest: 'tmp/templates.js',
                 module: 'ualib.staffdir.templates'
             }
         },
@@ -48,7 +48,7 @@ module.exports = function(grunt) {
                 separator: ';'
             },
             dist: {
-                src: 'src/**/*.js',
+                src: ['tmp/templates.js', 'src/**/*.js'],
                 dest: 'dist/staffdir.js'
             },
             index: {
@@ -77,9 +77,12 @@ module.exports = function(grunt) {
             },
             app: {
                 files: {
-                    'dist/staffdir.min.js': ['dist/staffdir-templates.js', 'dist/staffdir.js']
+                    'dist/staffdir.min.js': ['dist/staffdir.js']
                 }
             }
+        },
+        clean: {
+            app: ['tmp/']
         },
         bump: {
             options: {
@@ -109,7 +112,8 @@ module.exports = function(grunt) {
         'html2js',
         'jshint',
         'less:dev',
-        'concat'
+        'concat',
+        'clean'
     ]);
     grunt.registerTask('build', [
         'html2js',
@@ -117,6 +121,7 @@ module.exports = function(grunt) {
         'ngAnnotate',
         'uglify',
         'less:build',
-        'concat:index'
+        'concat:index',
+        'clean'
     ]);
 };

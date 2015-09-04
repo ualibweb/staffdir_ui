@@ -11,7 +11,7 @@ angular.module('ualib.staffdir')
                         SDS.showFacetBar = true;
                     }
                     SDS.facet[param] = params[param];
-                    console.log(SDS.facet);
+                    //console.log(SDS.facet);
                 }
             }
         });
