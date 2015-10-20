@@ -34,9 +34,12 @@ angular.module('ualib.staffdir')
                 sortBy: '@'
             },
             templateUrl: 'staff-card/staff-card-list.tpl.html',
-            controller: ['$scope', function($scope){
+            controller: ['$scope', '$rootScope', '$timeout', function($scope, $rootScope, $timeout){
                 $scope.filteredList = [];
                 $scope.staffdir = SDS;
+
+                //TODO: temporary work around because CMS file handling is dumb. Need to fix and make sustainable
+                $scope.placeholder = 'http://www.lib.ua.edu/wp-content/themes/roots-ualib/assets/img/user-profile.png';
 
                 //If sortby hasn't been defined in URI, check it default defined with directive
                 if (angular.isUndefined(SDS.facet.sortBy)){
@@ -45,28 +48,34 @@ angular.module('ualib.staffdir')
 
                 // Update listing when SDS broadcasts "facetsChange" event
                 var facetsListener = $scope.$on('facetsChange', function(ev){
-                    updateList();
+                    $timeout(function(){
+                        // Tell angularLazyImg module to update images (since no lazy load occurred because nothing was "scrolled" into view)
+                        $rootScope.$emit('lazyImg:refresh');
+                    }, 0);
                 });
 
                 // Function to update staff listing
-                function updateList(){
-                    var list = angular.copy($scope.list);
+                /*function updateList(){
+                    $scope.filteredList = filterList($scope.list);
+                }
 
+                function filterList(list){
                     list = $filter('filter')(list, $scope.staffdir.facet.search);
                     list = $filter('filter')(list, $scope.staffdir.facet.department);
                     list = $filter('filter')(list, $scope.staffdir.facet.subject, true);
                     list = $filter('filter')(list, $scope.staffdir.facet.library);
                     list = $filter('filter')(list, $scope.staffdir.specialtyType);
                     list = $filter('orderBy')(list, $scope.staffdir.facet.sortBy, $scope.staffdir.sortReverse);
+                    return list;
+                }*/
 
-                    $scope.filteredList = angular.copy(list);
-                }
+
 
                 $scope.$on('$destroy', function(){
                     facetsListener();
                 });
 
-                updateList();
+                //updateList();
             }]
         };
     }])

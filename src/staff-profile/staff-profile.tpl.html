@@ -1,48 +1,55 @@
-<h2>Faculty/Staff Profile</h2>
-<div class="row">
+<div class="page-header">
+    <h2>Faculty/Staff Profile</h2>
+</div>
+
+<div class="row staff-profile">
     <div class="col-md-3">
-        <img class="staff-portrait thumbnail" ng-src="{{userProfile.person.photo}}" ng-if="userProfile.person.photo != null"
-             width="180" height="225">
-        <img class="staff-portrait thumbnail" ng-src="wp-content/themes/roots-ualib/assets/img/user-profile.png"
-             ng-if="userProfile.person.photo == null" width="180" height="225">
+        <img class="staff-portrait thumbnail" ng-src="{{userProfile.person.photo}}" ng-if="userProfile.person.photo">
+        <img class="staff-portrait thumbnail" ng-src="wp-content/themes/roots-ualib/assets/img/user-profile.png" ng-if="!userProfile.person.photo">
     </div>
     <div class="col-md-9">
-        <h3 class="name">
-            <small ng-if="userProfile.person.rank">{{userProfile.person.rank}}</small>
-            <span ng-bind-html="userProfile.person.firstname"></span> <span ng-bind-html="userProfile.person.lastname"></span>
-        </h3>
-        <h4 class="title"><span ng-bind-html="userProfile.person.title"></span></h4>
-        <h5 class="hidden-xs"><span ng-bind-html="userProfile.person.department"></span></h5>
-        <div class="col-md-6">
-            <ul class="fa-ul">
-                <li ng-if="userProfile.person.phone"><span class="fa fa-phone fa-li"></span>{{userProfile.person.phone}}</li>
-                <li class="hidden-xs" ng-if="userProfile.person.fax"><span class="fa fa-fax fa-li"></span>{{userProfile.person.fax}}</li>
-                <li ng-if="userProfile.person.email"><span class="fa fa-envelope fa-li"></span>
-                    <a href="mailto:{{userProfile.person.email}}">{{userProfile.person.email}}</a>
-                </li>
-                <li ng-if="userProfile.person.website.length > 11"><span class="fa fa-external-link-square fa-li"></span>
-                    <a ng-href="{{userProfile.person.website}}" class="external-link">Personal website</a>
-                </li>
-            </ul>
+        <div class="name-plate">
+            <h1 class="name">
+                <small ng-if="userProfile.person.rank">{{userProfile.person.rank}}</small>
+                <span ng-bind-html="userProfile.person.firstname"></span> <span ng-bind-html="userProfile.person.lastname"></span>
+            </h1>
+            <h2 class="title"><span ng-bind-html="userProfile.person.title"></span></h2>
+            <h3 class="hidden-xs"><span ng-bind-html="userProfile.person.department"></span></h3>
         </div>
-        <div class="col-md-6">
-            <ul class="fa-ul">
-                <li ng-if="userProfile.person.resume.length > 11"><span class="fa fa-file-text fa-li"></span>
-                    <a ng-href="{{userProfile.person.resume}}">Resume / CV</a>
-                </li>
-                <li ng-if="userProfile.person.social1">
-                    <span class="{{userProfile.person.snClass1}}"></span>
-                    <a ng-href="{{userProfile.person.social1}}" class="external-link">{{userProfile.person.snTitle1}}</a>
-                </li>
-                <li ng-if="userProfile.person.social2">
-                    <span class="{{userProfile.person.snClass2}}"></span>
-                    <a ng-href="{{userProfile.person.social2}}" class="external-link">{{userProfile.person.snTitle2}}</a>
-                </li>
-                <li ng-if="userProfile.person.social3">
-                    <span class="{{userProfile.person.snClass3}}"></span>
-                    <a ng-href="{{userProfile.person.social3}}" class="external-link">{{userProfile.person.snTitle3}}</a>
-                </li>
-            </ul>
+        <div class="row">
+            <div class="page-slice">
+                <div class="col-md-6">
+                    <ul class="fa-ul">
+                        <li ng-if="userProfile.person.phone"><span class="fa fa-phone fa-li"></span>{{userProfile.person.phone}}</li>
+                        <li class="hidden-xs" ng-if="userProfile.person.fax"><span class="fa fa-fax fa-li"></span>{{userProfile.person.fax}}</li>
+                        <li ng-if="userProfile.person.email"><span class="fa fa-envelope fa-li"></span>
+                            <a href="mailto:{{userProfile.person.email}}">{{userProfile.person.email}}</a>
+                        </li>
+                        <li ng-if="userProfile.person.website.length > 11"><span class="fa fa-external-link-square fa-li"></span>
+                            <a ng-href="{{userProfile.person.website}}" class="external-link">Personal website</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <ul class="fa-ul">
+                        <li ng-if="userProfile.person.resume.length > 11"><span class="fa fa-file-text fa-li"></span>
+                            <a ng-href="{{userProfile.person.resume}}">Resume / CV</a>
+                        </li>
+                        <li ng-if="userProfile.person.social1">
+                            <span class="{{userProfile.person.snClass1}}"></span>
+                            <a ng-href="{{userProfile.person.social1}}" class="external-link">{{userProfile.person.snTitle1}}</a>
+                        </li>
+                        <li ng-if="userProfile.person.social2">
+                            <span class="{{userProfile.person.snClass2}}"></span>
+                            <a ng-href="{{userProfile.person.social2}}" class="external-link">{{userProfile.person.snTitle2}}</a>
+                        </li>
+                        <li ng-if="userProfile.person.social3">
+                            <span class="{{userProfile.person.snClass3}}"></span>
+                            <a ng-href="{{userProfile.person.social3}}" class="external-link">{{userProfile.person.snTitle3}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </div>

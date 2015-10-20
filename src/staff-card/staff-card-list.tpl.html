@@ -1,4 +1,4 @@
-<div ng-repeat="person in filteredList track by $index">
+<div ng-repeat="person in filteredList = (list | filter:staffdir.facet.search | filter:staffdir.facet.department | filter:staffdir.facet.subject:true | filter:staffdir.facet.library | filter:staffdir.specialtyType | orderBy:staffdir.facet.sortBy:staffdir.sortReverse)">
     <div class="page-slice">
         <div class="row">
             <div class="col-xs-12 col-sm-1">
@@ -9,18 +9,18 @@
                 </div>
             </div>
             <div class="col-xs-4 col-sm-3">
-                <img class="staff-portrait thumbnail" ng-src="{{person.photo}}" />
+                <img class="staff-portrait thumbnail" src="http://www.lib.ua.edu/wp-content/themes/roots-ualib/assets/img/user-profile.png" lazy-img='{{person.photo}}' />
             </div>
             <div class="col-xs-8">
                 <div class="row">
                     <div class="col-xs-12 col-sm-7 name-plate">
                         <h3 class="name">
                             <small ng-if="person.rank">{{person.rank}}</small>
-                            <a ng-href="/#/staffdir/profile/{{person.emailPrefix}}" ng-if="person.profile !== null">
+                            <a ng-href="#/staffdir/{{person.emailPrefix}}" ng-if="person.profile">
                                 <span ng-class="{'sorting-by': staffdir.facet.sortBy == 'firstname'}" ng-bind-html="person.firstname | highlight:staffdir.facet.search"></span>
                                 <span ng-class="{'sorting-by': staffdir.facet.sortBy == 'lastname'}" ng-bind-html="person.lastname | highlight:staffdir.facet.search"></span>
                             </a>
-                            <span ng-if="person.profile == null">
+                            <span ng-if="!person.profile">
                                 <span ng-class="{'sorting-by': staffdir.facet.sortBy == 'firstname'}" ng-bind-html="person.firstname | highlight:staffdir.facet.search"></span>
                                 <span ng-class="{'sorting-by': staffdir.facet.sortBy == 'lastname'}" ng-bind-html="person.lastname | highlight:staffdir.facet.search"></span>
                             </span>

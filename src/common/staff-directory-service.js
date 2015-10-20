@@ -2,8 +2,10 @@ angular.module('ualib.staffdir')
 
     // Capture any existing URL facet parameters.
     .run(['StaffDirectoryService', '$location', '$rootScope', function(SDS, $location, $rootScope){
-        $rootScope.$on('$routeChangeStart', function(ev, next, last){
-            if (next.originalPath === '/staffdir'){
+        $rootScope.$on('$locationChangeStart', function(ev, next, last){
+            //console.log(arguments);
+            //console.log($location.path());
+            if ($location.path() === '/staffdir'){
                 var params = $location.search();
                 for (var param in params){
                     //TODO: This must be temporary. Any URI param will cause the facet bar to display on load!!
@@ -11,7 +13,6 @@ angular.module('ualib.staffdir')
                         SDS.showFacetBar = true;
                     }
                     SDS.facet[param] = params[param];
-                    //console.log(SDS.facet);
                 }
             }
         });
@@ -60,6 +61,7 @@ angular.module('ualib.staffdir')
             $location.replace();
             self.showFacetBar = !isEmptyObj(self.facet);
             $rootScope.$broadcast('facetsChange');
+
         };
 
         this.specialtyType = function(staff){

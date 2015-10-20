@@ -19,6 +19,10 @@ angular.module('ualib.staffdir')
                     get: {
                         method: 'GET',
                         transformResponse: appendTransform($http.defaults.transformResponse, function(d){
+                            // temporary fix. Not sustainable to manually remove arbitrary fields from API for different views
+                            // TODO: work out proper API output for each view
+                            var toRemove = ['division', 'prefix', 'website','resume','social1','social2','social3'];
+
                             var data = angular.fromJson(d);
                             var staff = {
                                 list: [], // Array for directory listing
@@ -29,10 +33,19 @@ angular.module('ualib.staffdir')
                             var subj = [];
                             var list = [];
                             angular.forEach(data.list, function(val){
-                                delete val.division;
-                                if (val.photo == null){
-                                    //TODO: temporary work around because CMS file handling is dumb. Need to fix and make sustainable
-                                    val.photo = '/wp-content/themes/roots-ualib/assets/img/user-profile.png';
+                                // Remove all properties listed in the toRemove array
+                                var newVal = {};
+                                for (var prop in val){
+                                    if (val.hasOwnProperty(prop) && toRemove.indexOf(prop) === -1){
+                                        newVal[prop] = val[prop];
+                                    }
+                                }
+                                val = newVal;
+
+                                val.photo = val.photo || "http://www.lib.ua.edu/wp-content/themes/roots-ualib/assets/img/user-profile.png";
+                                //Overwrite "profile" text so its not searchable, set it as a boolean so the tpl knows if to link to a profile
+                                if (val.profile){
+                                    val.profile = true;
                                 }
 
 

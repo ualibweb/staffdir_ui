@@ -2,7 +2,7 @@ angular.module('ualib.staffdir.templates', ['staff-card/staff-card-list.tpl.html
 
 angular.module("staff-card/staff-card-list.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("staff-card/staff-card-list.tpl.html",
-    "<div ng-repeat=\"person in filteredList track by $index\">\n" +
+    "<div ng-repeat=\"person in filteredList = (list | filter:staffdir.facet.search | filter:staffdir.facet.department | filter:staffdir.facet.subject:true | filter:staffdir.facet.library | filter:staffdir.specialtyType | orderBy:staffdir.facet.sortBy:staffdir.sortReverse)\">\n" +
     "    <div class=\"page-slice\">\n" +
     "        <div class=\"row\">\n" +
     "            <div class=\"col-xs-12 col-sm-1\">\n" +
@@ -13,18 +13,18 @@ angular.module("staff-card/staff-card-list.tpl.html", []).run(["$templateCache",
     "                </div>\n" +
     "            </div>\n" +
     "            <div class=\"col-xs-4 col-sm-3\">\n" +
-    "                <img class=\"staff-portrait thumbnail\" ng-src=\"{{person.photo}}\" />\n" +
+    "                <img class=\"staff-portrait thumbnail\" src=\"http://www.lib.ua.edu/wp-content/themes/roots-ualib/assets/img/user-profile.png\" lazy-img='{{person.photo}}' />\n" +
     "            </div>\n" +
     "            <div class=\"col-xs-8\">\n" +
     "                <div class=\"row\">\n" +
     "                    <div class=\"col-xs-12 col-sm-7 name-plate\">\n" +
     "                        <h3 class=\"name\">\n" +
     "                            <small ng-if=\"person.rank\">{{person.rank}}</small>\n" +
-    "                            <a ng-href=\"/#/staffdir/profile/{{person.emailPrefix}}\" ng-if=\"person.profile !== null\">\n" +
+    "                            <a ng-href=\"#/staffdir/{{person.emailPrefix}}\" ng-if=\"person.profile\">\n" +
     "                                <span ng-class=\"{'sorting-by': staffdir.facet.sortBy == 'firstname'}\" ng-bind-html=\"person.firstname | highlight:staffdir.facet.search\"></span>\n" +
     "                                <span ng-class=\"{'sorting-by': staffdir.facet.sortBy == 'lastname'}\" ng-bind-html=\"person.lastname | highlight:staffdir.facet.search\"></span>\n" +
     "                            </a>\n" +
-    "                            <span ng-if=\"person.profile == null\">\n" +
+    "                            <span ng-if=\"!person.profile\">\n" +
     "                                <span ng-class=\"{'sorting-by': staffdir.facet.sortBy == 'firstname'}\" ng-bind-html=\"person.firstname | highlight:staffdir.facet.search\"></span>\n" +
     "                                <span ng-class=\"{'sorting-by': staffdir.facet.sortBy == 'lastname'}\" ng-bind-html=\"person.lastname | highlight:staffdir.facet.search\"></span>\n" +
     "                            </span>\n" +
@@ -136,8 +136,8 @@ angular.module("staff-directory/staff-directory-facets.tpl.html", []).run(["$tem
     "        <h5>Sort by</h5>\n" +
     "        <div class=\"facet-group\">\n" +
     "            <div class=\"btn-group btn-group-justified\">\n" +
-    "                <label class=\"btn btn-default\" ng-model=\"staffdir.facet.sortBy\" btn-radio=\"'lastname'\" uncheckable ng-change=\"staffdir.changeFacet('sortBy')\">Last name</label>\n" +
-    "                <label class=\"btn btn-default\" ng-model=\"staffdir.facet.sortBy\" btn-radio=\"'firstname'\" uncheckable ng-change=\"staffdir.changeFacet('sortBy')\">First name</label>\n" +
+    "                <label class=\"btn btn-default\" ng-model=\"staffdir.facet.sortBy\" btn-radio=\"'lastname'\" ng-change=\"staffdir.changeFacet('sortBy')\">Last name</label>\n" +
+    "                <label class=\"btn btn-default\" ng-model=\"staffdir.facet.sortBy\" btn-radio=\"'firstname'\" ng-change=\"staffdir.changeFacet('sortBy')\">First name</label>\n" +
     "            </div>\n" +
     "        </div>\n" +
     "    </div>\n" +
@@ -184,8 +184,8 @@ angular.module("staff-directory/staff-directory-facets.tpl.html", []).run(["$tem
     "        </div>\n" +
     "    </div>\n" +
     "\n" +
-    "    <div class=\"form-group\">\n" +
-    "        <button class=\"btn btn-primary btn-block hidden-xs\" type=\"button\" ng-click=\"staffdir.clearFacets()\">\n" +
+    "    <div class=\"form-group hidden-xs hidden-sm\">\n" +
+    "        <button class=\"btn btn-primary btn-block\" type=\"button\" ng-click=\"staffdir.clearFacets()\">\n" +
     "            <span class=\"fa fa-fw fa-refresh\"></span> Reset Filters\n" +
     "        </button>\n" +
     "    </div>\n" +
@@ -260,7 +260,7 @@ angular.module("staff-directory/staff-directory.tpl.html", []).run(["$templateCa
     "</div>\n" +
     "\n" +
     "\n" +
-    "<div class=\"row\">\n" +
+    "<div class=\"row staff-directory\">\n" +
     "    <div class=\"col-md-3 col-md-push-9\">\n" +
     "        <div class=\"staff-directory-facets\" facets=\"staffdir.facets\"></div>\n" +
     "    </div>\n" +
@@ -276,7 +276,7 @@ angular.module("staff-directory/staff-directory.tpl.html", []).run(["$templateCa
     "                <li class=\"pull-right\"><button type=\"button\" class=\"btn btn-primary btn-small reset-btn\" title=\"Reset filters\" ng-click=\"facets.clearFacets()\"><i class=\"fa fa-refresh\"></i></button></li>\n" +
     "            </ol>\n" +
     "        </div>\n" +
-    "        <div class=\"staff-directory-listing\" list=\"staffdir.list\" sort-by=\"lastname\"></div>\n" +
+    "        <div class=\"staff-directory-listing\" id=\"staff-directory-listing\" list=\"staffdir.list\" sort-by=\"lastname\"></div>\n" +
     "    </div>\n" +
     "</div>\n" +
     "\n" +
@@ -287,28 +287,59 @@ angular.module("staff-directory/staff-directory.tpl.html", []).run(["$templateCa
 
 angular.module("staff-profile/staff-profile.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("staff-profile/staff-profile.tpl.html",
-    "<h2>Faculty/Staff Profile</h2>\n" +
-    "<div class=\"row\">\n" +
+    "<div class=\"page-header\">\n" +
+    "    <h2>Faculty/Staff Profile</h2>\n" +
+    "</div>\n" +
+    "\n" +
+    "<div class=\"row staff-profile\">\n" +
     "    <div class=\"col-md-3\">\n" +
-    "        <img class=\"staff-portrait thumbnail\" ng-src=\"{{userProfile.person.photo}}\" ng-if=\"userProfile.person.photo != null\"\n" +
-    "             width=\"180\" height=\"225\">\n" +
-    "        <img class=\"staff-portrait thumbnail\" ng-src=\"wp-content/themes/roots-ualib/assets/img/user-profile.png\"\n" +
-    "             ng-if=\"userProfile.person.photo == null\" width=\"180\" height=\"225\">\n" +
+    "        <img class=\"staff-portrait thumbnail\" ng-src=\"{{userProfile.person.photo}}\" ng-if=\"userProfile.person.photo\">\n" +
+    "        <img class=\"staff-portrait thumbnail\" ng-src=\"wp-content/themes/roots-ualib/assets/img/user-profile.png\" ng-if=\"!userProfile.person.photo\">\n" +
     "    </div>\n" +
     "    <div class=\"col-md-9\">\n" +
-    "        <h3 class=\"name\">\n" +
-    "            <small ng-if=\"userProfile.person.rank\">{{userProfile.person.rank}}</small>\n" +
-    "            <span ng-bind-html=\"userProfile.person.firstname\"></span> <span ng-bind-html=\"userProfile.person.lastname\"></span>\n" +
-    "        </h3>\n" +
-    "        <h4 class=\"title\"><span ng-bind-html=\"userProfile.person.title\"></span></h4>\n" +
-    "        <h5 class=\"hidden-xs\"><span ng-bind-html=\"userProfile.person.department\"></span></h5>\n" +
-    "        <ul class=\"fa-ul\">\n" +
-    "            <li ng-if=\"userProfile.person.phone\"><span class=\"fa fa-phone fa-li\"></span>{{userProfile.person.phone}}</li>\n" +
-    "            <li class=\"hidden-xs\" ng-if=\"userProfile.person.fax\"><span class=\"fa fa-fax fa-li\"></span>{{userProfile.person.fax}}</li>\n" +
-    "            <li ng-if=\"userProfile.person.email\"><span class=\"fa fa-envelope fa-li\"></span>\n" +
-    "                <a href=\"mailto:{{userProfile.person.email}}\">{{userProfile.person.email}}</a>\n" +
-    "            </li>\n" +
-    "        </ul>\n" +
+    "        <div class=\"name-plate\">\n" +
+    "            <h1 class=\"name\">\n" +
+    "                <small ng-if=\"userProfile.person.rank\">{{userProfile.person.rank}}</small>\n" +
+    "                <span ng-bind-html=\"userProfile.person.firstname\"></span> <span ng-bind-html=\"userProfile.person.lastname\"></span>\n" +
+    "            </h1>\n" +
+    "            <h2 class=\"title\"><span ng-bind-html=\"userProfile.person.title\"></span></h2>\n" +
+    "            <h3 class=\"hidden-xs\"><span ng-bind-html=\"userProfile.person.department\"></span></h3>\n" +
+    "        </div>\n" +
+    "        <div class=\"row\">\n" +
+    "            <div class=\"page-slice\">\n" +
+    "                <div class=\"col-md-6\">\n" +
+    "                    <ul class=\"fa-ul\">\n" +
+    "                        <li ng-if=\"userProfile.person.phone\"><span class=\"fa fa-phone fa-li\"></span>{{userProfile.person.phone}}</li>\n" +
+    "                        <li class=\"hidden-xs\" ng-if=\"userProfile.person.fax\"><span class=\"fa fa-fax fa-li\"></span>{{userProfile.person.fax}}</li>\n" +
+    "                        <li ng-if=\"userProfile.person.email\"><span class=\"fa fa-envelope fa-li\"></span>\n" +
+    "                            <a href=\"mailto:{{userProfile.person.email}}\">{{userProfile.person.email}}</a>\n" +
+    "                        </li>\n" +
+    "                        <li ng-if=\"userProfile.person.website.length > 11\"><span class=\"fa fa-external-link-square fa-li\"></span>\n" +
+    "                            <a ng-href=\"{{userProfile.person.website}}\" class=\"external-link\">Personal website</a>\n" +
+    "                        </li>\n" +
+    "                    </ul>\n" +
+    "                </div>\n" +
+    "                <div class=\"col-md-6\">\n" +
+    "                    <ul class=\"fa-ul\">\n" +
+    "                        <li ng-if=\"userProfile.person.resume.length > 11\"><span class=\"fa fa-file-text fa-li\"></span>\n" +
+    "                            <a ng-href=\"{{userProfile.person.resume}}\">Resume / CV</a>\n" +
+    "                        </li>\n" +
+    "                        <li ng-if=\"userProfile.person.social1\">\n" +
+    "                            <span class=\"{{userProfile.person.snClass1}}\"></span>\n" +
+    "                            <a ng-href=\"{{userProfile.person.social1}}\" class=\"external-link\">{{userProfile.person.snTitle1}}</a>\n" +
+    "                        </li>\n" +
+    "                        <li ng-if=\"userProfile.person.social2\">\n" +
+    "                            <span class=\"{{userProfile.person.snClass2}}\"></span>\n" +
+    "                            <a ng-href=\"{{userProfile.person.social2}}\" class=\"external-link\">{{userProfile.person.snTitle2}}</a>\n" +
+    "                        </li>\n" +
+    "                        <li ng-if=\"userProfile.person.social3\">\n" +
+    "                            <span class=\"{{userProfile.person.snClass3}}\"></span>\n" +
+    "                            <a ng-href=\"{{userProfile.person.social3}}\" class=\"external-link\">{{userProfile.person.snTitle3}}</a>\n" +
+    "                        </li>\n" +
+    "                    </ul>\n" +
+    "                </div>\n" +
+    "            </div>\n" +
+    "        </div>\n" +
     "    </div>\n" +
     "</div>\n" +
     "<div class=\"row\">\n" +
@@ -326,9 +357,11 @@ angular.module("staff-profile/staff-profile.tpl.html", []).run(["$templateCache"
     'angular.filter',
     'ui.bootstrap',
     'ui.utils',
+    'angularLazyImg',
     'ualib.ui',
     'ualib.staffdir.templates'
 ]);
+
 
 //Alias for demo purposes
 angular.module('staffdir', ['ualib.staffdir']);
@@ -336,8 +369,10 @@ angular.module('staffdir', ['ualib.staffdir']);
 
     // Capture any existing URL facet parameters.
     .run(['StaffDirectoryService', '$location', '$rootScope', function(SDS, $location, $rootScope){
-        $rootScope.$on('$routeChangeStart', function(ev, next, last){
-            if (next.originalPath === '/staffdir'){
+        $rootScope.$on('$locationChangeStart', function(ev, next, last){
+            //console.log(arguments);
+            //console.log($location.path());
+            if ($location.path() === '/staffdir'){
                 var params = $location.search();
                 for (var param in params){
                     //TODO: This must be temporary. Any URI param will cause the facet bar to display on load!!
@@ -345,7 +380,6 @@ angular.module('staffdir', ['ualib.staffdir']);
                         SDS.showFacetBar = true;
                     }
                     SDS.facet[param] = params[param];
-                    //console.log(SDS.facet);
                 }
             }
         });
@@ -394,6 +428,7 @@ angular.module('staffdir', ['ualib.staffdir']);
             $location.replace();
             self.showFacetBar = !isEmptyObj(self.facet);
             $rootScope.$broadcast('facetsChange');
+
         };
 
         this.specialtyType = function(staff){
@@ -441,6 +476,10 @@ angular.module('staffdir', ['ualib.staffdir']);
                     get: {
                         method: 'GET',
                         transformResponse: appendTransform($http.defaults.transformResponse, function(d){
+                            // temporary fix. Not sustainable to manually remove arbitrary fields from API for different views
+                            // TODO: work out proper API output for each view
+                            var toRemove = ['division', 'prefix', 'website','resume','social1','social2','social3'];
+
                             var data = angular.fromJson(d);
                             var staff = {
                                 list: [], // Array for directory listing
@@ -451,10 +490,19 @@ angular.module('staffdir', ['ualib.staffdir']);
                             var subj = [];
                             var list = [];
                             angular.forEach(data.list, function(val){
-                                delete val.division;
-                                if (val.photo == null){
-                                    //TODO: temporary work around because CMS file handling is dumb. Need to fix and make sustainable
-                                    val.photo = '/wp-content/themes/roots-ualib/assets/img/user-profile.png';
+                                // Remove all properties listed in the toRemove array
+                                var newVal = {};
+                                for (var prop in val){
+                                    if (val.hasOwnProperty(prop) && toRemove.indexOf(prop) === -1){
+                                        newVal[prop] = val[prop];
+                                    }
+                                }
+                                val = newVal;
+
+                                val.photo = val.photo || "http://www.lib.ua.edu/wp-content/themes/roots-ualib/assets/img/user-profile.png";
+                                //Overwrite "profile" text so its not searchable, set it as a boolean so the tpl knows if to link to a profile
+                                if (val.profile){
+                                    val.profile = true;
                                 }
 
 
@@ -528,7 +576,7 @@ angular.module('staffdir', ['ualib.staffdir']);
         return {
             restrict: 'AC',
             templateUrl: 'staff-card/staff-card-list.tpl.html',
-            controller: ['$scope', function($scope){
+            controller: function($scope){
                 $scope.staffdir = {};
 
                 StaffFactory.directory().get()
@@ -539,7 +587,7 @@ angular.module('staffdir', ['ualib.staffdir']);
                     }, function(){
                         console.log('Staffdir Error -- Come on, put in proper error handling already');
                     });
-            }]
+            }
         };
     }])
 
@@ -640,9 +688,12 @@ angular.module('staffdir', ['ualib.staffdir']);
                 sortBy: '@'
             },
             templateUrl: 'staff-card/staff-card-list.tpl.html',
-            controller: ['$scope', function($scope){
+            controller: ['$scope', '$rootScope', '$timeout', function($scope, $rootScope, $timeout){
                 $scope.filteredList = [];
                 $scope.staffdir = SDS;
+
+                //TODO: temporary work around because CMS file handling is dumb. Need to fix and make sustainable
+                $scope.placeholder = 'http://www.lib.ua.edu/wp-content/themes/roots-ualib/assets/img/user-profile.png';
 
                 //If sortby hasn't been defined in URI, check it default defined with directive
                 if (angular.isUndefined(SDS.facet.sortBy)){
@@ -651,28 +702,34 @@ angular.module('staffdir', ['ualib.staffdir']);
 
                 // Update listing when SDS broadcasts "facetsChange" event
                 var facetsListener = $scope.$on('facetsChange', function(ev){
-                    updateList();
+                    $timeout(function(){
+                        // Tell angularLazyImg module to update images (since no lazy load occurred because nothing was "scrolled" into view)
+                        $rootScope.$emit('lazyImg:refresh');
+                    }, 0);
                 });
 
                 // Function to update staff listing
-                function updateList(){
-                    var list = angular.copy($scope.list);
+                /*function updateList(){
+                    $scope.filteredList = filterList($scope.list);
+                }
 
+                function filterList(list){
                     list = $filter('filter')(list, $scope.staffdir.facet.search);
                     list = $filter('filter')(list, $scope.staffdir.facet.department);
                     list = $filter('filter')(list, $scope.staffdir.facet.subject, true);
                     list = $filter('filter')(list, $scope.staffdir.facet.library);
                     list = $filter('filter')(list, $scope.staffdir.specialtyType);
                     list = $filter('orderBy')(list, $scope.staffdir.facet.sortBy, $scope.staffdir.sortReverse);
+                    return list;
+                }*/
 
-                    $scope.filteredList = angular.copy(list);
-                }
+
 
                 $scope.$on('$destroy', function(){
                     facetsListener();
                 });
 
-                updateList();
+                //updateList();
             }]
         };
     }])
@@ -701,7 +758,7 @@ angular.module('staffdir', ['ualib.staffdir']);
     });;angular.module('ualib.staffdir')
 
     .config(['$routeProvider', function($routeProvider){
-        $routeProvider.when('/staffdir/profile/:email', {
+        $routeProvider.when('/staffdir/:email', {
             template: function(params) {
                 return '<div class="staff-faculty-profile" email="' + params.email + '"></div>';
             }
@@ -715,10 +772,10 @@ angular.module('staffdir', ['ualib.staffdir']);
                 login: '@email'
             },
             templateUrl: 'staff-profile/staff-profile.tpl.html',
-            controller: ['$scope', function($scope){
+            controller: function($scope){
                 $scope.userProfile = {};
 
-                console.log("Login: " + $scope.login);
+                //console.log("Login: " + $scope.login);
 
                 StaffFactory.profile().get({login: $scope.login})
                     .$promise.then(function(data){
@@ -757,11 +814,11 @@ angular.module('staffdir', ['ualib.staffdir']);
                             }
                         }
                         $scope.userProfile = data;
-                        console.dir(data);
+                        //console.dir(data);
                     }, function(data){
                         console.log('Error: cold not get profile! ' + data);
                     });
-            }]
+            }
         };
     }]);
 

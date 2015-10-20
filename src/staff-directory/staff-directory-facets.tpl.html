@@ -12,8 +12,8 @@
         <h5>Sort by</h5>
         <div class="facet-group">
             <div class="btn-group btn-group-justified">
-                <label class="btn btn-default" ng-model="staffdir.facet.sortBy" btn-radio="'lastname'" uncheckable ng-change="staffdir.changeFacet('sortBy')">Last name</label>
-                <label class="btn btn-default" ng-model="staffdir.facet.sortBy" btn-radio="'firstname'" uncheckable ng-change="staffdir.changeFacet('sortBy')">First name</label>
+                <label class="btn btn-default" ng-model="staffdir.facet.sortBy" btn-radio="'lastname'" ng-change="staffdir.changeFacet('sortBy')">Last name</label>
+                <label class="btn btn-default" ng-model="staffdir.facet.sortBy" btn-radio="'firstname'" ng-change="staffdir.changeFacet('sortBy')">First name</label>
             </div>
         </div>
     </div>
@@ -60,8 +60,8 @@
         </div>
     </div>
 
-    <div class="form-group">
-        <button class="btn btn-primary btn-block hidden-xs" type="button" ng-click="staffdir.clearFacets()">
+    <div class="form-group hidden-xs hidden-sm">
+        <button class="btn btn-primary btn-block" type="button" ng-click="staffdir.clearFacets()">
             <span class="fa fa-fw fa-refresh"></span> Reset Filters
         </button>
     </div>

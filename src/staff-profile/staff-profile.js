@@ -1,7 +1,7 @@
 angular.module('ualib.staffdir')
 
     .config(['$routeProvider', function($routeProvider){
-        $routeProvider.when('/staffdir/profile/:email', {
+        $routeProvider.when('/staffdir/:email', {
             template: function(params) {
                 return '<div class="staff-faculty-profile" email="' + params.email + '"></div>';
             }
@@ -18,7 +18,7 @@ angular.module('ualib.staffdir')
             controller: function($scope){
                 $scope.userProfile = {};
 
-                console.log("Login: " + $scope.login);
+                //console.log("Login: " + $scope.login);
 
                 StaffFactory.profile().get({login: $scope.login})
                     .$promise.then(function(data){
@@ -57,7 +57,7 @@ angular.module('ualib.staffdir')
                             }
                         }
                         $scope.userProfile = data;
-                        console.dir(data);
+                        //console.dir(data);
                     }, function(data){
                         console.log('Error: cold not get profile! ' + data);
                     });

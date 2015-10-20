@@ -1,0 +1,33 @@
+.staff-profile{
+
+  .name-plate {
+    h2, h3 {
+      margin-top: 5px;
+    }
+    h1, h2, h3:not(:last-of-type) {
+      margin-bottom: 0;
+    }
+    h1 {
+      font-weight: bold;
+      margin-top: 0;
+      > small {
+        display: block;
+      }
+    }
+
+    @media(max-width: @screen-xs-max) {
+      h1 {
+        font-size: 2em;
+      }
+      h2 {
+        font-size: 1.5em;
+      }
+    }
+
+  }
+
+  .subject-specialty {
+    margin-top: 15px;
+    font-size: .9em;
+  }
+}
