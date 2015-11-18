@@ -356,7 +356,6 @@ angular.module("staff-profile/staff-profile.tpl.html", []).run(["$templateCache"
     'ngSanitize',
     'angular.filter',
     'ui.bootstrap',
-    'ui.utils',
     'angularLazyImg',
     'ualib.ui',
     'ualib.staffdir.templates'

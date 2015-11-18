@@ -5,7 +5,6 @@ angular.module('ualib.staffdir', [
     'ngSanitize',
     'angular.filter',
     'ui.bootstrap',
-    'ui.utils',
     'angularLazyImg',
     'ualib.ui',
     'ualib.staffdir.templates'
