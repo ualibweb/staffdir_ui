@@ -10,6 +10,9 @@ assets/vendor/modernizr/*
 #assets/js/vendor/modernizr.min.js
 assets/manifest.json
 
+# Docs folder for generated docs in gh-pages
+docs/
+
 # Ignore the styleguide folder used for testing
 styleguide/
 

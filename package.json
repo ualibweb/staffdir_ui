@@ -1,6 +1,6 @@
 {
   "name": "staffdir_ui",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Frontend UI for the Staff Directory",
   "main": [
     "staffdir.js",
@@ -36,6 +36,8 @@
     "grunt-html2js": "~0.3.0",
     "grunt-bower-concat": "~0.4.0",
     "grunt-ng-annotate": "~1.0.1",
-    "grunt-contrib-clean": "~0.6.0"
+    "grunt-contrib-clean": "~0.6.0",
+    "grunt-gh-pages": "~1.0.0",
+    "grunt-ngdocs": "~0.2.9"
   }
 }

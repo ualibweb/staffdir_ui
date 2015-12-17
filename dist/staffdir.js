@@ -12,10 +12,10 @@ angular.module("staff-card/staff-card-list.tpl.html", []).run(["$templateCache",
     "                    </div>\n" +
     "                </div>\n" +
     "            </div>\n" +
-    "            <div class=\"col-xs-4 col-sm-3\">\n" +
+    "            <div class=\"hidden-xs col-sm-3\">\n" +
     "                <img class=\"staff-portrait thumbnail\" src=\"http://www.lib.ua.edu/wp-content/themes/roots-ualib/assets/img/user-profile.png\" lazy-img='{{person.photo}}' />\n" +
     "            </div>\n" +
-    "            <div class=\"col-xs-8\">\n" +
+    "            <div class=\"col-xs-12 col-sm-7\">\n" +
     "                <div class=\"row\">\n" +
     "                    <div class=\"col-xs-12 col-sm-7 name-plate\">\n" +
     "                        <h3 class=\"name\">\n" +
@@ -35,7 +35,7 @@ angular.module("staff-card/staff-card-list.tpl.html", []).run(["$templateCache",
     "                    </div>\n" +
     "                    <div class=\"col-xs-12 col-sm-5\">\n" +
     "                        <ul class=\"fa-ul\">\n" +
-    "                            <li ng-if=\"person.phone\"><span class=\"fa fa-phone fa-li\"></span>{{person.phone}}</li>\n" +
+    "                            <li ng-if=\"person.phone\"><span class=\"fa fa-phone fa-li\"></span><a ng-href=\"tel:+1-205-{{person.phone}}\">(205) {{person.phone}}</a></li>\n" +
     "                            <li class=\"hidden-xs\" ng-if=\"person.fax\"><span class=\"fa fa-fax fa-li\"></span>{{person.fax}}</li>\n" +
     "                            <li ng-if=\"person.email\"><span class=\"fa fa-envelope fa-li\"></span><a ng-href=\"mailto:{{person.email}}\" title=\"Email {{person.firstname}} {{person.lastname}}\">{{person.email}}</a></li>\n" +
     "                        </ul>\n" +
@@ -98,7 +98,7 @@ angular.module("staff-card/staff-card-md.tpl.html", []).run(["$templateCache", f
     "                <div class=\"staff-card-detail\">\n" +
     "                    <h6>Contact</h6>\n" +
     "                    <ul class=\"fa-ul\">\n" +
-    "                        <li ng-if=\"staffPerson.phone\"><span class=\"fa fa-phone fa-li\"></span>{{staffPerson.phone}}</li>\n" +
+    "                        <li ng-if=\"staffPerson.phone\"><span class=\"fa fa-phone fa-li\"></span><a ng-href=\"tel:+1-205-{{staffPerson.phone}}\">(205)-{{staffPerson.phone}}</a></li>\n" +
     "                        <li ng-if=\"staffPerson.fax\"><span class=\"fa fa-fax fa-li\"></span>{{staffPerson.fax}}</li>\n" +
     "                        <li ng-if=\"staffPerson.email\"><span class=\"fa fa-envelope fa-li\"></span><a href=\"mailto:{{staffPerson.email}}\">{{staffPerson.email}}</a></li>\n" +
     "                    </ul>\n" +
@@ -255,28 +255,38 @@ angular.module("staff-directory/staff-directory-listing.tpl.html", []).run(["$te
 
 angular.module("staff-directory/staff-directory.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("staff-directory/staff-directory.tpl.html",
-    "<div class=\"page-header\">\n" +
-    "    <h1>Staff Directory</h1>\n" +
+    "<div class=\"jumbotron-header\">\n" +
+    "    <div class=\"jumbotron\">\n" +
+    "        <div class=\"container\">\n" +
+    "            <div class=\"row\">\n" +
+    "                <div class=\"col-md-12\">\n" +
+    "                    <h1>Staff Directory</h1>\n" +
+    "                </div>\n" +
+    "            </div>\n" +
+    "        </div>\n" +
+    "    </div>\n" +
     "</div>\n" +
     "\n" +
     "\n" +
-    "<div class=\"row staff-directory\">\n" +
-    "    <div class=\"col-md-3 col-md-push-9\">\n" +
-    "        <div class=\"staff-directory-facets\" facets=\"staffdir.facets\"></div>\n" +
-    "    </div>\n" +
-    "    <div class=\"col-md-9 col-md-pull-3\">\n" +
-    "        <div ng-show=\"facets.showFacetBar\">\n" +
-    "            <ol class=\"breadcrumb facetcrumb\">\n" +
-    "                <li ng-if=\"facets.facet.department\"><strong>Department:</strong> <button type=\"button\" class=\"btn btn-default\" ng-click=\"facets.clearFacets('department')\">{{facets.facet.department | truncate : 20 : '...'}} <span class=\"text-muted\" aria-hidden=\"true\">&times;</span></button></li>\n" +
-    "                <li ng-if=\"facets.facet.library\"><strong>Library:</strong> <button type=\"button\" class=\"btn btn-default\" ng-click=\"facets.clearFacets('library')\">{{facets.facet.library}} <span class=\"text-muted\" aria-hidden=\"true\">&times;</span></button></li>\n" +
-    "                <li ng-if=\"facets.facet.subject\"><strong>Subject:</strong> <button type=\"button\" class=\"btn btn-default\" ng-click=\"facets.clearFacets('subject')\">{{facets.facet.subject}} <span class=\"text-muted\" aria-hidden=\"true\">&times;</span></button></li>\n" +
-    "                <li ng-if=\"facets.facet.selector\"><button type=\"button\" class=\"btn btn-default\" ng-click=\"facets.clearFacets('selector')\">Selector <span class=\"text-muted\" aria-hidden=\"true\">&times;</span></button></li>\n" +
-    "                <li ng-if=\"facets.facet.instructor\"><button type=\"button\" class=\"btn btn-default\" ng-click=\"facets.clearFacets('instructor')\">Instructor <span class=\"text-muted\" aria-hidden=\"true\">&times;</span></button></li>\n" +
-    "\n" +
-    "                <li class=\"pull-right\"><button type=\"button\" class=\"btn btn-primary btn-small reset-btn\" title=\"Reset filters\" ng-click=\"facets.clearFacets()\"><i class=\"fa fa-refresh\"></i></button></li>\n" +
-    "            </ol>\n" +
+    "<div class=\"container\">\n" +
+    "    <div class=\"row staff-directory\">\n" +
+    "        <div class=\"col-md-3 col-md-push-9\">\n" +
+    "            <div class=\"staff-directory-facets\" facets=\"staffdir.facets\"></div>\n" +
     "        </div>\n" +
-    "        <div class=\"staff-directory-listing\" id=\"staff-directory-listing\" list=\"staffdir.list\" sort-by=\"lastname\"></div>\n" +
+    "        <div class=\"col-md-9 col-md-pull-3\">\n" +
+    "            <div ng-show=\"facets.showFacetBar\">\n" +
+    "                <ol class=\"breadcrumb facetcrumb\">\n" +
+    "                    <li ng-if=\"facets.facet.department\"><strong>Department:</strong> <button type=\"button\" class=\"btn btn-default\" ng-click=\"facets.clearFacets('department')\">{{facets.facet.department | truncate : 20 : '...'}} <span class=\"text-muted\" aria-hidden=\"true\">&times;</span></button></li>\n" +
+    "                    <li ng-if=\"facets.facet.library\"><strong>Library:</strong> <button type=\"button\" class=\"btn btn-default\" ng-click=\"facets.clearFacets('library')\">{{facets.facet.library}} <span class=\"text-muted\" aria-hidden=\"true\">&times;</span></button></li>\n" +
+    "                    <li ng-if=\"facets.facet.subject\"><strong>Subject:</strong> <button type=\"button\" class=\"btn btn-default\" ng-click=\"facets.clearFacets('subject')\">{{facets.facet.subject}} <span class=\"text-muted\" aria-hidden=\"true\">&times;</span></button></li>\n" +
+    "                    <li ng-if=\"facets.facet.selector\"><button type=\"button\" class=\"btn btn-default\" ng-click=\"facets.clearFacets('selector')\">Selector <span class=\"text-muted\" aria-hidden=\"true\">&times;</span></button></li>\n" +
+    "                    <li ng-if=\"facets.facet.instructor\"><button type=\"button\" class=\"btn btn-default\" ng-click=\"facets.clearFacets('instructor')\">Instructor <span class=\"text-muted\" aria-hidden=\"true\">&times;</span></button></li>\n" +
+    "\n" +
+    "                    <li class=\"pull-right\"><button type=\"button\" class=\"btn btn-primary btn-small reset-btn\" title=\"Reset filters\" ng-click=\"facets.clearFacets()\"><i class=\"fa fa-refresh\"></i></button></li>\n" +
+    "                </ol>\n" +
+    "            </div>\n" +
+    "            <div class=\"staff-directory-listing\" id=\"staff-directory-listing\" list=\"staffdir.list\" sort-by=\"lastname\"></div>\n" +
+    "        </div>\n" +
     "    </div>\n" +
     "</div>\n" +
     "\n" +
@@ -287,69 +297,97 @@ angular.module("staff-directory/staff-directory.tpl.html", []).run(["$templateCa
 
 angular.module("staff-profile/staff-profile.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("staff-profile/staff-profile.tpl.html",
-    "<div class=\"page-header\">\n" +
-    "    <h2>Faculty/Staff Profile</h2>\n" +
-    "</div>\n" +
-    "\n" +
-    "<div class=\"row staff-profile\">\n" +
-    "    <div class=\"col-md-3\">\n" +
-    "        <img class=\"staff-portrait thumbnail\" ng-src=\"{{userProfile.person.photo}}\" ng-if=\"userProfile.person.photo\">\n" +
-    "        <img class=\"staff-portrait thumbnail\" ng-src=\"wp-content/themes/roots-ualib/assets/img/user-profile.png\" ng-if=\"!userProfile.person.photo\">\n" +
+    "<div class=\"container\">\n" +
+    "    <div class=\"page-header\">\n" +
+    "        <h2>Faculty/Staff Profile</h2>\n" +
     "    </div>\n" +
-    "    <div class=\"col-md-9\">\n" +
-    "        <div class=\"name-plate\">\n" +
-    "            <h1 class=\"name\">\n" +
-    "                <small ng-if=\"userProfile.person.rank\">{{userProfile.person.rank}}</small>\n" +
-    "                <span ng-bind-html=\"userProfile.person.firstname\"></span> <span ng-bind-html=\"userProfile.person.lastname\"></span>\n" +
-    "            </h1>\n" +
-    "            <h2 class=\"title\"><span ng-bind-html=\"userProfile.person.title\"></span></h2>\n" +
-    "            <h3 class=\"hidden-xs\"><span ng-bind-html=\"userProfile.person.department\"></span></h3>\n" +
+    "\n" +
+    "    <div class=\"row staff-profile\">\n" +
+    "        <div class=\"hidden-xs col-md-3\">\n" +
+    "            <img class=\"staff-portrait thumbnail\" ng-src=\"{{userProfile.person.photo}}\" ng-if=\"userProfile.person.photo\">\n" +
+    "            <img class=\"staff-portrait thumbnail\" ng-src=\"wp-content/themes/roots-ualib/assets/img/user-profile.png\" ng-if=\"!userProfile.person.photo\">\n" +
     "        </div>\n" +
-    "        <div class=\"row\">\n" +
-    "            <div class=\"page-slice\">\n" +
-    "                <div class=\"col-md-6\">\n" +
-    "                    <ul class=\"fa-ul\">\n" +
-    "                        <li ng-if=\"userProfile.person.phone\"><span class=\"fa fa-phone fa-li\"></span>{{userProfile.person.phone}}</li>\n" +
-    "                        <li class=\"hidden-xs\" ng-if=\"userProfile.person.fax\"><span class=\"fa fa-fax fa-li\"></span>{{userProfile.person.fax}}</li>\n" +
-    "                        <li ng-if=\"userProfile.person.email\"><span class=\"fa fa-envelope fa-li\"></span>\n" +
-    "                            <a href=\"mailto:{{userProfile.person.email}}\">{{userProfile.person.email}}</a>\n" +
-    "                        </li>\n" +
-    "                        <li ng-if=\"userProfile.person.website.length > 11\"><span class=\"fa fa-external-link-square fa-li\"></span>\n" +
-    "                            <a ng-href=\"{{userProfile.person.website}}\" class=\"external-link\">Personal website</a>\n" +
-    "                        </li>\n" +
-    "                    </ul>\n" +
-    "                </div>\n" +
-    "                <div class=\"col-md-6\">\n" +
-    "                    <ul class=\"fa-ul\">\n" +
-    "                        <li ng-if=\"userProfile.person.resume.length > 11\"><span class=\"fa fa-file-text fa-li\"></span>\n" +
-    "                            <a ng-href=\"{{userProfile.person.resume}}\">Resume / CV</a>\n" +
-    "                        </li>\n" +
-    "                        <li ng-if=\"userProfile.person.social1\">\n" +
-    "                            <span class=\"{{userProfile.person.snClass1}}\"></span>\n" +
-    "                            <a ng-href=\"{{userProfile.person.social1}}\" class=\"external-link\">{{userProfile.person.snTitle1}}</a>\n" +
-    "                        </li>\n" +
-    "                        <li ng-if=\"userProfile.person.social2\">\n" +
-    "                            <span class=\"{{userProfile.person.snClass2}}\"></span>\n" +
-    "                            <a ng-href=\"{{userProfile.person.social2}}\" class=\"external-link\">{{userProfile.person.snTitle2}}</a>\n" +
-    "                        </li>\n" +
-    "                        <li ng-if=\"userProfile.person.social3\">\n" +
-    "                            <span class=\"{{userProfile.person.snClass3}}\"></span>\n" +
-    "                            <a ng-href=\"{{userProfile.person.social3}}\" class=\"external-link\">{{userProfile.person.snTitle3}}</a>\n" +
-    "                        </li>\n" +
-    "                    </ul>\n" +
+    "        <div class=\"col-md-9\">\n" +
+    "            <div class=\"name-plate\">\n" +
+    "                <h1 class=\"name\">\n" +
+    "                    <small ng-if=\"userProfile.person.rank\">{{userProfile.person.rank}}</small>\n" +
+    "                    <span ng-bind-html=\"userProfile.person.firstname\"></span> <span ng-bind-html=\"userProfile.person.lastname\"></span>\n" +
+    "                </h1>\n" +
+    "                <h2 class=\"title\"><span ng-bind-html=\"userProfile.person.title\"></span></h2>\n" +
+    "                <h3 class=\"hidden-xs\"><span ng-bind-html=\"userProfile.person.department\"></span></h3>\n" +
+    "            </div>\n" +
+    "            <div class=\"row\">\n" +
+    "                <div class=\"page-slice\">\n" +
+    "                    <div class=\"col-md-6\">\n" +
+    "                        <ul class=\"fa-ul\">\n" +
+    "                            <li ng-if=\"userProfile.person.phone\"><span class=\"fa fa-phone fa-li\"></span><a ng-href=\"tel:+1-205-{{userProfile.person.phone}}\">(205) {{userProfile.person.phone}}</a></li>\n" +
+    "                            <li class=\"hidden-xs\" ng-if=\"userProfile.person.fax\"><span class=\"fa fa-fax fa-li\"></span>{{userProfile.person.fax}}</li>\n" +
+    "                            <li ng-if=\"userProfile.person.email\"><span class=\"fa fa-envelope fa-li\"></span>\n" +
+    "                                <a href=\"mailto:{{userProfile.person.email}}\">{{userProfile.person.email}}</a>\n" +
+    "                            </li>\n" +
+    "                            <li ng-if=\"userProfile.person.website.length > 11\"><span class=\"fa fa-external-link-square fa-li\"></span>\n" +
+    "                                <a ng-href=\"{{userProfile.person.website}}\" class=\"external-link\">Personal website</a>\n" +
+    "                            </li>\n" +
+    "                        </ul>\n" +
+    "                    </div>\n" +
+    "                    <div class=\"col-md-6\">\n" +
+    "                        <ul class=\"fa-ul\">\n" +
+    "                            <li ng-if=\"userProfile.person.resume.length > 11\"><span class=\"fa fa-file-text fa-li\"></span>\n" +
+    "                                <a ng-href=\"{{userProfile.person.resume}}\">Resume / CV</a>\n" +
+    "                            </li>\n" +
+    "                            <li ng-if=\"userProfile.person.social1\">\n" +
+    "                                <span class=\"{{userProfile.person.snClass1}}\"></span>\n" +
+    "                                <a ng-href=\"{{userProfile.person.social1}}\" class=\"external-link\">{{userProfile.person.snTitle1}}</a>\n" +
+    "                            </li>\n" +
+    "                            <li ng-if=\"userProfile.person.social2\">\n" +
+    "                                <span class=\"{{userProfile.person.snClass2}}\"></span>\n" +
+    "                                <a ng-href=\"{{userProfile.person.social2}}\" class=\"external-link\">{{userProfile.person.snTitle2}}</a>\n" +
+    "                            </li>\n" +
+    "                            <li ng-if=\"userProfile.person.social3\">\n" +
+    "                                <span class=\"{{userProfile.person.snClass3}}\"></span>\n" +
+    "                                <a ng-href=\"{{userProfile.person.social3}}\" class=\"external-link\">{{userProfile.person.snTitle3}}</a>\n" +
+    "                            </li>\n" +
+    "                        </ul>\n" +
+    "                    </div>\n" +
     "                </div>\n" +
     "            </div>\n" +
     "        </div>\n" +
     "    </div>\n" +
-    "</div>\n" +
-    "<div class=\"row\">\n" +
-    "    <div class=\"col-md-12\">\n" +
-    "        <span ng-bind-html=\"userProfile.person.profile\"></span>\n" +
+    "    <div class=\"row\">\n" +
+    "        <div class=\"col-md-12\">\n" +
+    "            <span ng-bind-html=\"userProfile.person.profile\"></span>\n" +
+    "        </div>\n" +
     "    </div>\n" +
-    "</div>\n" +
-    "");
+    "\n" +
+    "</div>");
 }]);
-;angular.module('ualib.staffdir', [
+;/**
+ * @ngdoc overview
+ * @name index
+ *
+ * @description
+ * # Staff Directory App
+ * ## default route: [/#/staffdir](http://www.lib.ua.edu/#/staffdir)
+ */
+/**
+ * @ngdoc overview
+ * @name staffdir
+ *
+ * @requires ngRoute
+ * @requires ngResource
+ * @requires ngAnimate
+ * @requires ngSanitize
+ * @requires angular-filter
+ * @requires ui-bootstrap
+ * @requires angularLazyImg
+ * @requires ualib-ui
+ *
+ * @description
+ * # Staff Directory App
+ * ## default route: [/#/staffdir](http://www.lib.ua.edu/#/staffdir)
+ */
+
+angular.module('ualib.staffdir', [
     'ngRoute',
     'ngResource',
     'ngAnimate',
@@ -456,6 +494,18 @@ angular.module('staffdir', ['ualib.staffdir']);
 
     }]);;angular.module('ualib.staffdir')
 
+    /**
+     * @ngdoc service
+     * @name staffdir.StaffFactory
+     *
+     * @requires $resource
+     * @requires $http
+     * @requires $filter
+     *
+     * @description
+     * Factory service to get staff directory info from the API.
+     */
+
     .factory('StaffFactory', ['$resource', '$filter', '$http', function($resource, $filter, $http){
         //TODO: centralize this function so it can be used with all apps
         // Extend the default responseTransform array - Straight from Angular 1.2.8 API docs - //docs.angularjs.org/api/ng/service/$http#overriding-the-default-transformations-per-request
@@ -469,10 +519,31 @@ angular.module('staffdir', ['ualib.staffdir']);
         }
 
         return {
+            /**
+             * @ngdoc object
+             * @name staffdir.StaffFactory:directory
+             * @methodOf staffdir.StaffFactory
+             *
+             * @description
+             * Gets full list of library faculty and staff
+             *
+             * @example
+             * <pre>
+             *      var list = StaffFactory.directory().get()
+                        .$promise.then(function(data){
+                            return data;
+                        }, function(data, status){
+                            console.log('Error' + status + ': ' + data);
+                            return staff;
+                        });
+             * </pre>
+             *
+             * @returns {Promise} $resource promise
+             */
             directory: function(){
                 return $resource('//wwwdev2.lib.ua.edu/staffDir/api/people', {}, {
-                    cache: true,
                     get: {
+                        cache: true,
                         method: 'GET',
                         transformResponse: appendTransform($http.defaults.transformResponse, function(d){
                             // temporary fix. Not sustainable to manually remove arbitrary fields from API for different views
@@ -550,15 +621,112 @@ angular.module('staffdir', ['ualib.staffdir']);
                     }
                 });
             },
+            /**
+             * @ngdoc object
+             * @name staffdir.StaffFactory:byEmail
+             * @methodOf staffdir.StaffFactory
+             *
+             * @param {object} email Email param object
+             * @param {string} email.email Faculty/staff member's email address
+             *
+             * @description
+             * Gets faculty/staff info by email
+             *
+             * @example
+             * <pre>
+             *      var person = StaffFactory.email().get({email: 'email@addres.com'})
+                        .$promise.then(function(data){
+                            return data;
+                        }, function(data, status){
+                            console.log('Error' + status + ': ' + data);
+                            return staff;
+                        });
+             * </pre>
+             *
+             * @returns {Promise} $resource promise
+             */
             byEmail: function(){
                 return $resource('//wwwdev2.lib.ua.edu/staffDir/api/people/search/email/:email', {}, {cache: true});
             },
+            /**
+             * @ngdoc object
+             * @name staffdir.StaffFactory:byName
+             * @methodOf staffdir.StaffFactory
+             *
+             * @param {object} name Name param object
+             * @param {string} name.firstname Faculty/staff member's first name
+             * @param {string} name.lastname Faculty/staff member's last name
+             *
+             * @description
+             * Gets faculty/staff info by full name.
+             *
+             * @example
+             * <pre>
+             *      var person = StaffFactory.email().get({firstname: 'Malcolm', lastname: 'Reynolds'})
+                        .$promise.then(function(data){
+                            return data;
+                        }, function(data, status){
+                            console.log('Error' + status + ': ' + data);
+                            return staff;
+                        });
+             * </pre>
+             *
+             * @returns {Promise} $resource promise
+             */
             byName: function(){
                 return $resource('//wwwdev2.lib.ua.edu/staffDir/api/people/search/firstname/:firstname/lastname/:lastname', {}, {cache: true});
             },
+            /**
+             * @ngdoc object
+             * @name staffdir.StaffFactory:byId
+             * @methodOf staffdir.StaffFactory
+             *
+             * @param {object} id ID param object
+             * @param {number} id.id Faculty/staff member's ID (in the API database)
+             *
+             * @description
+             * Gets faculty/staff info by ID (in the API database).
+             *
+             * @example
+             * <pre>
+             *      var person = StaffFactory.email().get({id: 2468})
+                        .$promise.then(function(data){
+                            return data;
+                        }, function(data, status){
+                            console.log('Error' + status + ': ' + data);
+                            return staff;
+                        });
+             * </pre>
+             *
+             * @returns {Promise} $resource promise
+             */
             byId: function(){
                 return $resource('//wwwdev2.lib.ua.edu/staffDir/api/people/search/id/:id', {}, {cache: true});
             },
+            /**
+             * @ngdoc object
+             * @name staffdir.StaffFactory:profile
+             * @methodOf staffdir.StaffFactory
+             *
+             * @param {object} id ID param object
+             * @param {number} id.id Faculty/staff member's ID (in the API database)
+             *
+             * @description
+             * Gets faculty/staff info by ID (in the API database).
+             *
+             * @example
+             * <pre>
+             *      var person = StaffFactory.email().get({id: 2468})
+                    .$promise.then(function(data){
+                            return data;
+                        }, function(data, status){
+                            console.log('Error' + status + ': ' + data);
+                            return staff;
+                        });
+             * </pre>
+             *
+             * @returns {Promise} $resource promise
+             */
             profile: function(){
                 return $resource('//wwwdev2.lib.ua.edu/staffDir/api/profile/:login', {}, {cache: true});
             }

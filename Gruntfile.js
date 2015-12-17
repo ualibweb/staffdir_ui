@@ -101,6 +101,28 @@ module.exports = function(grunt) {
                 prereleaseName: false,
                 regExp: false
             }
+        },
+        ngdocs: {
+            options: {
+                dest: 'docs',
+                html5Mode: false,
+                startPage: 'api/staffdir',
+                sourceLink: true,
+                title: "Staff Directory UI Docs",
+                titleLink: "api/staffdir"
+            },
+            api: {
+                src: ['src/**/*.js', '!src/**/*.spec.js'],
+                title: 'API Documentation'
+            }
+        },
+        'gh-pages': {
+            options: {
+                base: 'docs'
+            },
+            firstTarget: {
+                src: ['**/*']
+            }
         }
     });
 
