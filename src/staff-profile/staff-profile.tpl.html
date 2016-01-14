@@ -21,7 +21,7 @@
                 <div class="page-slice">
                     <div class="col-md-6">
                         <ul class="fa-ul">
-                            <li ng-if="userProfile.person.phone"><span class="fa fa-phone fa-li"></span><a ng-href="tel:+1-205-{{userProfile.person.phone}}">(205) {{userProfile.person.phone}}</a></li>
+                            <li ng-if="userProfile.person.phone"><span class="fa fa-phone fa-li"></span><a ng-href="tel:+1-{{userProfile.person.phone}}">{{userProfile.person.phone}}</a></li>
                             <li class="hidden-xs" ng-if="userProfile.person.fax"><span class="fa fa-fax fa-li"></span>{{userProfile.person.fax}}</li>
                             <li ng-if="userProfile.person.email"><span class="fa fa-envelope fa-li"></span>
                                 <a href="mailto:{{userProfile.person.email}}">{{userProfile.person.email}}</a>
