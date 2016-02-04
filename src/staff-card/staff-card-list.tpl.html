@@ -1,8 +1,8 @@
-<div ng-repeat="person in filteredList = (list | filterBy: ['department']:staffdir.facet.department | filter:staffdir.facet.subject:true | filterBy: ['library']:staffdir.facet.library | filter:staffdir.specialtyType | orderBy:staffdir.facet.sortBy:staffdir.sortReverse) | after:(staffdir.pager.page-1)*staffdir.pager.perPage | limitTo:staffdir.pager.perPage">
+<div ng-repeat="person in filteredList | after:(staffdir.pager.page-1)*staffdir.pager.perPage | limitTo:staffdir.pager.perPage">
     <div class="page-slice">
         <div class="row">
             <div class="hidden-xs col-sm-3">
-                <img class="staff-portrait thumbnail" src="http://www.lib.ua.edu/wp-content/themes/roots-ualib/assets/img/user-profile.png" lazy-img='{{person.photo}}' />
+                <img class="staff-portrait thumbnail" ng-src='{{person.photo}}' />
             </div>
             <div class="col-xs-12 col-sm-7">
                 <div class="row">

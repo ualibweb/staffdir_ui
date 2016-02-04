@@ -31,7 +31,6 @@ angular.module('ualib.staffdir', [
     'ngSanitize',
     'angular.filter',
     'ui.bootstrap',
-    'angularLazyImg',
     'ualib.ui',
     'ualib.staffdir.templates'
 ]);

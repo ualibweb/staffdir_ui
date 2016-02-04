@@ -2,11 +2,11 @@ angular.module('ualib.staffdir.templates', ['staff-card/staff-card-list.tpl.html
 
 angular.module("staff-card/staff-card-list.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("staff-card/staff-card-list.tpl.html",
-    "<div ng-repeat=\"person in filteredList = (list | filterBy: ['department']:staffdir.facet.department | filter:staffdir.facet.subject:true | filterBy: ['library']:staffdir.facet.library | filter:staffdir.specialtyType | orderBy:staffdir.facet.sortBy:staffdir.sortReverse) | after:(staffdir.pager.page-1)*staffdir.pager.perPage | limitTo:staffdir.pager.perPage\">\n" +
+    "<div ng-repeat=\"person in filteredList | after:(staffdir.pager.page-1)*staffdir.pager.perPage | limitTo:staffdir.pager.perPage\">\n" +
     "    <div class=\"page-slice\">\n" +
     "        <div class=\"row\">\n" +
     "            <div class=\"hidden-xs col-sm-3\">\n" +
-    "                <img class=\"staff-portrait thumbnail\" src=\"http://www.lib.ua.edu/wp-content/themes/roots-ualib/assets/img/user-profile.png\" lazy-img='{{person.photo}}' />\n" +
+    "                <img class=\"staff-portrait thumbnail\" ng-src='{{person.photo}}' />\n" +
     "            </div>\n" +
     "            <div class=\"col-xs-12 col-sm-7\">\n" +
     "                <div class=\"row\">\n" +
@@ -396,7 +396,6 @@ angular.module('ualib.staffdir', [
     'ngSanitize',
     'angular.filter',
     'ui.bootstrap',
-    'angularLazyImg',
     'ualib.ui',
     'ualib.staffdir.templates'
 ]);
@@ -856,7 +855,7 @@ angular.module('staffdir', ['ualib.staffdir']);
 
     }])
 
-    .directive('staffDirectoryListing', ['StaffDirectoryService', '$document', function(SDS, $document){
+    .directive('staffDirectoryListing', ['StaffDirectoryService', '$document', '$filter', function(SDS, $document, $filter){
         return {
             restrict: 'AC',
             scope: {
@@ -880,18 +879,12 @@ angular.module('staffdir', ['ualib.staffdir']);
 
 
                 // Update listing when SDS broadcasts "facetsChange" event
-                var facetsListener = $scope.$on('facetsChange', function(ev, facet){
-                    if (facet === 'page'){
-                        updatePager();
-                    }
-                    $timeout(function(){
-                        // Tell angularLazyImg module to update images (since no lazy load occurred because nothing was "scrolled" into view)
-                        $rootScope.$emit('lazyImg:refresh');
-                    }, 0);
+                var facetsListener = $scope.$on('facetsChange', function(){
+                    updateList();
                 });                
 
-                function updatePager(){
-                    SDS.pager.totalItems = $scope.filteredList.length;
+                function updatePager(totalItems){
+                    SDS.pager.totalItems = totalItems;
                     var numPages =  Math.floor(SDS.pager.totalItems / SDS.pager.maxSize);
                     if (numPages < SDS.pager.page){
                         SDS.pager.page = numPages || 1;
@@ -901,11 +894,41 @@ angular.module('staffdir', ['ualib.staffdir']);
                     $document.duScrollTo(0, 30, 500, function (t) { return (--t)*t*t+1; });
                 }
 
+                function updateList(){
+                    $scope.filteredList = filterList($scope.list);
+                }
+
+                function filterList(list){
+                    for (var facet in SDS.facet){
+                        switch (facet){
+                            case 'department':
+                            case 'library':
+                                list = $filter('filterBy')(list, [facet], SDS.facet[facet]);
+                                break;
+                            case 'selector':
+                            case 'instructor':
+                                list = $filter('filter')(list, SDS.specialtyType);
+                                break;
+                            case 'subject':
+                                list = $filter('filter')(list, SDS.facet[facet], true);
+                                console.log(facet+'s.'+facet);
+                                console.log(list);
+                                break;
+                            case 'sortBy':
+                                list = $filter('orderBy')(list, SDS.facet[facet], SDS.sortReverse);
+                                break;
+                            default:
+                                list = $filter('filter')(list, SDS.facet[facet]);
+                        }
+                    }
+                    updatePager(list.length);
+                    return list;
+                }
+
                 $scope.$on('$destroy', function(){
                     facetsListener();
                 });
 
-                //updateList();
             }]
         };
     }])
