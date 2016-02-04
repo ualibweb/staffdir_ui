@@ -75,7 +75,7 @@ angular.module('ualib.staffdir')
                                 }
                                 val = newVal;
 
-                                val.photo = val.photo || "http://www.lib.ua.edu/wp-content/themes/roots-ualib/assets/img/user-profile.png";
+                                val.photo = val.photo || "https://www.lib.ua.edu/wp-content/themes/roots-ualib/assets/img/user-profile.png";
                                 //Overwrite "profile" text so its not searchable, set it as a boolean so the tpl knows if to link to a profile
                                 if (val.profile){
                                     val.profile = true;
@@ -92,9 +92,9 @@ angular.module('ualib.staffdir')
                                 }
 
                                 //preset alpha index values base on first and last name
-                                val.alphaIndex = {};
+                                /*val.alphaIndex = {};
                                 val.alphaIndex.lastname = val.lastname.charAt(0).toUpperCase();
-                                val.alphaIndex.firstname = val.firstname.charAt(0).toUpperCase();
+                                val.alphaIndex.firstname = val.firstname.charAt(0).toUpperCase();*/
 
                                 list.push(val);
 

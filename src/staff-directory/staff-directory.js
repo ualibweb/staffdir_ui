@@ -23,10 +23,11 @@ angular.module('ualib.staffdir')
     .controller('StaffDirCtrl', ['$scope', 'StaffDir', 'StaffDirectoryService', function($scope, StaffDir, SDS){
         $scope.staffdir = StaffDir;
         $scope.facets = SDS;
+        SDS.pager.totalItems = StaffDir.list.length;
 
     }])
 
-    .directive('staffDirectoryListing', ['StaffDirectoryService', '$filter', function(SDS, $filter){
+    .directive('staffDirectoryListing', ['StaffDirectoryService', '$document', function(SDS, $document){
         return {
             restrict: 'AC',
             scope: {
@@ -35,41 +36,41 @@ angular.module('ualib.staffdir')
             },
             templateUrl: 'staff-card/staff-card-list.tpl.html',
             controller: ['$scope', '$rootScope', '$timeout', function($scope, $rootScope, $timeout){
-                $scope.filteredList = [];
+                $scope.filteredList = $scope.list;
                 $scope.staffdir = SDS;
 
+
                 //TODO: temporary work around because CMS file handling is dumb. Need to fix and make sustainable
-                $scope.placeholder = 'http://www.lib.ua.edu/wp-content/themes/roots-ualib/assets/img/user-profile.png';
+                $scope.placeholder = 'https://www.lib.ua.edu/wp-content/themes/roots-ualib/assets/img/user-profile.png';
+
 
                 //If sortby hasn't been defined in URI, check it default defined with directive
                 if (angular.isUndefined(SDS.facet.sortBy)){
                     $scope.staffdir.facet.sortBy = angular.isDefined($scope.sortBy) ? $scope.sortBy : 'lastname';
                 }
 
+
                 // Update listing when SDS broadcasts "facetsChange" event
-                var facetsListener = $scope.$on('facetsChange', function(ev){
+                var facetsListener = $scope.$on('facetsChange', function(ev, facet){
+                    if (facet === 'page'){
+                        updatePager();
+                    }
                     $timeout(function(){
                         // Tell angularLazyImg module to update images (since no lazy load occurred because nothing was "scrolled" into view)
                         $rootScope.$emit('lazyImg:refresh');
                     }, 0);
-                });
+                });                
 
-                // Function to update staff listing
-                /*function updateList(){
-                    $scope.filteredList = filterList($scope.list);
+                function updatePager(){
+                    SDS.pager.totalItems = $scope.filteredList.length;
+                    var numPages =  Math.floor(SDS.pager.totalItems / SDS.pager.maxSize);
+                    if (numPages < SDS.pager.page){
+                        SDS.pager.page = numPages || 1;
+                    }
+                    SDS.pager.firstItem = (SDS.pager.page-1)*SDS.pager.perPage+1;
+                    SDS.pager.lastItem = Math.min(SDS.pager.totalItems, (SDS.pager.page * SDS.pager.perPage));
+                    $document.duScrollTo(0, 30, 500, function (t) { return (--t)*t*t+1; });
                 }
-
-                function filterList(list){
-                    list = $filter('filter')(list, $scope.staffdir.facet.search);
-                    list = $filter('filter')(list, $scope.staffdir.facet.department);
-                    list = $filter('filter')(list, $scope.staffdir.facet.subject, true);
-                    list = $filter('filter')(list, $scope.staffdir.facet.library);
-                    list = $filter('filter')(list, $scope.staffdir.specialtyType);
-                    list = $filter('orderBy')(list, $scope.staffdir.facet.sortBy, $scope.staffdir.sortReverse);
-                    return list;
-                }*/
-
-
 
                 $scope.$on('$destroy', function(){
                     facetsListener();

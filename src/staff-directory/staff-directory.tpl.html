@@ -28,7 +28,16 @@
                     <li class="pull-right"><button type="button" class="btn btn-primary btn-small reset-btn" title="Reset filters" ng-click="facets.clearFacets()"><i class="fa fa-refresh"></i></button></li>
                 </ol>
             </div>
+
+            <div class="text-center">
+                <pagination class="pagination-sm" ng-model="facets.pager.page" total-items="facets.pager.totalItems" max-size="facets.pager.maxSize" boundary-links="true" rotate="false" items-per-page="facets.pager.perPage" ng-change="facets.changeFacet('page')" ng-if="facets.pager.totalItems > facets.pager.perPage"></pagination>
+            </div>
+            
             <div class="staff-directory-listing" id="staff-directory-listing" list="staffdir.list" sort-by="lastname"></div>
+
+            <div class="text-center">
+                <pagination class="pagination-sm" ng-model="facets.pager.page" total-items="facets.pager.totalItems" max-size="facets.pager.maxSize" boundary-links="true" rotate="false" items-per-page="facets.pager.perPage" ng-change="facets.changeFacet('page')" ng-if="facets.pager.totalItems > facets.pager.perPage"></pagination>
+            </div>
         </div>
     </div>
 </div>

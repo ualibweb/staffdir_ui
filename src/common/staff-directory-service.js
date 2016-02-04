@@ -23,7 +23,13 @@ angular.module('ualib.staffdir')
         this.sortReverse = false; // Default sort direction
         this.sortable = {}; // reference object for sortable columns
         this.facet = {}; // Object to hold filter values based on available facets (empty object means no filtering).
-        this.facetExceptions = {sortBy: 'lastname', search: ''};
+        this.facetExceptions = {sortBy: 'lastname', search: '', page: 1};
+        this.pager =  {
+            page: 1,
+            perPage: 20,
+            maxSize: 10,
+            totalItems: 0
+        };
 
         //TODO: handle this variable through a central route/event instead of on a function-by-function basis
         this.showFacetBar = false;
@@ -60,7 +66,7 @@ angular.module('ualib.staffdir')
             $location.search(facet, val);
             $location.replace();
             self.showFacetBar = !isEmptyObj(self.facet);
-            $rootScope.$broadcast('facetsChange');
+            $rootScope.$broadcast('facetsChange', facet);
 
         };
 

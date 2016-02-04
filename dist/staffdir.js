@@ -2,16 +2,9 @@ angular.module('ualib.staffdir.templates', ['staff-card/staff-card-list.tpl.html
 
 angular.module("staff-card/staff-card-list.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("staff-card/staff-card-list.tpl.html",
-    "<div ng-repeat=\"person in filteredList = (list | filter:staffdir.facet.search | filter:staffdir.facet.department | filter:staffdir.facet.subject:true | filter:staffdir.facet.library | filter:staffdir.specialtyType | orderBy:staffdir.facet.sortBy:staffdir.sortReverse)\">\n" +
+    "<div ng-repeat=\"person in filteredList = (list | filterBy: ['department']:staffdir.facet.department | filter:staffdir.facet.subject:true | filterBy: ['library']:staffdir.facet.library | filter:staffdir.specialtyType | orderBy:staffdir.facet.sortBy:staffdir.sortReverse) | after:(staffdir.pager.page-1)*staffdir.pager.perPage | limitTo:staffdir.pager.perPage\">\n" +
     "    <div class=\"page-slice\">\n" +
     "        <div class=\"row\">\n" +
-    "            <div class=\"col-xs-12 col-sm-1\">\n" +
-    "                <div class=\"alpha-index-header\" ng-if=\"person.alphaIndex[staffdir.facet.sortBy] != filteredList[$index-1].alphaIndex[staffdir.facet.sortBy]\">\n" +
-    "                    <div ui-scrollfix=\"+0\">\n" +
-    "                        {{person.alphaIndex[staffdir.facet.sortBy]}}\n" +
-    "                    </div>\n" +
-    "                </div>\n" +
-    "            </div>\n" +
     "            <div class=\"hidden-xs col-sm-3\">\n" +
     "                <img class=\"staff-portrait thumbnail\" src=\"http://www.lib.ua.edu/wp-content/themes/roots-ualib/assets/img/user-profile.png\" lazy-img='{{person.photo}}' />\n" +
     "            </div>\n" +
@@ -169,7 +162,7 @@ angular.module("staff-directory/staff-directory-facets.tpl.html", []).run(["$tem
     "    </div>\n" +
     "\n" +
     "    <div class=\"form-group hidden-xs hidden-sm\">\n" +
-    "        <h5>Library</h5>\n" +
+    "        <h5>Library Location</h5>\n" +
     "        <div class=\"facet-group\">\n" +
     "            <div class=\"radio\">\n" +
     "                <label>\n" +
@@ -285,7 +278,16 @@ angular.module("staff-directory/staff-directory.tpl.html", []).run(["$templateCa
     "                    <li class=\"pull-right\"><button type=\"button\" class=\"btn btn-primary btn-small reset-btn\" title=\"Reset filters\" ng-click=\"facets.clearFacets()\"><i class=\"fa fa-refresh\"></i></button></li>\n" +
     "                </ol>\n" +
     "            </div>\n" +
+    "\n" +
+    "            <div class=\"text-center\">\n" +
+    "                <pagination class=\"pagination-sm\" ng-model=\"facets.pager.page\" total-items=\"facets.pager.totalItems\" max-size=\"facets.pager.maxSize\" boundary-links=\"true\" rotate=\"false\" items-per-page=\"facets.pager.perPage\" ng-change=\"facets.changeFacet('page')\" ng-if=\"facets.pager.totalItems > facets.pager.perPage\"></pagination>\n" +
+    "            </div>\n" +
+    "            \n" +
     "            <div class=\"staff-directory-listing\" id=\"staff-directory-listing\" list=\"staffdir.list\" sort-by=\"lastname\"></div>\n" +
+    "\n" +
+    "            <div class=\"text-center\">\n" +
+    "                <pagination class=\"pagination-sm\" ng-model=\"facets.pager.page\" total-items=\"facets.pager.totalItems\" max-size=\"facets.pager.maxSize\" boundary-links=\"true\" rotate=\"false\" items-per-page=\"facets.pager.perPage\" ng-change=\"facets.changeFacet('page')\" ng-if=\"facets.pager.totalItems > facets.pager.perPage\"></pagination>\n" +
+    "            </div>\n" +
     "        </div>\n" +
     "    </div>\n" +
     "</div>\n" +
@@ -427,7 +429,13 @@ angular.module('staffdir', ['ualib.staffdir']);
         this.sortReverse = false; // Default sort direction
         this.sortable = {}; // reference object for sortable columns
         this.facet = {}; // Object to hold filter values based on available facets (empty object means no filtering).
-        this.facetExceptions = {sortBy: 'lastname', search: ''};
+        this.facetExceptions = {sortBy: 'lastname', search: '', page: 1};
+        this.pager =  {
+            page: 1,
+            perPage: 20,
+            maxSize: 10,
+            totalItems: 0
+        };
 
         //TODO: handle this variable through a central route/event instead of on a function-by-function basis
         this.showFacetBar = false;
@@ -464,7 +472,7 @@ angular.module('staffdir', ['ualib.staffdir']);
             $location.search(facet, val);
             $location.replace();
             self.showFacetBar = !isEmptyObj(self.facet);
-            $rootScope.$broadcast('facetsChange');
+            $rootScope.$broadcast('facetsChange', facet);
 
         };
 
@@ -569,7 +577,7 @@ angular.module('staffdir', ['ualib.staffdir']);
                                 }
                                 val = newVal;
 
-                                val.photo = val.photo || "http://www.lib.ua.edu/wp-content/themes/roots-ualib/assets/img/user-profile.png";
+                                val.photo = val.photo || "https://www.lib.ua.edu/wp-content/themes/roots-ualib/assets/img/user-profile.png";
                                 //Overwrite "profile" text so its not searchable, set it as a boolean so the tpl knows if to link to a profile
                                 if (val.profile){
                                     val.profile = true;
@@ -586,9 +594,9 @@ angular.module('staffdir', ['ualib.staffdir']);
                                 }
 
                                 //preset alpha index values base on first and last name
-                                val.alphaIndex = {};
+                                /*val.alphaIndex = {};
                                 val.alphaIndex.lastname = val.lastname.charAt(0).toUpperCase();
-                                val.alphaIndex.firstname = val.firstname.charAt(0).toUpperCase();
+                                val.alphaIndex.firstname = val.firstname.charAt(0).toUpperCase();*/
 
                                 list.push(val);
 
@@ -743,7 +751,7 @@ angular.module('staffdir', ['ualib.staffdir']);
         return {
             restrict: 'AC',
             templateUrl: 'staff-card/staff-card-list.tpl.html',
-            controller: ['$scope', function($scope){
+            controller: function($scope){
                 $scope.staffdir = {};
 
                 StaffFactory.directory().get()
@@ -754,7 +762,7 @@ angular.module('staffdir', ['ualib.staffdir']);
                     }, function(){
                         console.log('Staffdir Error -- Come on, put in proper error handling already');
                     });
-            }]
+            }
         };
     }])
 
@@ -844,10 +852,11 @@ angular.module('staffdir', ['ualib.staffdir']);
     .controller('StaffDirCtrl', ['$scope', 'StaffDir', 'StaffDirectoryService', function($scope, StaffDir, SDS){
         $scope.staffdir = StaffDir;
         $scope.facets = SDS;
+        SDS.pager.totalItems = StaffDir.list.length;
 
     }])
 
-    .directive('staffDirectoryListing', ['StaffDirectoryService', '$filter', function(SDS, $filter){
+    .directive('staffDirectoryListing', ['StaffDirectoryService', '$document', function(SDS, $document){
         return {
             restrict: 'AC',
             scope: {
@@ -856,41 +865,41 @@ angular.module('staffdir', ['ualib.staffdir']);
             },
             templateUrl: 'staff-card/staff-card-list.tpl.html',
             controller: ['$scope', '$rootScope', '$timeout', function($scope, $rootScope, $timeout){
-                $scope.filteredList = [];
+                $scope.filteredList = $scope.list;
                 $scope.staffdir = SDS;
 
+
                 //TODO: temporary work around because CMS file handling is dumb. Need to fix and make sustainable
-                $scope.placeholder = 'http://www.lib.ua.edu/wp-content/themes/roots-ualib/assets/img/user-profile.png';
+                $scope.placeholder = 'https://www.lib.ua.edu/wp-content/themes/roots-ualib/assets/img/user-profile.png';
+
 
                 //If sortby hasn't been defined in URI, check it default defined with directive
                 if (angular.isUndefined(SDS.facet.sortBy)){
                     $scope.staffdir.facet.sortBy = angular.isDefined($scope.sortBy) ? $scope.sortBy : 'lastname';
                 }
 
+
                 // Update listing when SDS broadcasts "facetsChange" event
-                var facetsListener = $scope.$on('facetsChange', function(ev){
+                var facetsListener = $scope.$on('facetsChange', function(ev, facet){
+                    if (facet === 'page'){
+                        updatePager();
+                    }
                     $timeout(function(){
                         // Tell angularLazyImg module to update images (since no lazy load occurred because nothing was "scrolled" into view)
                         $rootScope.$emit('lazyImg:refresh');
                     }, 0);
-                });
+                });                
 
-                // Function to update staff listing
-                /*function updateList(){
-                    $scope.filteredList = filterList($scope.list);
+                function updatePager(){
+                    SDS.pager.totalItems = $scope.filteredList.length;
+                    var numPages =  Math.floor(SDS.pager.totalItems / SDS.pager.maxSize);
+                    if (numPages < SDS.pager.page){
+                        SDS.pager.page = numPages || 1;
+                    }
+                    SDS.pager.firstItem = (SDS.pager.page-1)*SDS.pager.perPage+1;
+                    SDS.pager.lastItem = Math.min(SDS.pager.totalItems, (SDS.pager.page * SDS.pager.perPage));
+                    $document.duScrollTo(0, 30, 500, function (t) { return (--t)*t*t+1; });
                 }
-
-                function filterList(list){
-                    list = $filter('filter')(list, $scope.staffdir.facet.search);
-                    list = $filter('filter')(list, $scope.staffdir.facet.department);
-                    list = $filter('filter')(list, $scope.staffdir.facet.subject, true);
-                    list = $filter('filter')(list, $scope.staffdir.facet.library);
-                    list = $filter('filter')(list, $scope.staffdir.specialtyType);
-                    list = $filter('orderBy')(list, $scope.staffdir.facet.sortBy, $scope.staffdir.sortReverse);
-                    return list;
-                }*/
-
-
 
                 $scope.$on('$destroy', function(){
                     facetsListener();
@@ -939,7 +948,7 @@ angular.module('staffdir', ['ualib.staffdir']);
                 login: '@email'
             },
             templateUrl: 'staff-profile/staff-profile.tpl.html',
-            controller: ['$scope', function($scope){
+            controller: function($scope){
                 $scope.userProfile = {};
 
                 //console.log("Login: " + $scope.login);
@@ -985,7 +994,7 @@ angular.module('staffdir', ['ualib.staffdir']);
                     }, function(data){
                         console.log('Error: cold not get profile! ' + data);
                     });
-            }]
+            }
         };
     }]);
 
