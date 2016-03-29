@@ -12,7 +12,7 @@
                 <div class="staff-card-detail">
                     <h6>Contact</h6>
                     <ul class="fa-ul">
-                        <li ng-if="staffPerson.phone"><span class="fa fa-phone fa-li"></span><a ng-href="tel:+1-205-{{staffPerson.phone}}">(205)-{{staffPerson.phone}}</a></li>
+                        <li ng-if="staffPerson.phone"><span class="fa fa-phone fa-li"></span><a ng-href="tel:+1-{{staffPerson.phone}}">{{staffPerson.phone}}</a></li>
                         <li ng-if="staffPerson.fax"><span class="fa fa-fax fa-li"></span>{{staffPerson.fax}}</li>
                         <li ng-if="staffPerson.email"><span class="fa fa-envelope fa-li"></span><a href="mailto:{{staffPerson.email}}">{{staffPerson.email}}</a></li>
                     </ul>
