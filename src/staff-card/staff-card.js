@@ -46,7 +46,7 @@ angular.module('ualib.staffdir')
                 return tpl;
             },
             link: function(scope, elm){
-                console.log(scope.person);
+                //console.log(scope.person);
                 if (angular.isDefined(scope.person)){
                     scope.info = {};
 
@@ -63,7 +63,7 @@ angular.module('ualib.staffdir')
                         var p = scope.person.split(/\s/);
 
                         if (p.length > 1){
-                            console.log({firstname: p[0], lastname: p[1]});
+                            //console.log({firstname: p[0], lastname: p[1]});
                             StaffFactory.byName().get({firstname: p[0], lastname: p[1]})
                                 .$promise.then(function(data){
                                     scope.staffPerson = data.list[0];

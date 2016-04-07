@@ -83,8 +83,8 @@ angular.module('ualib.staffdir')
                                 break;
                             case 'subject':
                                 list = $filter('filter')(list, SDS.facet[facet], true);
-                                console.log(facet+'s.'+facet);
-                                console.log(list);
+                                //console.log(facet+'s.'+facet);
+                                //console.log(list);
                                 break;
                             case 'sortBy':
                                 list = $filter('orderBy')(list, SDS.facet[facet], SDS.sortReverse);

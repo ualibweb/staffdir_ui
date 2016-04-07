@@ -87,8 +87,6 @@ angular.module('ualib.staffdir')
                                 //added in order to prevent crashes from empty email address
                                 if (prefix !== null) {
                                     val.emailPrefix = prefix[0];
-                                } else {
-                                    console.log(val.email);
                                 }
 
                                 //preset alpha index values base on first and last name

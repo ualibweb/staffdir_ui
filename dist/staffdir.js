@@ -588,8 +588,6 @@ angular.module('staffdir', ['ualib.staffdir']);
                                 //added in order to prevent crashes from empty email address
                                 if (prefix !== null) {
                                     val.emailPrefix = prefix[0];
-                                } else {
-                                    console.log(val.email);
                                 }
 
                                 //preset alpha index values base on first and last name
@@ -786,7 +784,7 @@ angular.module('staffdir', ['ualib.staffdir']);
                 return tpl;
             },
             link: function(scope, elm){
-                console.log(scope.person);
+                //console.log(scope.person);
                 if (angular.isDefined(scope.person)){
                     scope.info = {};
 
@@ -803,7 +801,7 @@ angular.module('staffdir', ['ualib.staffdir']);
                         var p = scope.person.split(/\s/);
 
                         if (p.length > 1){
-                            console.log({firstname: p[0], lastname: p[1]});
+                            //console.log({firstname: p[0], lastname: p[1]});
                             StaffFactory.byName().get({firstname: p[0], lastname: p[1]})
                                 .$promise.then(function(data){
                                     scope.staffPerson = data.list[0];
@@ -911,8 +909,8 @@ angular.module('staffdir', ['ualib.staffdir']);
                                 break;
                             case 'subject':
                                 list = $filter('filter')(list, SDS.facet[facet], true);
-                                console.log(facet+'s.'+facet);
-                                console.log(list);
+                                //console.log(facet+'s.'+facet);
+                                //console.log(list);
                                 break;
                             case 'sortBy':
                                 list = $filter('orderBy')(list, SDS.facet[facet], SDS.sortReverse);
