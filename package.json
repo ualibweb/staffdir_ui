@@ -2,15 +2,9 @@
   "name": "staffdir_ui",
   "version": "2.1.0",
   "description": "Frontend UI for the Staff Directory",
-  "main": [
-    "staffdir.js",
-    "staffdir-templates.js",
-    "staffdir.css",
-    "staffdir.min.js",
-    "staffdir.min.css"
-  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "bower install"
   },
   "repository": {
     "type": "git",
@@ -22,8 +16,6 @@
     "url": "https://github.com/ualibweb/staffdir_ui/issues"
   },
   "devDependencies": {
-    "bower": ">=1.3.12",
-    "grunt": "~0.4.5",
     "grunt-contrib-jshint": "~0.10.0",
     "grunt-contrib-concat": "~0.5.0",
     "grunt-contrib-less": "~0.12.0",
