@@ -35,11 +35,12 @@ angular.module('ualib.staffdir')
                 sortBy: '@'
             },
             templateUrl: 'staff-card/staff-card-list.tpl.html',
-            controller: ['$scope', '$rootScope', '$timeout', function($scope, $rootScope, $timeout){
-                $scope.filteredList = $scope.list;
+            controller: ['$scope', function($scope){
+                SDS.init();
                 $scope.staffdir = SDS;
+                $scope.filteredList = filterList($scope.list);
 
-
+                updatePager($scope.filteredList.length);
                 //TODO: temporary work around because CMS file handling is dumb. Need to fix and make sustainable
                 $scope.placeholder = 'https://www.lib.ua.edu/wp-content/themes/roots-ualib/assets/img/user-profile.png';
 
@@ -53,7 +54,7 @@ angular.module('ualib.staffdir')
                 // Update listing when SDS broadcasts "facetsChange" event
                 var facetsListener = $scope.$on('facetsChange', function(){
                     updateList();
-                });                
+                });
 
                 function updatePager(totalItems){
                     SDS.pager.totalItems = totalItems;
@@ -63,11 +64,12 @@ angular.module('ualib.staffdir')
                     }
                     SDS.pager.firstItem = (SDS.pager.page-1)*SDS.pager.perPage+1;
                     SDS.pager.lastItem = Math.min(SDS.pager.totalItems, (SDS.pager.page * SDS.pager.perPage));
-                    $document.duScrollTo(0, 30, 500, function (t) { return (--t)*t*t+1; });
                 }
 
                 function updateList(){
                     $scope.filteredList = filterList($scope.list);
+                    updatePager($scope.filteredList.length);
+                    $document.duScrollTo(0, 30, 500, function (t) { return (--t)*t*t+1; });
                 }
 
                 function filterList(list){
@@ -93,7 +95,6 @@ angular.module('ualib.staffdir')
                                 list = $filter('filter')(list, SDS.facet[facet]);
                         }
                     }
-                    updatePager(list.length);
                     return list;
                 }
 

@@ -236,3 +236,4 @@ angular.module('ualib.staffdir')
             }
         };
     }]);
+

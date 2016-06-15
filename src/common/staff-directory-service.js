@@ -1,23 +1,5 @@
 angular.module('ualib.staffdir')
 
-    // Capture any existing URL facet parameters.
-    .run(['StaffDirectoryService', '$location', '$rootScope', function(SDS, $location, $rootScope){
-        $rootScope.$on('$locationChangeStart', function(ev, next, last){
-            //console.log(arguments);
-            //console.log($location.path());
-            if ($location.path() === '/staffdir'){
-                var params = $location.search();
-                for (var param in params){
-                    //TODO: This must be temporary. Any URI param will cause the facet bar to display on load!!
-                    if (!SDS.showFacetBar && !SDS.facetExceptions.hasOwnProperty(param)) {
-                        SDS.showFacetBar = true;
-                    }
-                    SDS.facet[param] = params[param];
-                }
-            }
-        });
-    }])
-
     .service('StaffDirectoryService', ['$location', '$rootScope', function($location, $rootScope){
         var self = this; //ensures proper contest in closure statements
         this.sortReverse = false; // Default sort direction
@@ -33,6 +15,18 @@ angular.module('ualib.staffdir')
 
         //TODO: handle this variable through a central route/event instead of on a function-by-function basis
         this.showFacetBar = false;
+
+        // Initialize function to capture any pre-linked filter params
+        this.init = function(){
+            var params = $location.search();
+            for (var param in params){
+                //TODO: This must be temporary. Any URI param will cause the facet bar to display on load!!
+                if (!this.showFacetBar && !this.facetExceptions.hasOwnProperty(param)) {
+                    this.showFacetBar = true;
+                }
+                this.facet[param] = params[param];
+            }
+        };
 
         // Accepts string or array arguments of facets to clear
         this.clearFacets = function(){

@@ -2,379 +2,32 @@ angular.module('ualib.staffdir.templates', ['staff-card/staff-card-list.tpl.html
 
 angular.module("staff-card/staff-card-list.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("staff-card/staff-card-list.tpl.html",
-    "<div ng-repeat=\"person in filteredList | after:(staffdir.pager.page-1)*staffdir.pager.perPage | limitTo:staffdir.pager.perPage\">\n" +
-    "    <div class=\"page-slice\">\n" +
-    "        <div class=\"row\">\n" +
-    "            <div class=\"hidden-xs col-sm-3\">\n" +
-    "                <img class=\"staff-portrait thumbnail\" ng-src='{{person.photo}}' />\n" +
-    "            </div>\n" +
-    "            <div class=\"col-xs-12 col-sm-7\">\n" +
-    "                <div class=\"row\">\n" +
-    "                    <div class=\"col-xs-12 col-sm-7 name-plate\">\n" +
-    "                        <h3 class=\"name\">\n" +
-    "                            <small ng-if=\"person.rank\">{{person.rank}}</small>\n" +
-    "                            <a ng-href=\"#/staffdir/{{person.emailPrefix}}\" ng-if=\"person.profile\">\n" +
-    "                                <span ng-class=\"{'sorting-by': staffdir.facet.sortBy == 'firstname'}\" ng-bind-html=\"person.firstname | highlight:staffdir.facet.search\"></span>\n" +
-    "                                <span ng-class=\"{'sorting-by': staffdir.facet.sortBy == 'lastname'}\" ng-bind-html=\"person.lastname | highlight:staffdir.facet.search\"></span>\n" +
-    "                            </a>\n" +
-    "                            <span ng-if=\"!person.profile\">\n" +
-    "                                <span ng-class=\"{'sorting-by': staffdir.facet.sortBy == 'firstname'}\" ng-bind-html=\"person.firstname | highlight:staffdir.facet.search\"></span>\n" +
-    "                                <span ng-class=\"{'sorting-by': staffdir.facet.sortBy == 'lastname'}\" ng-bind-html=\"person.lastname | highlight:staffdir.facet.search\"></span>\n" +
-    "                            </span>\n" +
-    "                        </h3>\n" +
-    "                        <h4 class=\"title\"><span ng-bind-html=\"person.title | highlight:staffdir.facet.search\"></span></h4>\n" +
-    "                        <h5 class=\"hidden-xs\"><span ng-bind-html=\"person.department | highlight:staffdir.facet.search\"></span></h5>\n" +
-    "\n" +
-    "                    </div>\n" +
-    "                    <div class=\"col-xs-12 col-sm-5\">\n" +
-    "                        <ul class=\"fa-ul\">\n" +
-    "                            <li ng-if=\"person.phone\"><span class=\"fa fa-phone fa-li\"></span><a ng-href=\"tel:+1{{person.phone}}\">{{person.phone}}</a></li>\n" +
-    "                            <li class=\"hidden-xs\" ng-if=\"person.fax\"><span class=\"fa fa-fax fa-li\"></span>{{person.fax}}</li>\n" +
-    "                            <li ng-if=\"person.email\"><span class=\"fa fa-envelope fa-li\"></span><a ng-href=\"mailto:{{person.email}}\" title=\"Email {{person.firstname}} {{person.lastname}}\">{{person.email}}</a></li>\n" +
-    "                        </ul>\n" +
-    "                    </div>\n" +
-    "                    <div class=\"col-sm-12 subject-specialty hidden-xs\" ng-if=\"person.subjects\">\n" +
-    "                        <table class=\"table table-condensed\">\n" +
-    "                            <thead>\n" +
-    "                            <tr>\n" +
-    "                                <th>Subject specialty</th>\n" +
-    "                                <th class=\"text-center\">Selector</th>\n" +
-    "                                <th class=\"text-center\">Instruction</th>\n" +
-    "                            </tr>\n" +
-    "                            </thead>\n" +
-    "                            <tbody>\n" +
-    "                            <tr ng-repeat=\"subject in person.subjects | orderBy:'subject'\">\n" +
-    "                                <td>\n" +
-    "                                    <a ng-href=\"{{subject.link}}\" title=\"{{subject.subject}}\" ng-if=\"subject.link\" ng-bind-html=\"subject.subject | highlight:staffdir.facet.search\"></a>\n" +
-    "                                    <span ng-if=\"!subject.link\" ng-bind-html=\"subject.subject | highlight:staffdir.facet.search\">{{subject.subject}}</span>\n" +
-    "                                </td>\n" +
-    "                                <td class=\"text-center\"><span class=\"fa fa-circle text-info\" ng-if=\"subject.type == 1 || subject.type == 3\"></span></td>\n" +
-    "                                <td class=\"text-center\"><span class=\"fa fa-circle text-info\" ng-if=\"subject.type > 1\"></span></td>\n" +
-    "                            </tr>\n" +
-    "                            </tbody>\n" +
-    "                        </table>\n" +
-    "                    </div>\n" +
-    "                </div>\n" +
-    "            </div>\n" +
-    "        </div>\n" +
-    "    </div>\n" +
-    "</div>\n" +
-    "\n" +
-    "<div class=\"alert alert-warning text-center\" role=\"alert\" ng-if=\"filteredList.length < 1\">\n" +
-    "    <h2>\n" +
-    "        No staff members found\n" +
-    "        <span ng-if=\"staffdir.facet.library\"> in {{staffdir.facet.library}}</span>\n" +
-    "        <span ng-if=\"staffdir.facet.selector\"> that are subject selectors</span>\n" +
-    "        <span ng-if=\"staffdir.facet.instructor\"><span ng-if=\"staffdir.facet.selector\"> or</span> <span ng-if=\"!staffdir.facet.selector\"> that are</span> instruction librarians</span>\n" +
-    "                <span ng-if=\"staffdir.facet.subject\">\n" +
-    "                    <span ng-if=\"staffdir.facet.selector || staffdir.facet.instructor\"> for</span>\n" +
-    "                    <span ng-if=\"!staffdir.facet.selector && !staffdir.facet.instructor\"> with a specialty in</span>\n" +
-    "                     {{staffdir.facet.subject}}\n" +
-    "                </span>\n" +
-    "    </h2>\n" +
-    "</div>");
+    "<div ng-repeat=\"person in filteredList | after:(staffdir.pager.page-1)*staffdir.pager.perPage | limitTo:staffdir.pager.perPage\"><div class=page-slice><div class=row><div class=\"hidden-xs col-sm-3\"><img class=\"staff-portrait thumbnail\" ng-src=\"{{person.photo}}\"></div><div class=\"col-xs-12 col-sm-7\"><div class=row><div class=\"col-xs-12 col-sm-7 name-plate\"><h3 class=name><small ng-if=person.rank>{{person.rank}}</small> <a ng-href=#/staffdir/{{person.emailPrefix}} ng-if=person.profile><span ng-class=\"{'sorting-by': staffdir.facet.sortBy == 'firstname'}\" ng-bind-html=\"person.firstname | highlight:staffdir.facet.search\"></span> <span ng-class=\"{'sorting-by': staffdir.facet.sortBy == 'lastname'}\" ng-bind-html=\"person.lastname | highlight:staffdir.facet.search\"></span></a> <span ng-if=!person.profile><span ng-class=\"{'sorting-by': staffdir.facet.sortBy == 'firstname'}\" ng-bind-html=\"person.firstname | highlight:staffdir.facet.search\"></span> <span ng-class=\"{'sorting-by': staffdir.facet.sortBy == 'lastname'}\" ng-bind-html=\"person.lastname | highlight:staffdir.facet.search\"></span></span></h3><h4 class=title><span ng-bind-html=\"person.title | highlight:staffdir.facet.search\"></span></h4><h5 class=hidden-xs><span ng-bind-html=\"person.department | highlight:staffdir.facet.search\"></span></h5></div><div class=\"col-xs-12 col-sm-5\"><ul class=fa-ul><li ng-if=person.phone><span class=\"fa fa-phone fa-li\"></span><a ng-href=tel:+1{{person.phone}}>{{person.phone}}</a></li><li class=hidden-xs ng-if=person.fax><span class=\"fa fa-fax fa-li\"></span>{{person.fax}}</li><li ng-if=person.email><span class=\"fa fa-envelope fa-li\"></span><a ng-href=mailto:{{person.email}} title=\"Email {{person.firstname}} {{person.lastname}}\">{{person.email}}</a></li></ul></div><div class=\"col-sm-12 subject-specialty hidden-xs\" ng-if=person.subjects><table class=\"table table-condensed\"><thead><tr><th>Subject specialty</th><th class=text-center>Selector</th><th class=text-center>Instruction</th></tr></thead><tbody><tr ng-repeat=\"subject in person.subjects | orderBy:'subject'\"><td><a ng-href={{subject.link}} title={{subject.subject}} ng-if=subject.link ng-bind-html=\"subject.subject | highlight:staffdir.facet.search\"></a> <span ng-if=!subject.link ng-bind-html=\"subject.subject | highlight:staffdir.facet.search\">{{subject.subject}}</span></td><td class=text-center><span class=\"fa fa-circle text-info\" ng-if=\"subject.type == 1 || subject.type == 3\"></span></td><td class=text-center><span class=\"fa fa-circle text-info\" ng-if=\"subject.type > 1\"></span></td></tr></tbody></table></div></div></div></div></div></div><div class=\"alert alert-warning text-center\" role=alert ng-if=\"filteredList.length < 1\"><h2>No staff members found <span ng-if=staffdir.facet.library>in {{staffdir.facet.library}}</span> <span ng-if=staffdir.facet.selector>that are subject selectors</span> <span ng-if=staffdir.facet.instructor><span ng-if=staffdir.facet.selector>or</span> <span ng-if=!staffdir.facet.selector>that are</span> instruction librarians</span> <span ng-if=staffdir.facet.subject><span ng-if=\"staffdir.facet.selector || staffdir.facet.instructor\">for</span> <span ng-if=\"!staffdir.facet.selector && !staffdir.facet.instructor\">with a specialty in</span> {{staffdir.facet.subject}}</span></h2></div>");
 }]);
 
 angular.module("staff-card/staff-card-md.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("staff-card/staff-card-md.tpl.html",
-    "<div class=\"staff-card-container panel panel-default\">\n" +
-    "    <div class=\"panel-body\">\n" +
-    "        <div class=\"row\">\n" +
-    "            <div class=\"name-plate col-sm-12 text-right\">\n" +
-    "                <h4 class=\"name\"><small ng-if=\"staffPerson.rank\">{{staffPerson.rank}} </small>{{staffPerson.firstname}} {{staffPerson.lastname}}</h4>\n" +
-    "                <div class=\"title\">{{staffPerson.title}}</div>\n" +
-    "                <div class=\"\">{{staffPerson.department}}</div>\n" +
-    "            </div>\n" +
-    "        </div>\n" +
-    "        <div class=\"row\">\n" +
-    "            <div class=\"col-xs-6\">\n" +
-    "                <div class=\"staff-card-detail\">\n" +
-    "                    <h6>Contact</h6>\n" +
-    "                    <ul class=\"fa-ul\">\n" +
-    "                        <li ng-if=\"staffPerson.phone\"><span class=\"fa fa-phone fa-li\"></span><a ng-href=\"tel:+1-{{staffPerson.phone}}\">{{staffPerson.phone}}</a></li>\n" +
-    "                        <li ng-if=\"staffPerson.fax\"><span class=\"fa fa-fax fa-li\"></span>{{staffPerson.fax}}</li>\n" +
-    "                        <li ng-if=\"staffPerson.email\"><span class=\"fa fa-envelope fa-li\"></span><a href=\"mailto:{{staffPerson.email}}\">{{staffPerson.email}}</a></li>\n" +
-    "                    </ul>\n" +
-    "                </div>\n" +
-    "            </div>\n" +
-    "            <div class=\"col-xs-6\">\n" +
-    "                <div class=\"staff-card-detail\" ng-if=\"staffPerson.subjects\">\n" +
-    "                    <h6>Subject Expertise</h6>\n" +
-    "                    <ul class=\"list-unstyled\">\n" +
-    "                        <li role=\"presentation\" ng-repeat=\"subject in staffPerson.subjects | orderBy:subject.subject\" ng-class=\"{'disabled': !subject.link}\">\n" +
-    "                            <a ng-href=\"{{subject.link}}\" title=\"{{subject.subject}}\" ng-if=\"subject.link\">{{subject.subject}}</a>\n" +
-    "                            <span title=\"{{subject.subject}}\" ng-if=\"!subject.link\">{{subject.subject}}</span>\n" +
-    "                        </li>\n" +
-    "                    </ul>\n" +
-    "                </div>\n" +
-    "            </div>\n" +
-    "        </div>\n" +
-    "    </div>\n" +
-    "</div>");
+    "<div class=\"staff-card-container panel panel-default\"><div class=panel-body><div class=row><div class=\"name-plate col-sm-12 text-right\"><h4 class=name><small ng-if=staffPerson.rank>{{staffPerson.rank}}</small>{{staffPerson.firstname}} {{staffPerson.lastname}}</h4><div class=title>{{staffPerson.title}}</div><div>{{staffPerson.department}}</div></div></div><div class=row><div class=col-xs-6><div class=staff-card-detail><h6>Contact</h6><ul class=fa-ul><li ng-if=staffPerson.phone><span class=\"fa fa-phone fa-li\"></span><a ng-href=tel:+1-{{staffPerson.phone}}>{{staffPerson.phone}}</a></li><li ng-if=staffPerson.fax><span class=\"fa fa-fax fa-li\"></span>{{staffPerson.fax}}</li><li ng-if=staffPerson.email><span class=\"fa fa-envelope fa-li\"></span><a href=mailto:{{staffPerson.email}}>{{staffPerson.email}}</a></li></ul></div></div><div class=col-xs-6><div class=staff-card-detail ng-if=staffPerson.subjects><h6>Subject Expertise</h6><ul class=list-unstyled><li role=presentation ng-repeat=\"subject in staffPerson.subjects | orderBy:subject.subject\" ng-class=\"{'disabled': !subject.link}\"><a ng-href={{subject.link}} title={{subject.subject}} ng-if=subject.link>{{subject.subject}}</a> <span title={{subject.subject}} ng-if=!subject.link>{{subject.subject}}</span></li></ul></div></div></div></div></div>");
 }]);
 
 angular.module("staff-directory/staff-directory-facets.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("staff-directory/staff-directory-facets.tpl.html",
-    "<form class=\"facets-form\">\n" +
-    "    <div class=\"form-group\">\n" +
-    "        <h4>Filters</h4>\n" +
-    "    </div>\n" +
-    "    <div class=\"form-group\">\n" +
-    "        <div class=\"facet-group\">\n" +
-    "            <input class=\"form-control\" id=\"directorySearch\" name=\"directorySearch\" type=\"text\" ng-model=\"staffdir.facet.search\" placeholder=\"Keyword Search...\" ng-keyup=\"staffdir.changeFacet('search')\"/>\n" +
-    "        </div>\n" +
-    "    </div>\n" +
-    "\n" +
-    "    <div class=\"form-group\">\n" +
-    "        <h5>Sort by</h5>\n" +
-    "        <div class=\"facet-group\">\n" +
-    "            <div class=\"btn-group btn-group-justified\">\n" +
-    "                <label class=\"btn btn-default\" ng-model=\"staffdir.facet.sortBy\" btn-radio=\"'lastname'\" ng-change=\"staffdir.changeFacet('sortBy')\">Last name</label>\n" +
-    "                <label class=\"btn btn-default\" ng-model=\"staffdir.facet.sortBy\" btn-radio=\"'firstname'\" ng-change=\"staffdir.changeFacet('sortBy')\">First name</label>\n" +
-    "            </div>\n" +
-    "        </div>\n" +
-    "    </div>\n" +
-    "\n" +
-    "    <div class=\"form-group hidden-xs hidden-sm\">\n" +
-    "        <h5>Subject specialty</h5>\n" +
-    "\n" +
-    "        <div class=\"facet-group\">\n" +
-    "\n" +
-    "            <select class=\"form-control\" ng-model=\"staffdir.facet.subject\" name=\"subject\" ng-options=\"subject for subject in facets.subjects\" ng-change=\"staffdir.changeFacet('subject')\">\n" +
-    "                <option value=\"\">-- Select Subject --</option>\n" +
-    "            </select>\n" +
-    "            <label class=\"checkbox-inline\">\n" +
-    "                <input type=\"checkbox\" id=\"selector\" ng-true-value=\"1\" ng-model=\"staffdir.facet.selector\" ng-change=\"staffdir.changeFacet('selector')\"> Selector\n" +
-    "            </label>\n" +
-    "            <label class=\"checkbox-inline\">\n" +
-    "                <input type=\"checkbox\" id=\"instructor\" ng-true-value=\"2\" ng-model=\"staffdir.facet.instructor\" ng-change=\"staffdir.changeFacet('instructor')\"> Instructor\n" +
-    "            </label>\n" +
-    "        </div>\n" +
-    "    </div>\n" +
-    "\n" +
-    "    <div class=\"form-group hidden-xs hidden-sm\">\n" +
-    "        <h5>Department</h5>\n" +
-    "        <div class=\"facet-group\">\n" +
-    "            <select class=\"form-control\" ng-model=\"staffdir.facet.department\" name=\"department\" ng-options=\"department for department in facets.departments\" ng-change=\"staffdir.changeFacet('department')\">\n" +
-    "                <option value=\"\">-- Select Department --</option>\n" +
-    "            </select>\n" +
-    "        </div>\n" +
-    "    </div>\n" +
-    "\n" +
-    "    <div class=\"form-group hidden-xs hidden-sm\">\n" +
-    "        <h5>Library Location</h5>\n" +
-    "        <div class=\"facet-group\">\n" +
-    "            <div class=\"radio\">\n" +
-    "                <label>\n" +
-    "                    <input type=\"radio\" ng-model=\"staffdir.facet.library\" value=\"\" ng-checked=\"!staffdir.facet.library\" ng-change=\"staffdir.changeFacet('library')\"> All\n" +
-    "                </label>\n" +
-    "            </div>\n" +
-    "            <div class=\"radio\" ng-repeat=\"library in facets.libraries\">\n" +
-    "                <label>\n" +
-    "                    <input type=\"radio\" ng-model=\"staffdir.facet.library\" value=\"{{library}}\" ng-change=\"staffdir.changeFacet('library')\"> {{library}}\n" +
-    "                </label>\n" +
-    "            </div>\n" +
-    "        </div>\n" +
-    "    </div>\n" +
-    "\n" +
-    "    <div class=\"form-group hidden-xs hidden-sm\">\n" +
-    "        <button class=\"btn btn-primary btn-block\" type=\"button\" ng-click=\"staffdir.clearFacets()\">\n" +
-    "            <span class=\"fa fa-fw fa-refresh\"></span> Reset Filters\n" +
-    "        </button>\n" +
-    "    </div>\n" +
-    "</form>");
+    "<form class=facets-form><div class=form-group><h4>Filters</h4></div><div class=form-group><div class=facet-group><input class=form-control id=directorySearch name=directorySearch ng-model=staffdir.facet.search placeholder=\"Keyword Search...\" ng-keyup=\"staffdir.changeFacet('search')\"></div></div><div class=form-group><h5>Sort by</h5><div class=facet-group><div class=\"btn-group btn-group-justified\"><label class=\"btn btn-default\" ng-model=staffdir.facet.sortBy btn-radio=\"'lastname'\" ng-change=\"staffdir.changeFacet('sortBy')\">Last name</label><label class=\"btn btn-default\" ng-model=staffdir.facet.sortBy btn-radio=\"'firstname'\" ng-change=\"staffdir.changeFacet('sortBy')\">First name</label></div></div></div><div class=\"form-group hidden-xs hidden-sm\"><h5>Subject specialty</h5><div class=facet-group><select class=form-control ng-model=staffdir.facet.subject name=subject ng-options=\"subject for subject in facets.subjects\" ng-change=\"staffdir.changeFacet('subject')\"><option value=\"\">-- Select Subject --</option></select><label class=checkbox-inline><input type=checkbox id=selector ng-true-value=1 ng-model=staffdir.facet.selector ng-change=\"staffdir.changeFacet('selector')\"> Selector</label><label class=checkbox-inline><input type=checkbox id=instructor ng-true-value=2 ng-model=staffdir.facet.instructor ng-change=\"staffdir.changeFacet('instructor')\"> Instructor</label></div></div><div class=\"form-group hidden-xs hidden-sm\"><h5>Department</h5><div class=facet-group><select class=form-control ng-model=staffdir.facet.department name=department ng-options=\"department for department in facets.departments\" ng-change=\"staffdir.changeFacet('department')\"><option value=\"\">-- Select Department --</option></select></div></div><div class=\"form-group hidden-xs hidden-sm\"><h5>Library Location</h5><div class=facet-group><div class=radio><label><input type=radio ng-model=staffdir.facet.library ng-checked=!staffdir.facet.library ng-change=\"staffdir.changeFacet('library')\"> All</label></div><div class=radio ng-repeat=\"library in facets.libraries\"><label><input type=radio ng-model=staffdir.facet.library value={{library}} ng-change=\"staffdir.changeFacet('library')\"> {{library}}</label></div></div></div><div class=\"form-group hidden-xs hidden-sm\"><button class=\"btn btn-primary btn-block\" type=button ng-click=staffdir.clearFacets()><span class=\"fa fa-fw fa-refresh\"></span> Reset Filters</button></div></form>");
 }]);
 
 angular.module("staff-directory/staff-directory-listing.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("staff-directory/staff-directory-listing.tpl.html",
-    "<div class=\"table-responsive\">\n" +
-    "    <table class=\"table table-striped table-condensed table-hover\">\n" +
-    "        <thead>\n" +
-    "        <tr>\n" +
-    "            <th>\n" +
-    "                <a href=\"#\"\n" +
-    "                   ng-click=\"sortList($event, 'lastname')\"\n" +
-    "                   ng-class=\"{'sortable': !staffdir.sortReverse && staffdir.facet.sortBy == 'lastname', 'sortable-reverse': staffdir.sortReverse && staffdir.facet.sortBy == 'lastname'}\">Name</a>\n" +
-    "            </th>\n" +
-    "            <th class=\"hidden-xs\">\n" +
-    "                <a href=\"#\" \n" +
-    "                   ng-click=\"sortList($event, 'title')\" \n" +
-    "                   ng-class=\"{'sortable': !staffdir.sortReverse && staffdir.facet.sortBy == 'title', 'sortable-reverse': staffdir.sortReverse && staffdir.facet.sortBy == 'title'}\">Title</a>\n" +
-    "            </th>\n" +
-    "            <th class=\"hidden-xs\">\n" +
-    "                <a href=\"#\" \n" +
-    "                   ng-click=\"sortList($event, 'department')\" \n" +
-    "                   ng-class=\"{'sortable': !staffdir.sortReverse && staffdir.facet.sortBy == 'department', 'sortable-reverse': staffdir.sortReverse && staffdir.sortBy == 'department'}\">Department/Unit</a>\n" +
-    "            </th>\n" +
-    "            <th>Contact</th>\n" +
-    "            <th class=\"hidden-xs hidden-sm\">Specialty</th>\n" +
-    "        </tr>\n" +
-    "        </thead>\n" +
-    "        <tbody>\n" +
-    "        <tr ng-repeat=\"person in filteredList = (list | filter:staffdir.facet.search | filter:staffdir.facet.subject:true | orderBy:staffdir.sortBy:staffdir.sortReverse) track by $index\">\n" +
-    "            <td class=\"text-nowrap\">\n" +
-    "                <div ng-if=\"person.rank\" class=\"text-muted\"> {{person.rank}}</div>\n" +
-    "                <span ng-bind-html=\"person.firstname | highlight:staffdir.facet.search\"></span> <strong ng-bind-html=\"person.lastname | highlight:staffdir.facet.search\"></strong>\n" +
-    "\n" +
-    "            </td>\n" +
-    "            <td class=\"hidden-xs\"><span ng-bind-html=\"person.title | highlight:staffdir.facet.search\"></span></td>\n" +
-    "            <td class=\"hidden-xs\"><span ng-bind-html=\"person.department | highlight:staffdir.facet.search\"></span></td>\n" +
-    "            <td>\n" +
-    "                <ul class=\"fa-ul\">\n" +
-    "                    <li ng-if=\"person.phone\"><span class=\"fa fa-phone fa-li\"></span>{{person.phone}}</li>\n" +
-    "                    <li ng-if=\"person.fax\"><span class=\"fa fa-fax fa-li\"></span>{{person.fax}}</li>\n" +
-    "                    <li ng-if=\"person.email\"><span class=\"fa fa-envelope fa-li\"></span> <a ng-href=\"mailto:{{person.email}}\" title=\"Email {{person.firstname}} {{persone.lastname}}\">{{person.email}}</a></li>\n" +
-    "                </ul>\n" +
-    "            </td>\n" +
-    "            <td class=\"hidden-xs hidden-sm\">\n" +
-    "                <ul class=\"list-unstyled\" ng-if=\"person.subjects\">\n" +
-    "                    <li ng-repeat=\"subject in person.subjects | orderBy:subject.subject\">\n" +
-    "                        <a ng-href=\"{{subject.link}}\" title=\"{{subject.subject}}\" ng-if=\"subject.link\" ng-bind-html=\"subject.subject | highlight:staffdir.facet.search\"></a>\n" +
-    "                        <span ng-if=\"!subject.link\" ng-bind-html=\"subject.subject | highlight:staffdir.facet.search\">{{subject.subject}}</span>\n" +
-    "                    </li>\n" +
-    "                </ul>\n" +
-    "            </td>\n" +
-    "        </tr>\n" +
-    "        </tbody>\n" +
-    "    </table>\n" +
-    "    <div class=\"alert alert-warning text-center\" role=\"alert\" ng-show=\"filteredList.length === 0\">\n" +
-    "        <h2>\n" +
-    "            No results<span ng-if=\"staffdir.facet.subject\"><strong> for {{staffdir.facet.subject}}</strong> subject specialists</span>\n" +
-    "            <span ng-if=\"staffdir.facet.search\"> matching <strong>\"{{staffdir.facet.search}}\"</strong></span>\n" +
-    "        </h2>\n" +
-    "    </div>\n" +
-    "</div>");
+    "<div class=table-responsive><table class=\"table table-striped table-condensed table-hover\"><thead><tr><th><a href=# ng-click=\"sortList($event, 'lastname')\" ng-class=\"{'sortable': !staffdir.sortReverse && staffdir.facet.sortBy == 'lastname', 'sortable-reverse': staffdir.sortReverse && staffdir.facet.sortBy == 'lastname'}\">Name</a></th><th class=hidden-xs><a href=# ng-click=\"sortList($event, 'title')\" ng-class=\"{'sortable': !staffdir.sortReverse && staffdir.facet.sortBy == 'title', 'sortable-reverse': staffdir.sortReverse && staffdir.facet.sortBy == 'title'}\">Title</a></th><th class=hidden-xs><a href=# ng-click=\"sortList($event, 'department')\" ng-class=\"{'sortable': !staffdir.sortReverse && staffdir.facet.sortBy == 'department', 'sortable-reverse': staffdir.sortReverse && staffdir.sortBy == 'department'}\">Department/Unit</a></th><th>Contact</th><th class=\"hidden-xs hidden-sm\">Specialty</th></tr></thead><tbody><tr ng-repeat=\"person in filteredList = (list | filter:staffdir.facet.search | filter:staffdir.facet.subject:true | orderBy:staffdir.sortBy:staffdir.sortReverse) track by $index\"><td class=text-nowrap><div ng-if=person.rank class=text-muted>{{person.rank}}</div><span ng-bind-html=\"person.firstname | highlight:staffdir.facet.search\"></span> <strong ng-bind-html=\"person.lastname | highlight:staffdir.facet.search\"></strong></td><td class=hidden-xs><span ng-bind-html=\"person.title | highlight:staffdir.facet.search\"></span></td><td class=hidden-xs><span ng-bind-html=\"person.department | highlight:staffdir.facet.search\"></span></td><td><ul class=fa-ul><li ng-if=person.phone><span class=\"fa fa-phone fa-li\"></span>{{person.phone}}</li><li ng-if=person.fax><span class=\"fa fa-fax fa-li\"></span>{{person.fax}}</li><li ng-if=person.email><span class=\"fa fa-envelope fa-li\"></span> <a ng-href=mailto:{{person.email}} title=\"Email {{person.firstname}} {{persone.lastname}}\">{{person.email}}</a></li></ul></td><td class=\"hidden-xs hidden-sm\"><ul class=list-unstyled ng-if=person.subjects><li ng-repeat=\"subject in person.subjects | orderBy:subject.subject\"><a ng-href={{subject.link}} title={{subject.subject}} ng-if=subject.link ng-bind-html=\"subject.subject | highlight:staffdir.facet.search\"></a> <span ng-if=!subject.link ng-bind-html=\"subject.subject | highlight:staffdir.facet.search\">{{subject.subject}}</span></li></ul></td></tr></tbody></table><div class=\"alert alert-warning text-center\" role=alert ng-show=\"filteredList.length === 0\"><h2>No results<span ng-if=staffdir.facet.subject><strong>for {{staffdir.facet.subject}}</strong> subject specialists</span> <span ng-if=staffdir.facet.search>matching <strong>\"{{staffdir.facet.search}}\"</strong></span></h2></div></div>");
 }]);
 
 angular.module("staff-directory/staff-directory.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("staff-directory/staff-directory.tpl.html",
-    "<div class=\"jumbotron-header\">\n" +
-    "    <div class=\"jumbotron\">\n" +
-    "        <div class=\"container\">\n" +
-    "            <div class=\"row\">\n" +
-    "                <div class=\"col-sm-12\">\n" +
-    "                    <ol class=\"breadcrumb\" typeof=\"BreadcrumbList\" vocab=\"http://schema.org/\">\n" +
-    "                        <li><a title=\"Go to The University of Alabama Libraries.\" href=\"/#/home\" class=\"home\">The University of Alabama Libraries</a></li>\n" +
-    "                        <li><a title=\"Go to News.\" href=\"/#/staffdir\" class=\"post post-page\">Staff Directory</a></li>\n" +
-    "                    </ol>\n" +
-    "                </div>\n" +
-    "            </div>\n" +
-    "            <div class=\"row\">\n" +
-    "                <div class=\"col-md-12\">\n" +
-    "                    <h1>Staff Directory</h1>\n" +
-    "                </div>\n" +
-    "            </div>\n" +
-    "        </div>\n" +
-    "    </div>\n" +
-    "</div>\n" +
-    "\n" +
-    "\n" +
-    "<div class=\"container\">\n" +
-    "    <div class=\"row staff-directory\">\n" +
-    "        <div class=\"col-md-3 col-md-push-9\">\n" +
-    "            <div class=\"staff-directory-facets\" facets=\"staffdir.facets\"></div>\n" +
-    "        </div>\n" +
-    "        <div class=\"col-md-9 col-md-pull-3\">\n" +
-    "            <div ng-show=\"facets.showFacetBar\">\n" +
-    "                <ol class=\"breadcrumb facetcrumb\">\n" +
-    "                    <li ng-if=\"facets.facet.department\"><strong>Department:</strong> <button type=\"button\" class=\"btn btn-default\" ng-click=\"facets.clearFacets('department')\">{{facets.facet.department | truncate : 20 : '...'}} <span class=\"text-muted\" aria-hidden=\"true\">&times;</span></button></li>\n" +
-    "                    <li ng-if=\"facets.facet.library\"><strong>Library:</strong> <button type=\"button\" class=\"btn btn-default\" ng-click=\"facets.clearFacets('library')\">{{facets.facet.library}} <span class=\"text-muted\" aria-hidden=\"true\">&times;</span></button></li>\n" +
-    "                    <li ng-if=\"facets.facet.subject\"><strong>Subject:</strong> <button type=\"button\" class=\"btn btn-default\" ng-click=\"facets.clearFacets('subject')\">{{facets.facet.subject}} <span class=\"text-muted\" aria-hidden=\"true\">&times;</span></button></li>\n" +
-    "                    <li ng-if=\"facets.facet.selector\"><button type=\"button\" class=\"btn btn-default\" ng-click=\"facets.clearFacets('selector')\">Selector <span class=\"text-muted\" aria-hidden=\"true\">&times;</span></button></li>\n" +
-    "                    <li ng-if=\"facets.facet.instructor\"><button type=\"button\" class=\"btn btn-default\" ng-click=\"facets.clearFacets('instructor')\">Instructor <span class=\"text-muted\" aria-hidden=\"true\">&times;</span></button></li>\n" +
-    "\n" +
-    "                    <li class=\"pull-right\"><button type=\"button\" class=\"btn btn-primary btn-small reset-btn\" title=\"Reset filters\" ng-click=\"facets.clearFacets()\"><i class=\"fa fa-refresh\"></i></button></li>\n" +
-    "                </ol>\n" +
-    "            </div>\n" +
-    "\n" +
-    "            <div class=\"text-center\">\n" +
-    "                <pagination class=\"pagination-sm\" ng-model=\"facets.pager.page\" total-items=\"facets.pager.totalItems\" max-size=\"facets.pager.maxSize\" boundary-links=\"true\" rotate=\"false\" items-per-page=\"facets.pager.perPage\" ng-change=\"facets.changeFacet('page')\" ng-if=\"facets.pager.totalItems > facets.pager.perPage\"></pagination>\n" +
-    "            </div>\n" +
-    "            \n" +
-    "            <div class=\"staff-directory-listing\" id=\"staff-directory-listing\" list=\"staffdir.list\" sort-by=\"lastname\"></div>\n" +
-    "\n" +
-    "            <div class=\"text-center\">\n" +
-    "                <pagination class=\"pagination-sm\" ng-model=\"facets.pager.page\" total-items=\"facets.pager.totalItems\" max-size=\"facets.pager.maxSize\" boundary-links=\"true\" rotate=\"false\" items-per-page=\"facets.pager.perPage\" ng-change=\"facets.changeFacet('page')\" ng-if=\"facets.pager.totalItems > facets.pager.perPage\"></pagination>\n" +
-    "            </div>\n" +
-    "        </div>\n" +
-    "    </div>\n" +
-    "</div>\n" +
-    "\n" +
-    "\n" +
-    "\n" +
-    "");
+    "<div class=jumbotron-header><div class=jumbotron><div class=container><div class=row><div class=col-sm-12><ol class=breadcrumb typeof=BreadcrumbList vocab=\"http://schema.org/\"><li><a title=\"Go to The University of Alabama Libraries.\" href=/#/home class=home>The University of Alabama Libraries</a></li><li><a title=\"Go to News.\" href=/#/staffdir class=\"post post-page\">Staff Directory</a></li></ol></div></div><div class=row><div class=col-md-12><h1>Staff Directory</h1></div></div></div></div></div><div class=container><div class=\"row staff-directory\"><div class=\"col-md-3 col-md-push-9\"><div class=staff-directory-facets facets=staffdir.facets></div></div><div class=\"col-md-9 col-md-pull-3\"><div ng-show=facets.showFacetBar><ol class=\"breadcrumb facetcrumb\"><li ng-if=facets.facet.department><strong>Department:</strong> <button type=button class=\"btn btn-default\" ng-click=\"facets.clearFacets('department')\">{{facets.facet.department | truncate : 20 : '...'}} <span class=text-muted aria-hidden=true>&times;</span></button></li><li ng-if=facets.facet.library><strong>Library:</strong> <button type=button class=\"btn btn-default\" ng-click=\"facets.clearFacets('library')\">{{facets.facet.library}} <span class=text-muted aria-hidden=true>&times;</span></button></li><li ng-if=facets.facet.subject><strong>Subject:</strong> <button type=button class=\"btn btn-default\" ng-click=\"facets.clearFacets('subject')\">{{facets.facet.subject}} <span class=text-muted aria-hidden=true>&times;</span></button></li><li ng-if=facets.facet.selector><button type=button class=\"btn btn-default\" ng-click=\"facets.clearFacets('selector')\">Selector <span class=text-muted aria-hidden=true>&times;</span></button></li><li ng-if=facets.facet.instructor><button type=button class=\"btn btn-default\" ng-click=\"facets.clearFacets('instructor')\">Instructor <span class=text-muted aria-hidden=true>&times;</span></button></li><li class=pull-right><button type=button class=\"btn btn-primary btn-small reset-btn\" title=\"Reset filters\" ng-click=facets.clearFacets()><i class=\"fa fa-refresh\"></i></button></li></ol></div><div class=text-center><pagination class=pagination-sm ng-model=facets.pager.page total-items=facets.pager.totalItems max-size=facets.pager.maxSize boundary-links=true rotate=false items-per-page=facets.pager.perPage ng-change=\"facets.changeFacet('page')\" ng-if=\"facets.pager.totalItems > facets.pager.perPage\"></pagination></div><div class=staff-directory-listing id=staff-directory-listing list=staffdir.list sort-by=lastname></div><div class=text-center><pagination class=pagination-sm ng-model=facets.pager.page total-items=facets.pager.totalItems max-size=facets.pager.maxSize boundary-links=true rotate=false items-per-page=facets.pager.perPage ng-change=\"facets.changeFacet('page')\" ng-if=\"facets.pager.totalItems > facets.pager.perPage\"></pagination></div></div></div></div>");
 }]);
 
 angular.module("staff-profile/staff-profile.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("staff-profile/staff-profile.tpl.html",
-    "<div class=\"container\">\n" +
-    "    <ol class=\"breadcrumb\" typeof=\"BreadcrumbList\" vocab=\"http://schema.org/\">\n" +
-    "        <li><a title=\"Go to The University of Alabama Libraries.\" href=\"/#/home\" class=\"home\">The University of Alabama Libraries</a></li>\n" +
-    "        <li><a title=\"Go to the Staff Directory.\" href=\"/#/staffdir\" class=\"home\">Staff Directory</a></li>\n" +
-    "        <li><a title=\"Go to user profile.\" href=\"\" class=\"home\">{{userProfile.person.firstname}} {{userProfile.person.lastname}}</a></li>\n" +
-    "    </ol>\n" +
-    "    <div class=\"page-header\">\n" +
-    "        <h2>Faculty/Staff Profile</h2>\n" +
-    "    </div>\n" +
-    "\n" +
-    "    <div class=\"row staff-profile\">\n" +
-    "        <div class=\"hidden-xs col-md-3\">\n" +
-    "            <img class=\"staff-portrait thumbnail\" ng-src=\"{{userProfile.person.photo}}\" ng-if=\"userProfile.person.photo\">\n" +
-    "            <img class=\"staff-portrait thumbnail\" ng-src=\"wp-content/themes/roots-ualib/assets/img/user-profile.png\" ng-if=\"!userProfile.person.photo\">\n" +
-    "        </div>\n" +
-    "        <div class=\"col-md-9\">\n" +
-    "            <div class=\"name-plate\">\n" +
-    "                <h1 class=\"name\">\n" +
-    "                    <small ng-if=\"userProfile.person.rank\">{{userProfile.person.rank}}</small>\n" +
-    "                    <span ng-bind-html=\"userProfile.person.firstname\"></span> <span ng-bind-html=\"userProfile.person.lastname\"></span>\n" +
-    "                </h1>\n" +
-    "                <h2 class=\"title\"><span ng-bind-html=\"userProfile.person.title\"></span></h2>\n" +
-    "                <h3 class=\"hidden-xs\"><span ng-bind-html=\"userProfile.person.department\"></span></h3>\n" +
-    "            </div>\n" +
-    "            <div class=\"row\">\n" +
-    "                <div class=\"page-slice\">\n" +
-    "                    <div class=\"col-md-6\">\n" +
-    "                        <ul class=\"fa-ul\">\n" +
-    "                            <li ng-if=\"userProfile.person.phone\"><span class=\"fa fa-phone fa-li\"></span><a ng-href=\"tel:+1-{{userProfile.person.phone}}\">{{userProfile.person.phone}}</a></li>\n" +
-    "                            <li class=\"hidden-xs\" ng-if=\"userProfile.person.fax\"><span class=\"fa fa-fax fa-li\"></span>{{userProfile.person.fax}}</li>\n" +
-    "                            <li ng-if=\"userProfile.person.email\"><span class=\"fa fa-envelope fa-li\"></span>\n" +
-    "                                <a href=\"mailto:{{userProfile.person.email}}\">{{userProfile.person.email}}</a>\n" +
-    "                            </li>\n" +
-    "                            <li ng-if=\"userProfile.person.website.length > 11\"><span class=\"fa fa-external-link-square fa-li\"></span>\n" +
-    "                                <a ng-href=\"{{userProfile.person.website}}\" class=\"external-link\">Personal website</a>\n" +
-    "                            </li>\n" +
-    "                        </ul>\n" +
-    "                    </div>\n" +
-    "                    <div class=\"col-md-6\">\n" +
-    "                        <ul class=\"fa-ul\">\n" +
-    "                            <li ng-if=\"userProfile.person.resume.length > 11\"><span class=\"fa fa-file-text fa-li\"></span>\n" +
-    "                                <a ng-href=\"{{userProfile.person.resume}}\">Resume / CV</a>\n" +
-    "                            </li>\n" +
-    "                            <li ng-if=\"userProfile.person.social1\">\n" +
-    "                                <span class=\"{{userProfile.person.snClass1}}\"></span>\n" +
-    "                                <a ng-href=\"{{userProfile.person.social1}}\" class=\"external-link\">{{userProfile.person.snTitle1}}</a>\n" +
-    "                            </li>\n" +
-    "                            <li ng-if=\"userProfile.person.social2\">\n" +
-    "                                <span class=\"{{userProfile.person.snClass2}}\"></span>\n" +
-    "                                <a ng-href=\"{{userProfile.person.social2}}\" class=\"external-link\">{{userProfile.person.snTitle2}}</a>\n" +
-    "                            </li>\n" +
-    "                            <li ng-if=\"userProfile.person.social3\">\n" +
-    "                                <span class=\"{{userProfile.person.snClass3}}\"></span>\n" +
-    "                                <a ng-href=\"{{userProfile.person.social3}}\" class=\"external-link\">{{userProfile.person.snTitle3}}</a>\n" +
-    "                            </li>\n" +
-    "                        </ul>\n" +
-    "                    </div>\n" +
-    "                </div>\n" +
-    "            </div>\n" +
-    "        </div>\n" +
-    "    </div>\n" +
-    "    <div class=\"row\">\n" +
-    "        <div class=\"col-md-12\">\n" +
-    "            <span ng-bind-html=\"userProfile.person.profile\"></span>\n" +
-    "        </div>\n" +
-    "    </div>\n" +
-    "\n" +
-    "</div>");
+    "<div class=container><ol class=breadcrumb typeof=BreadcrumbList vocab=\"http://schema.org/\"><li><a title=\"Go to The University of Alabama Libraries.\" href=/#/home class=home>The University of Alabama Libraries</a></li><li><a title=\"Go to the Staff Directory.\" href=/#/staffdir class=home>Staff Directory</a></li><li><a title=\"Go to user profile.\" href=\"\" class=home>{{userProfile.person.firstname}} {{userProfile.person.lastname}}</a></li></ol><div class=page-header><h2>Faculty/Staff Profile</h2></div><div class=\"row staff-profile\"><div class=\"hidden-xs col-md-3\"><img class=\"staff-portrait thumbnail\" ng-src={{userProfile.person.photo}} ng-if=userProfile.person.photo> <img class=\"staff-portrait thumbnail\" ng-src=wp-content/themes/roots-ualib/assets/img/user-profile.png ng-if=!userProfile.person.photo></div><div class=col-md-9><div class=name-plate><h1 class=name><small ng-if=userProfile.person.rank>{{userProfile.person.rank}}</small> <span ng-bind-html=userProfile.person.firstname></span> <span ng-bind-html=userProfile.person.lastname></span></h1><h2 class=title><span ng-bind-html=userProfile.person.title></span></h2><h3 class=hidden-xs><span ng-bind-html=userProfile.person.department></span></h3></div><div class=row><div class=page-slice><div class=col-md-6><ul class=fa-ul><li ng-if=userProfile.person.phone><span class=\"fa fa-phone fa-li\"></span><a ng-href=tel:+1-{{userProfile.person.phone}}>{{userProfile.person.phone}}</a></li><li class=hidden-xs ng-if=userProfile.person.fax><span class=\"fa fa-fax fa-li\"></span>{{userProfile.person.fax}}</li><li ng-if=userProfile.person.email><span class=\"fa fa-envelope fa-li\"></span> <a href=mailto:{{userProfile.person.email}}>{{userProfile.person.email}}</a></li><li ng-if=\"userProfile.person.website.length > 11\"><span class=\"fa fa-external-link-square fa-li\"></span> <a ng-href={{userProfile.person.website}} class=external-link>Personal website</a></li></ul></div><div class=col-md-6><ul class=fa-ul><li ng-if=\"userProfile.person.resume.length > 11\"><span class=\"fa fa-file-text fa-li\"></span> <a ng-href={{userProfile.person.resume}}>Resume / CV</a></li><li ng-if=userProfile.person.social1><span class={{userProfile.person.snClass1}}></span> <a ng-href={{userProfile.person.social1}} class=external-link>{{userProfile.person.snTitle1}}</a></li><li ng-if=userProfile.person.social2><span class={{userProfile.person.snClass2}}></span> <a ng-href={{userProfile.person.social2}} class=external-link>{{userProfile.person.snTitle2}}</a></li><li ng-if=userProfile.person.social3><span class={{userProfile.person.snClass3}}></span> <a ng-href={{userProfile.person.social3}} class=external-link>{{userProfile.person.snTitle3}}</a></li></ul></div></div></div></div></div><div class=row><div class=col-md-12><span ng-bind-html=userProfile.person.profile></span></div></div></div>");
 }]);
 ;/**
  * @ngdoc overview
@@ -418,24 +71,6 @@ angular.module('ualib.staffdir', [
 angular.module('staffdir', ['ualib.staffdir']);
 ;angular.module('ualib.staffdir')
 
-    // Capture any existing URL facet parameters.
-    .run(['StaffDirectoryService', '$location', '$rootScope', function(SDS, $location, $rootScope){
-        $rootScope.$on('$locationChangeStart', function(ev, next, last){
-            //console.log(arguments);
-            //console.log($location.path());
-            if ($location.path() === '/staffdir'){
-                var params = $location.search();
-                for (var param in params){
-                    //TODO: This must be temporary. Any URI param will cause the facet bar to display on load!!
-                    if (!SDS.showFacetBar && !SDS.facetExceptions.hasOwnProperty(param)) {
-                        SDS.showFacetBar = true;
-                    }
-                    SDS.facet[param] = params[param];
-                }
-            }
-        });
-    }])
-
     .service('StaffDirectoryService', ['$location', '$rootScope', function($location, $rootScope){
         var self = this; //ensures proper contest in closure statements
         this.sortReverse = false; // Default sort direction
@@ -451,6 +86,18 @@ angular.module('staffdir', ['ualib.staffdir']);
 
         //TODO: handle this variable through a central route/event instead of on a function-by-function basis
         this.showFacetBar = false;
+
+        // Initialize function to capture any pre-linked filter params
+        this.init = function(){
+            var params = $location.search();
+            for (var param in params){
+                //TODO: This must be temporary. Any URI param will cause the facet bar to display on load!!
+                if (!this.showFacetBar && !this.facetExceptions.hasOwnProperty(param)) {
+                    this.showFacetBar = true;
+                }
+                this.facet[param] = params[param];
+            }
+        };
 
         // Accepts string or array arguments of facets to clear
         this.clearFacets = function(){
@@ -749,7 +396,9 @@ angular.module('staffdir', ['ualib.staffdir']);
                 return $resource('//wwwdev2.lib.ua.edu/staffDir/api/profile/:login', {}, {cache: true});
             }
         };
-    }]);;angular.module('ualib.staffdir')
+    }]);
+
+;angular.module('ualib.staffdir')
 
     .config(['$routeProvider', function($routeProvider){
         $routeProvider.when('/staffdir/cardlist', {
@@ -874,11 +523,12 @@ angular.module('staffdir', ['ualib.staffdir']);
                 sortBy: '@'
             },
             templateUrl: 'staff-card/staff-card-list.tpl.html',
-            controller: ['$scope', '$rootScope', '$timeout', function($scope, $rootScope, $timeout){
-                $scope.filteredList = $scope.list;
+            controller: ['$scope', function($scope){
+                SDS.init();
                 $scope.staffdir = SDS;
+                $scope.filteredList = filterList($scope.list);
 
-
+                updatePager($scope.filteredList.length);
                 //TODO: temporary work around because CMS file handling is dumb. Need to fix and make sustainable
                 $scope.placeholder = 'https://www.lib.ua.edu/wp-content/themes/roots-ualib/assets/img/user-profile.png';
 
@@ -892,7 +542,7 @@ angular.module('staffdir', ['ualib.staffdir']);
                 // Update listing when SDS broadcasts "facetsChange" event
                 var facetsListener = $scope.$on('facetsChange', function(){
                     updateList();
-                });                
+                });
 
                 function updatePager(totalItems){
                     SDS.pager.totalItems = totalItems;
@@ -902,11 +552,12 @@ angular.module('staffdir', ['ualib.staffdir']);
                     }
                     SDS.pager.firstItem = (SDS.pager.page-1)*SDS.pager.perPage+1;
                     SDS.pager.lastItem = Math.min(SDS.pager.totalItems, (SDS.pager.page * SDS.pager.perPage));
-                    $document.duScrollTo(0, 30, 500, function (t) { return (--t)*t*t+1; });
                 }
 
                 function updateList(){
                     $scope.filteredList = filterList($scope.list);
+                    updatePager($scope.filteredList.length);
+                    $document.duScrollTo(0, 30, 500, function (t) { return (--t)*t*t+1; });
                 }
 
                 function filterList(list){
@@ -932,7 +583,6 @@ angular.module('staffdir', ['ualib.staffdir']);
                                 list = $filter('filter')(list, SDS.facet[facet]);
                         }
                     }
-                    updatePager(list.length);
                     return list;
                 }
 

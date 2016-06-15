@@ -38,6 +38,18 @@ module.exports = function(grunt) {
         },
         html2js:{
             dev: {
+                options: {
+                    htmlmin: {
+                        collapseBooleanAttributes: true,
+                        collapseWhitespace: true,
+                        removeAttributeQuotes: true,
+                        removeComments: true,
+                        removeEmptyAttributes: true,
+                        removeRedundantAttributes: true,
+                        removeScriptTypeAttributes: true,
+                        removeStyleLinkTypeAttributes: true
+                    }
+                },
                 src: ['src/**/*.tpl.html', '!src/staff-directory-listing.tpl.html', '!src/staff-card/staff-card-sm.tpl.html'],
                 dest: 'tmp/templates.js',
                 module: 'ualib.staffdir.templates'
