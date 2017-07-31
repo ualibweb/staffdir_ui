@@ -26,12 +26,6 @@
             <select class="form-control" ng-model="staffdir.facet.subject" name="subject" ng-options="subject for subject in facets.subjects" ng-change="staffdir.changeFacet('subject')">
                 <option value="">-- Select Subject --</option>
             </select>
-            <label class="checkbox-inline">
-                <input type="checkbox" id="selector" ng-true-value="1" ng-model="staffdir.facet.selector" ng-change="staffdir.changeFacet('selector')"> Selector
-            </label>
-            <label class="checkbox-inline">
-                <input type="checkbox" id="instructor" ng-true-value="2" ng-model="staffdir.facet.instructor" ng-change="staffdir.changeFacet('instructor')"> Instructor
-            </label>
         </div>
     </div>
 

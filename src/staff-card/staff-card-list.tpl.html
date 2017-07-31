@@ -33,9 +33,7 @@
                         <table class="table table-condensed">
                             <thead>
                             <tr>
-                                <th>Subject specialty</th>
-                                <th class="text-center">Selector</th>
-                                <th class="text-center">Instruction</th>
+                                <th>Liaison</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -44,8 +42,6 @@
                                     <a ng-href="{{subject.link}}" title="{{subject.subject}}" ng-if="subject.link" ng-bind-html="subject.subject | highlight:staffdir.facet.search"></a>
                                     <span ng-if="!subject.link" ng-bind-html="subject.subject | highlight:staffdir.facet.search">{{subject.subject}}</span>
                                 </td>
-                                <td class="text-center"><span class="fa fa-circle text-info" ng-if="subject.type == 1 || subject.type == 3"></span></td>
-                                <td class="text-center"><span class="fa fa-circle text-info" ng-if="subject.type > 1"></span></td>
                             </tr>
                             </tbody>
                         </table>
