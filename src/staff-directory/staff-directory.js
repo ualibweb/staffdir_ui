@@ -81,6 +81,7 @@ angular.module('ualib.staffdir')
                                 break;
                             case 'selector':
                             case 'instructor':
+                            case 'liaison':
                                 list = $filter('filter')(list, SDS.specialtyType);
                                 break;
                             case 'subject':

@@ -65,13 +65,17 @@ angular.module('ualib.staffdir')
         };
 
         this.specialtyType = function(staff){
-            var type = (self.facet.selector | self.facet.instructor);
+            var type = self.facet.liaison;
             if (type){
+                //Type 1 used to refer to selectors for a subject and type 2 used to be instructor, with type 3 representing both.  In the liaison program, that distinction is no longer made -- so everyone is both.
+                type = 3;
                 return staff.subjects.filter(function(subj){
                         var isType = (subj.type & type) === type;
                         if (type === 3){
+                            console.log(self.facet.subject);
                             return self.facet.subject ? (self.facet.subject === subj.subject) && subj.type > 0 : subj.type > 0;
                         }
+
                         return self.facet.subject ? (self.facet.subject === subj.subject) && isType : isType;
                     }).length > 0;
             }

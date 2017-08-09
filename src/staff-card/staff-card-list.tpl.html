@@ -56,11 +56,11 @@
     <h2>
         No staff members found
         <span ng-if="staffdir.facet.library"> in {{staffdir.facet.library}}</span>
-        <span ng-if="staffdir.facet.selector"> that are subject selectors</span>
-        <span ng-if="staffdir.facet.instructor"><span ng-if="staffdir.facet.selector"> or</span> <span ng-if="!staffdir.facet.selector"> that are</span> instruction librarians</span>
+        <span ng-if="staffdir.facet.liaison"> that are liaisons</span>
+
                 <span ng-if="staffdir.facet.subject">
-                    <span ng-if="staffdir.facet.selector || staffdir.facet.instructor"> for</span>
-                    <span ng-if="!staffdir.facet.selector && !staffdir.facet.instructor"> with a specialty in</span>
+                    <span ng-if="staffdir.facet.liaison"> for</span>
+                    <span ng-if="!staffdir.facet.liaison"> with a specialty in</span>
                      {{staffdir.facet.subject}}
                 </span>
     </h2>
