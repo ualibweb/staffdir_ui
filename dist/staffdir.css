@@ -199,6 +199,9 @@
   margin-top: 15px;
   font-size: .9em;
 }
+.staff-directory-facets .btn-group-justified > .btn {
+  width: 50%;
+}
 .staff-card {
   max-width: 450px;
   background-color: #f9f9f9;

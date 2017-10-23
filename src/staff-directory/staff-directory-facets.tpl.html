@@ -4,7 +4,8 @@
     </div>
     <div class="form-group">
         <div class="facet-group">
-            <input class="form-control" id="directorySearch" name="directorySearch" type="text" ng-model="staffdir.facet.search" placeholder="Keyword Search..." ng-keyup="staffdir.changeFacet('search')"/>
+            <h5 id="searchStaffDirectory">Search staff directory</h5>
+            <input class="form-control" id="directorySearch" aria-labelledby="searchStaffDirectory" name="directorySearch" type="text" ng-model="staffdir.facet.search" placeholder="Keyword Search..." ng-keyup="staffdir.changeFacet('search')"/>
         </div>
     </div>
 
@@ -12,8 +13,8 @@
         <h5>Sort by</h5>
         <div class="facet-group">
             <div class="btn-group btn-group-justified">
-                <label class="btn btn-default" ng-model="staffdir.facet.sortBy" btn-radio="'lastname'" ng-change="staffdir.changeFacet('sortBy')">Last name</label>
-                <label class="btn btn-default" ng-model="staffdir.facet.sortBy" btn-radio="'firstname'" ng-change="staffdir.changeFacet('sortBy')">First name</label>
+                <button class="btn btn-default" ng-model="staffdir.facet.sortBy" btn-radio="'lastname'" ng-change="staffdir.changeFacet('sortBy')">Last name</button>
+                <button class="btn btn-default" ng-model="staffdir.facet.sortBy" btn-radio="'firstname'"  ng-change="staffdir.changeFacet('sortBy')">First name</button>
             </div>
         </div>
     </div>
