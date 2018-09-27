@@ -414,7 +414,7 @@ angular.module('staffdir', ['ualib.staffdir']);
         return {
             restrict: 'AC',
             templateUrl: 'staff-card/staff-card-list.tpl.html',
-            controller: ['$scope', function($scope){
+            controller: function($scope){
                 $scope.staffdir = {};
 
                 StaffFactory.directory().get()
@@ -425,7 +425,7 @@ angular.module('staffdir', ['ualib.staffdir']);
                     }, function(){
                         console.log('Staffdir Error -- Come on, put in proper error handling already');
                     });
-            }]
+            }
         };
     }])
 
@@ -585,7 +585,11 @@ angular.module('staffdir', ['ualib.staffdir']);
                                 list = $filter('orderBy')(list, SDS.facet[facet], SDS.sortReverse);
                                 break;
                             default:
-                                list = $filter('filter')(list, SDS.facet[facet]);
+                                //Search for each parameter separately
+                                var facetArray = SDS.facet[facet].split(' ');
+                                for (i = 0; i < facetArray.length; i++) {
+                                    list = $filter('filter')(list, facetArray[i]);
+                                }
                         }
                     }
                     return list;
@@ -637,7 +641,7 @@ angular.module('staffdir', ['ualib.staffdir']);
                 login: '@email'
             },
             templateUrl: 'staff-profile/staff-profile.tpl.html',
-            controller: ['$scope', function($scope){
+            controller: function($scope){
                 $scope.userProfile = {};
 
                 //console.log("Login: " + $scope.login);
@@ -683,7 +687,7 @@ angular.module('staffdir', ['ualib.staffdir']);
                     }, function(data){
                         console.log('Error: cold not get profile! ' + data);
                     });
-            }]
+            }
         };
     }]);
 

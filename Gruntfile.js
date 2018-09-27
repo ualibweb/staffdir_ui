@@ -11,7 +11,8 @@ module.exports = function(grunt) {
         bower: 'bower_components',
         jshint: {
             options: {
-                jshintrc: '.jshintrc'
+                jshintrc: '.jshintrc',
+                reporterOutput: ''
             },
             all: [
                 'Gruntfile.js',
