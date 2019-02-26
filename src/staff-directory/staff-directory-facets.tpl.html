@@ -1,16 +1,16 @@
 <form class="facets-form">
     <div class="form-group">
-        <h4>Filters</h4>
+        <h2 class="h4">Filters</h2>
     </div>
     <div class="form-group">
         <div class="facet-group">
-            <h5 id="searchStaffDirectory">Search staff directory</h5>
+            <h3 id="searchStaffDirectory" class="h5">Search staff directory</h3>
             <input class="form-control" id="directorySearch" aria-labelledby="searchStaffDirectory" name="directorySearch" type="text" ng-model="staffdir.facet.search" placeholder="Keyword Search..." ng-keyup="staffdir.changeFacet('search')"/>
         </div>
     </div>
 
     <div class="form-group">
-        <h5>Sort by</h5>
+        <h3 class="h5">Sort by</h3>
         <div class="facet-group">
             <div class="btn-group btn-group-justified">
                 <button class="btn btn-default" ng-model="staffdir.facet.sortBy" btn-radio="'lastname'" ng-change="staffdir.changeFacet('sortBy')">Last name</button>
@@ -20,7 +20,7 @@
     </div>
 
     <div class="form-group hidden-xs hidden-sm">
-        <h5>Liaison area</h5>
+        <h3 class="h5">Liaison area</h3>
 
         <div class="facet-group">
 
@@ -34,7 +34,7 @@
     </div>
 
     <div class="form-group hidden-xs hidden-sm">
-        <h5>Department</h5>
+        <h3 class="h5">Department</h3>
         <div class="facet-group">
             <select class="form-control" ng-model="staffdir.facet.department" name="department" ng-options="department for department in facets.departments" ng-change="staffdir.changeFacet('department')">
                 <option value="">-- Select Department --</option>
@@ -43,7 +43,7 @@
     </div>
 
     <div class="form-group hidden-xs hidden-sm">
-        <h5>Library Location</h5>
+        <h3 class="h5">Library Location</h3>
         <div class="facet-group">
             <div class="radio">
                 <label>
@@ -59,7 +59,7 @@
     </div>
 
     <div class="form-group hidden-xs hidden-sm">
-        <button class="btn btn-primary btn-block" type="button" ng-click="staffdir.clearFacets()">
+        <button class="btn btn-primary btn-primary-dark btn-block" type="button" ng-click="staffdir.clearFacets()">
             <span class="fa fa-fw fa-refresh"></span> Reset Filters
         </button>
     </div>
