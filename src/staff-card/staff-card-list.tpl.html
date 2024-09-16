@@ -1,9 +1,9 @@
 <div ng-repeat="person in filteredList | after:(staffdir.pager.page-1)*staffdir.pager.perPage | limitTo:staffdir.pager.perPage">
     <div class="page-slice">
         <div class="row">
-            <div class="hidden-xs col-sm-3">
-                <img class="staff-portrait thumbnail" ng-if='person.photo' ng-src='{{person.photo}}' alt=""  />
-                <img class="staff-portrait thumbnail" ng-if='!person.photo' ng-src='https://www.lib.ua.edu/wp-content/themes/roots-ualib/assets/img/user-profile.png' alt=""  />
+            <div class="col-sm-3">
+                <img class="staff-portrait thumbnail" ng-if='person.photo' ng-src='{{person.photo}}' alt="" style="width: 100%;" />
+                <img class="staff-portrait thumbnail" ng-if='!person.photo' ng-src='https://www.lib.ua.edu/wp-content/themes/roots-ualib/assets/img/user-profile.png' alt="" style="width: 100%;" />
             </div>
             <div class="col-xs-12 col-sm-7">
                 <div class="row">
@@ -30,7 +30,7 @@
                             <li ng-if="person.email"><span class="fa fa-envelope fa-li"></span><a ng-href="mailto:{{person.email}}" title="Email {{person.firstname}} {{person.lastname}}">{{person.email}}</a></li>
                         </ul>
                     </div>
-                    <div class="col-sm-12 subject-specialty hidden-xs" ng-if="person.subjects">
+                    <div class="col-sm-12 subject-specialty" ng-if="person.subjects">
                         <table class="table table-condensed">
                             <thead>
                             <tr>
